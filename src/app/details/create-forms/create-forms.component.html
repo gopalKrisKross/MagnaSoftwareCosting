@@ -1,0 +1,75 @@
+<div class="row">
+  <div class="col-md-12">
+    <nb-card class="inline-form-card" [formGroup]="departnentForm">
+      <nb-card-header>Inline form</nb-card-header>
+      <nb-card-body>
+        <table class="table table-bordered label" id="departmentTable">
+          <thead class="tHeading" status="warning">
+            <tr>
+              <th>Dept</th>
+              <th>Shift</th>
+              <th>Jan-23</th>
+              <th>Feb-23</th>
+              <th>Mar-23</th>
+              <th>Apr-23</th>
+              <th>May-23</th>
+              <th>Jun-23</th>
+              <th>Jul-23</th>
+              <th>Aug-23</th>
+              <th>Sep-23</th>
+              <th>Oct-23</th>
+              <th>Nov-23</th>
+              <th>Dec-23</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let branch of departmentDetails">
+            <tr>
+              <td rowspan="3" status="warning">
+                {{ branch }}
+              </td>
+              <td>First</td>
+              <td *ngFor="let val of data; let i = index" class="padding0">
+                <input
+                  type="text"
+                  class="formInput"
+                  status="basic"
+                  nbInput
+                  formControlName="{{ branch }}First{{ i }}"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>Gen</td>
+              <td *ngFor="let val of data; let i = index" class="padding0">
+                <input
+                  type="text"
+                  class="formInput"
+                  status="basic"
+                  nbInput
+                  formControlName="{{ branch }}Gen{{ i }}"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>Sec</td>
+              <td *ngFor="let val of data; let i = index" class="padding0">
+                <input
+                  type="text"
+                  class="formInput"
+                  status="basic"
+                  nbInput
+                  formControlName="{{ branch }}Sec{{ i }}"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="offset-sm-11 col-sm-12">
+          <button type="button" nbButton status="primary" (click)="saveData()">
+            save
+          </button>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
