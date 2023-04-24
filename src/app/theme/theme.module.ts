@@ -13,13 +13,11 @@ import {
   NbIconModule,
   NbCardModule,
   NbInputModule,
+  NbDatepickerModule,
+  NbSpinnerModule,
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
-
-// import { DEFAULT_THEME } from './styles/theme.default';
-// import { COSMIC_THEME } from './styles/theme.cosmic';
-// import { CORPORATE_THEME } from './styles/theme.corporate';
-// import { DARK_THEME } from './styles/theme.dark';
+import { NbMomentDateModule } from '@nebular/moment';
 
 @NgModule({
   imports: [
@@ -36,8 +34,11 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
     NbIconModule,
     NbEvaIconsModule,
     NbMenuModule.forRoot(),
+    NbDatepickerModule.forRoot(),
     NbCardModule,
     NbInputModule,
+    NbMomentDateModule,
+    NbSpinnerModule,
   ],
   exports: [
     NbLayoutModule,
@@ -54,6 +55,9 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
     NbEvaIconsModule,
     NbCardModule,
     NbInputModule,
+    NbDatepickerModule,
+    NbMomentDateModule,
+    NbSpinnerModule,
   ],
   declarations: [],
 })

@@ -1,0 +1,55 @@
+<div class="row">
+  <div class="col-md-12">
+    <nb-card class="inline-form-card">
+      <nb-card-header>Actual Usage</nb-card-header>
+      <nb-card-body>
+        <div class="row">
+          <div class="col-sm-3">
+            <nb-select placeholder="Department" size="small" class="formInput">
+              <nb-option value="2">Select Deparment</nb-option>
+              <!-- <nb-option
+                  *ngFor="let branch of departmentDetails"
+                  [value]="branch"
+                  >{{ branch }}</nb-option
+                > -->
+            </nb-select>
+          </div>
+          <div class="col-sm-3">
+            <nb-select placeholder="Software" size="small" class="formInput">
+              <nb-option value="1">Select Software</nb-option>
+            </nb-select>
+          </div>
+          <div class="col-sm-2">
+            <input
+              nbInput
+              [nbDatepicker]="fromDatePicker"
+              size="small"
+              class="formInput"
+            />
+            <nb-datepicker #fromDatePicker format="MMM-YY"></nb-datepicker>
+          </div>
+          <div class="col-sm-2">
+            <input
+              nbInput
+              [nbDatepicker]="toDatePicker"
+              fieldSize="small"
+              class="formInput"
+            />
+            <nb-datepicker #toDatePicker format="MMM-YY"></nb-datepicker>
+          </div>
+          <div class="text-center p-2 col-sm-2">
+            <button type="button" size="small" nbButton status="info">
+              Go
+            </button>
+          </div>
+        </div>
+
+        <div class="offset-sm-11 col-sm-12">
+          <button type="button" size="small" nbButton status="info">
+            save
+          </button>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

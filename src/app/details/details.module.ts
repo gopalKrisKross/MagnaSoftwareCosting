@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { ThemeModule } from '../theme/theme.module';
+import { ActualUsageComponent } from './actual-usage/actual-usage.component';
 const routes: Routes = [
   {
     path: '',
@@ -15,11 +16,15 @@ const routes: Routes = [
         path: 'create',
         component: CreateFormsComponent,
       },
+      {
+        path: 'costing',
+        component: ActualUsageComponent,
+      },
     ],
   },
 ];
 @NgModule({
-  declarations: [CreateFormsComponent, DetailComponent],
+  declarations: [CreateFormsComponent, DetailComponent, ActualUsageComponent],
   imports: [
     CommonModule,
     FormsModule,

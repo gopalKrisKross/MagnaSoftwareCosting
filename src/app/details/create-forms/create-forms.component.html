@@ -1,9 +1,55 @@
 <div class="row">
   <div class="col-md-12">
     <nb-card class="inline-form-card" [formGroup]="departnentForm">
-      <nb-card-header>Inline form</nb-card-header>
+      <nb-card-header>Estimation</nb-card-header>
       <nb-card-body>
-        <table class="table table-bordered label" id="departmentTable">
+        <div class="row">
+          <div class="col-sm-3">
+            <nb-select placeholder="Department" size="small" class="formInput">
+              <nb-option value="2">Select Deparment</nb-option>
+              <nb-option
+                *ngFor="let branch of departmentDetails"
+                [value]="branch"
+                >{{ branch }}</nb-option
+              >
+            </nb-select>
+          </div>
+          <div class="col-sm-3">
+            <nb-select placeholder="Software" size="small" class="formInput">
+              <nb-option value="1">Select Software</nb-option>
+            </nb-select>
+          </div>
+          <div class="col-sm-2">
+            <input
+              nbInput
+              [nbDatepicker]="fromDatePicker"
+              fieldSize="small"
+              class="formInput"
+            />
+            <nb-datepicker #fromDatePicker format="MMM-YY"></nb-datepicker>
+          </div>
+          <div class="col-sm-2">
+            <input
+              nbInput
+              [nbDatepicker]="toDatePicker"
+              fieldSize="small"
+              class="formInput"
+            />
+            <nb-datepicker #toDatePicker format="MMM-YY"></nb-datepicker>
+          </div>
+          <div class="text-center p-2 col-sm-2">
+            <button
+              type="button"
+              size="small"
+              nbButton
+              status="info"
+              (click)="getData()"
+            >
+              Go
+            </button>
+          </div>
+        </div>
+        <table class="table table-bordered label mt-3" id="departmentTable">
           <thead class="tHeading" status="warning">
             <tr>
               <th>Dept</th>
@@ -33,6 +79,7 @@
                   type="text"
                   class="formInput"
                   status="basic"
+                  fieldSize="small"
                   nbInput
                   formControlName="{{ branch }}First{{ i }}"
                 />
@@ -45,6 +92,7 @@
                   type="text"
                   class="formInput"
                   status="basic"
+                  fieldSize="small"
                   nbInput
                   formControlName="{{ branch }}Gen{{ i }}"
                 />
@@ -57,6 +105,7 @@
                   type="text"
                   class="formInput"
                   status="basic"
+                  fieldSize="small"
                   nbInput
                   formControlName="{{ branch }}Sec{{ i }}"
                 />
@@ -65,7 +114,13 @@
           </tbody>
         </table>
         <div class="offset-sm-11 col-sm-12">
-          <button type="button" nbButton status="primary" (click)="saveData()">
+          <button
+            type="button"
+            size="small"
+            nbButton
+            status="info"
+            (click)="saveData()"
+          >
             save
           </button>
         </div>

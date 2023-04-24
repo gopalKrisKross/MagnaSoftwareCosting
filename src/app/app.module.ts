@@ -11,6 +11,7 @@ import { PagesComponent } from './pages/pages.component';
 import { DetailsModule } from './details/details.module';
 import { NbThemeModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
+import { LoginModule } from './login/login.module';
 @NgModule({
   declarations: [AppComponent, PagesComponent],
   imports: [
@@ -23,6 +24,7 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
     DetailsModule,
     NbThemeModule.forRoot({ name: 'default' }),
     NbEvaIconsModule,
+    LoginModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

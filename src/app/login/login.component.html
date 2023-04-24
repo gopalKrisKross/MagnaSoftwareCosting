@@ -1,0 +1,63 @@
+<section class="vh-100">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-9 col-lg-6 col-xl-5">
+        <img [src]="image" class="img-fluid" alt="Sample image" />
+      </div>
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <nb-card accent="info">
+          <nb-card-header class="loginHeading">Login</nb-card-header>
+          <nb-card-body>
+            <form [formGroup]="loginForm">
+              <div class="form-floating mb-3">
+                <input
+                  type="email"
+                  class="form-control"
+                  placeholder="name@example.com"
+                  formControlName="EmailId"
+                />
+                <label for="floatingInput">Email address</label>
+                <ng-container
+                  *ngIf="f['EmailId'].touched && f['EmailId'].invalid"
+                >
+                  <p class="status-danger">Email is required!</p>
+                </ng-container>
+              </div>
+              <div class="form-floating">
+                <input
+                  type="password"
+                  class="form-control"
+                  placeholder="Password"
+                  formControlName="Password"
+                />
+                <label for="floatingPassword">Password</label>
+                <ng-container
+                  *ngIf="f['Password'].touched && f['Password'].invalid"
+                >
+                  <p class="status-danger">Password is required!</p>
+                </ng-container>
+              </div>
+
+              <div
+                class="d-flex justify-content-between align-items-center mt-4"
+              >
+                <a href="#!" class="text-body">Forgot password?</a>
+              </div>
+
+              <div class="text-center text-lg-end mt-4">
+                <button
+                  type="button"
+                  class="btn btn-primary btn-lg"
+                  style="padding-left: 2.5rem; padding-right: 2.5rem"
+                  (click)="login()"
+                >
+                  Login
+                </button>
+              </div>
+            </form>
+          </nb-card-body>
+        </nb-card>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
-import { NbSidebarService, NbThemeService } from '@nebular/theme';
+import {
+  NbMenuService,
+  NbSidebarService,
+  NbThemeService,
+} from '@nebular/theme';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -34,31 +38,53 @@ export class HeaderComponent implements OnInit {
 
   currentTheme = 'default';
 
-  userMenu = [{ title: 'Profile' }, { title: 'Log out' }];
+  userMenu = [
+    { title: 'Profile' },
+    { title: 'Log out' },
+    {
+      title: 'Select Theme',
+      children: [
+        {
+          title: 'Corporate',
+        },
+        {
+          title: 'Cosmic',
+        },
+        {
+          title: 'Dark',
+        },
+        {
+          title: 'Default',
+        },
+      ],
+    },
+  ];
   constructor(
     private themeService: NbThemeService,
-    private sidebarService: NbSidebarService
+    private sidebarService: NbSidebarService,
+    private menuService: NbMenuService
   ) {}
 
   ngOnInit() {
-    //   this.currentTheme = this.themeService.currentTheme;
-    //   const { xl } = this.breakpointService.getBreakpointsMap();
-    //   this.themeService
-    //     .onMediaQueryChange()
-    //     .pipe(
-    //       map(([, currentBreakpoint]) => currentBreakpoint.width < xl),
-    //       takeUntil(this.destroy$)
-    //     )
-    //     .subscribe(
-    //       (isLessThanXl: boolean) => (this.userPictureOnly = isLessThanXl)
-    //     );
-    //   this.themeService
-    //     .onThemeChange()
-    //     .pipe(
-    //       map(({ name }) => name),
-    //       takeUntil(this.destroy$)
-    //     )
-    //     .subscribe((themeName) => (this.currentTheme = themeName));
+    this.menuService.onItemClick().subscribe((event: any) => {
+      console.log(event);
+      switch (event.item.title.toLowerCase()) {
+        case 'profile':
+          break;
+        case 'log out':
+          break;
+        case 'corporate':
+        case 'cosmic':
+        case 'dark':
+        case 'default':
+          this.changeTheme(event.item.title.toLowerCase());
+          break;
+
+        default:
+          break;
+      }
+      console.log();
+    });
   }
 
   ngOnDestroy() {
@@ -67,16 +93,12 @@ export class HeaderComponent implements OnInit {
   }
 
   changeTheme(themeName: string) {
+    console.log('fire');
     this.themeService.changeTheme(themeName);
   }
 
   toggleSidebar(): boolean {
     this.sidebarService.toggle(true, 'menu-sidebar');
-    return false;
-  }
-
-  navigateHome() {
-    // this.menuService.navigateHome();
     return false;
   }
 }

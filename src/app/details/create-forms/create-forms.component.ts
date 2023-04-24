@@ -34,7 +34,10 @@ export class CreateFormsComponent implements OnInit {
       });
     });
   }
-
+  getData() {
+    try {
+    } catch (error) {}
+  }
   saveData() {
     console.log(this.departnentForm.getRawValue());
     let obj = {};
