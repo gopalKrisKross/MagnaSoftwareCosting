@@ -7,6 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { ThemeModule } from '../theme/theme.module';
 import { ActualUsageComponent } from './actual-usage/actual-usage.component';
+import { MasterListComponent } from './master-list/master-list.component';
 const routes: Routes = [
   {
     path: '',
@@ -24,7 +25,7 @@ const routes: Routes = [
   },
 ];
 @NgModule({
-  declarations: [CreateFormsComponent, DetailComponent, ActualUsageComponent],
+  declarations: [CreateFormsComponent, DetailComponent, ActualUsageComponent, MasterListComponent],
   imports: [
     CommonModule,
     FormsModule,
