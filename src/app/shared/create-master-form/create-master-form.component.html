@@ -1,1 +1,102 @@
-<p>create-master-form works!</p>
+<nb-card class="w-75 ms-auto me-auto" status="warning">
+  <nb-card-header>
+    Create
+    <div class="float-end">
+      <nb-icon
+        icon="close-outline"
+        (click)="close(true)"
+        role="button"
+      ></nb-icon></div
+  ></nb-card-header>
+  <nb-card-body>
+    <div class="row" [formGroup]="masterForm">
+      <div class="col-6 floating-label-field">
+        <input
+          type="text"
+          class="floating-input"
+          placeholder=" "
+          formControlName="id"
+        />
+        <label class="floating-label">ID</label>
+      </div>
+      <div class="col-6 floating-label-field">
+        <input
+          type="text"
+          class="floating-input"
+          placeholder=" "
+          formControlName="name"
+        />
+        <label class="floating-label">Name</label>
+      </div>
+      <div class="col-6 floating-label-field">
+        <input
+          type="text"
+          class="floating-input"
+          placeholder=" "
+          formControlName="licenceServerID"
+        />
+        <label class="floating-label">Licence Server ID</label>
+      </div>
+      <div class="col-6 floating-label-field">
+        <input
+          type="text"
+          class="floating-input"
+          placeholder=" "
+          formControlName="departmentID"
+        />
+        <label class="floating-label">Department ID</label>
+      </div>
+      <div class="col-6 floating-label-field">
+        <input
+          type="text"
+          class="floating-input"
+          placeholder=" "
+          formControlName="licenceServerDeptID"
+        />
+        <label class="floating-label">Licence Server Dept ID</label>
+      </div>
+      <div class="col-6 floating-label-field">
+        <input
+          type="text"
+          class="floating-input"
+          placeholder=" "
+          formControlName="status"
+        />
+        <label class="floating-label">Status</label>
+      </div>
+      <div class="col-6 floating-label-field">
+        <input
+          type="text"
+          class="floating-input"
+          placeholder=" "
+          formControlName="addedby"
+        />
+        <label class="floating-label">Added by</label>
+      </div>
+      <div class="col-6 floating-label-field">
+        <input
+          type="text"
+          class="floating-input"
+          placeholder=" "
+          [nbDatepicker]="AddDatePicker"
+          formControlName="addedDate"
+        />
+        <label class="floating-label">Added Date</label>
+
+        <nb-datepicker #AddDatePicker format="DD-MMM-yyyy"></nb-datepicker>
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <button
+      type="button"
+      size="small"
+      nbButton
+      status="info"
+      class="float-end"
+      (click)="saveDetails()"
+    >
+      save
+    </button></nb-card-footer
+  >
+</nb-card>

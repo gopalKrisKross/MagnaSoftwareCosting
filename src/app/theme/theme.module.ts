@@ -17,6 +17,7 @@ import {
   NbSpinnerModule,
   NbTooltipModule,
   NbBadgeModule,
+  NbDialogModule,
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { NbMomentDateModule } from '@nebular/moment';
@@ -37,12 +38,14 @@ import { NbMomentDateModule } from '@nebular/moment';
     NbEvaIconsModule,
     NbMenuModule.forRoot(),
     NbDatepickerModule.forRoot(),
+
     NbCardModule,
     NbInputModule,
     NbMomentDateModule,
     NbSpinnerModule,
     NbTooltipModule,
     NbBadgeModule,
+    NbDialogModule.forRoot(),
   ],
   exports: [
     NbLayoutModule,
@@ -64,6 +67,7 @@ import { NbMomentDateModule } from '@nebular/moment';
     NbSpinnerModule,
     NbTooltipModule,
     NbBadgeModule,
+    NbDialogModule,
   ],
   declarations: [],
 })

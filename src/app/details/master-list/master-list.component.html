@@ -3,9 +3,10 @@
     <nb-card class="inline-form-card" status="warning">
       <nb-card-header>
         <div class="d-flex justify-content-between col-12">
-          <div class="align-items-center d-flex">{{ listName }}</div>
+          <div class="align-items-center d-flex">{{ title }}</div>
           <div class="">
             <nb-icon
+              (click)="openModal(false)"
               icon="plus-outline"
               nbTooltip="Create"
               nbTooltipPlacement="bottom"
@@ -18,7 +19,9 @@
           <table class="table table-bordered label mt-3 text-center">
             <thead class="tHeading">
               <tr>
-                <th *ngFor="let heading of masterListHeading">{{ heading }}</th>
+                <th *ngFor="let heading of info[0] | keyvalue">
+                  {{ masterListHeading[heading.key] }}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -27,7 +30,10 @@
                   {{ dataProp.value }}
                 </td>
                 <td nbTooltip="Edit" nbTooltipPlacement="bottom">
-                  <nb-icon icon="edit-outline"></nb-icon>
+                  <nb-icon
+                    icon="edit-outline"
+                    (click)="openModal(false)"
+                  ></nb-icon>
                 </td>
               </tr>
             </tbody>
