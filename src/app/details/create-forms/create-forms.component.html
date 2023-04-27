@@ -1,11 +1,16 @@
 <div class="row">
   <div class="col-md-12">
-    <nb-card class="inline-form-card" [formGroup]="departnentForm">
+    <nb-card class="inline-form-card" status="warning">
       <nb-card-header>Estimation</nb-card-header>
       <nb-card-body>
-        <div class="row">
-          <div class="col-sm-3">
-            <nb-select placeholder="Department" size="small" class="formInput">
+        <div class="row" [formGroup]="deptOptionForm">
+          <div class="col-md-3">
+            <nb-select
+              placeholder="Department"
+              size="small"
+              class="formInput"
+              formControlName="department"
+            >
               <nb-option value="2">Select Deparment</nb-option>
               <nb-option
                 *ngFor="let branch of departmentDetails"
@@ -14,30 +19,42 @@
               >
             </nb-select>
           </div>
-          <div class="col-sm-3">
-            <nb-select placeholder="Software" size="small" class="formInput">
+          <div class="col-md-3">
+            <nb-select
+              placeholder="Software"
+              size="small"
+              class="formInput"
+              name="software"
+              formControlName="software"
+            >
               <nb-option value="1">Select Software</nb-option>
+              <nb-option value="CATIA">CATIA</nb-option>
+              <nb-option value="UG">UG</nb-option>
             </nb-select>
           </div>
-          <div class="col-sm-2">
+          <div class="col-md-2">
             <input
               nbInput
               [nbDatepicker]="fromDatePicker"
               fieldSize="small"
               class="formInput"
+              name="fromDatePicker"
+              formControlName="fromDatePicker"
             />
             <nb-datepicker #fromDatePicker format="MMM-YY"></nb-datepicker>
           </div>
-          <div class="col-sm-2">
+          <div class="col-md-2">
             <input
               nbInput
               [nbDatepicker]="toDatePicker"
               fieldSize="small"
               class="formInput"
+              name="toDatePicker"
+              formControlName="toDatePicker"
             />
             <nb-datepicker #toDatePicker format="MMM-YY"></nb-datepicker>
           </div>
-          <div class="text-center p-2 col-sm-2">
+          <div class="text-center col-md-2">
             <button
               type="button"
               size="small"
@@ -49,71 +66,73 @@
             </button>
           </div>
         </div>
-        <table class="table table-bordered label mt-3" id="departmentTable">
-          <thead class="tHeading" status="warning">
-            <tr>
-              <th>Dept</th>
-              <th>Shift</th>
-              <th>Jan-23</th>
-              <th>Feb-23</th>
-              <th>Mar-23</th>
-              <th>Apr-23</th>
-              <th>May-23</th>
-              <th>Jun-23</th>
-              <th>Jul-23</th>
-              <th>Aug-23</th>
-              <th>Sep-23</th>
-              <th>Oct-23</th>
-              <th>Nov-23</th>
-              <th>Dec-23</th>
-            </tr>
-          </thead>
-          <tbody *ngFor="let branch of departmentDetails">
-            <tr>
-              <td rowspan="3" status="warning">
-                {{ branch }}
-              </td>
-              <td>First</td>
-              <td *ngFor="let val of data; let i = index" class="padding0">
-                <input
-                  type="text"
-                  class="formInput"
-                  status="basic"
-                  fieldSize="small"
-                  nbInput
-                  formControlName="{{ branch }}First{{ i }}"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>Gen</td>
-              <td *ngFor="let val of data; let i = index" class="padding0">
-                <input
-                  type="text"
-                  class="formInput"
-                  status="basic"
-                  fieldSize="small"
-                  nbInput
-                  formControlName="{{ branch }}Gen{{ i }}"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>Sec</td>
-              <td *ngFor="let val of data; let i = index" class="padding0">
-                <input
-                  type="text"
-                  class="formInput"
-                  status="basic"
-                  fieldSize="small"
-                  nbInput
-                  formControlName="{{ branch }}Sec{{ i }}"
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="offset-sm-11 col-sm-12">
+        <div [formGroup]="departnentForm">
+          <table
+            class="table table-bordered label mt-3 text-center"
+            id="departmentTable"
+            *ngFor="let branch of departmentData"
+          >
+            <thead class="tHeading">
+              <tr>
+                <th>{{ branch }}</th>
+                <th *ngFor="let header of headerList">{{ header }}</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let project of getProject(branch)">
+              <tr>
+                <td rowspan="3" class=" ">
+                  {{ project.value }}
+                </td>
+                <td>First</td>
+                <td *ngFor="let val of data; let i = index" class="p-0">
+                  <input
+                    type="text"
+                    class="formInput text-center"
+                    status="basic"
+                    fieldSize="small"
+                    nbInput
+                    formControlName="{{ branch }}First{{ i }}"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>Gen</td>
+                <td *ngFor="let val of data; let i = index" class="p-0">
+                  <input
+                    type="text"
+                    class="formInput text-center"
+                    status="basic"
+                    fieldSize="small"
+                    nbInput
+                    formControlName="{{ branch }}Gen{{ i }}"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>Sec</td>
+                <td *ngFor="let val of data; let i = index" class="p-0">
+                  <input
+                    type="text"
+                    class="formInput text-center"
+                    status="basic"
+                    fieldSize="small"
+                    nbInput
+                    formControlName="{{ branch }}Sec{{ i }}"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>Total</td>
+                <td *ngFor="let val of data; let i = index" class="fw-bold">
+                  {{ getCalTotal(val) }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="offset-sm-11 col-sm-12" *ngIf="departmentData">
           <button
             type="button"
             size="small"

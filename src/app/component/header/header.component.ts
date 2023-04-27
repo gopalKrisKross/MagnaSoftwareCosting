@@ -13,15 +13,14 @@ import { Subject } from 'rxjs';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  private destroy$: Subject<void> = new Subject<void>();
-  userPictureOnly: boolean = false;
   user: any;
+  picture: any = 'assets/img/nick.png';
 
   themes = [
-    {
-      value: 'default',
-      name: 'Light',
-    },
+    // {
+    //   value: 'default',
+    //   name: 'Light',
+    // },
     {
       value: 'dark',
       name: 'Dark',
@@ -36,13 +35,14 @@ export class HeaderComponent implements OnInit {
     },
   ];
 
-  currentTheme = 'default';
+  currentTheme = 'corporate';
 
   userMenu = [
-    { title: 'Profile' },
-    { title: 'Log out' },
+    { title: 'Profile', icon: 'person-outline' },
+    { title: 'Log out', icon: 'unlock-outline' },
     {
       title: 'Select Theme',
+      icon: 'film-outline',
       children: [
         {
           title: 'Corporate',
@@ -53,9 +53,9 @@ export class HeaderComponent implements OnInit {
         {
           title: 'Dark',
         },
-        {
-          title: 'Default',
-        },
+        // {
+        //   title: 'Default',
+        // },
       ],
     },
   ];
@@ -87,13 +87,9 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+  ngOnDestroy() {}
 
   changeTheme(themeName: string) {
-    console.log('fire');
     this.themeService.changeTheme(themeName);
   }
 

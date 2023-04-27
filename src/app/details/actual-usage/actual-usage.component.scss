@@ -1,3 +1,10 @@
 .formInput {
-  width: 100%;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+.formField {
+  padding: 5px;
+}
+.padding0 {
+  padding: 0px !important;
 }

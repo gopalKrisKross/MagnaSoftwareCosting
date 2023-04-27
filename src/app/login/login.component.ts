@@ -15,7 +15,7 @@ import { NavigationService } from '../services/navigation/navigation.service';
 export class LoginComponent implements OnInit {
   // image: string = 'assets/login/login.png';
   loginForm: FormGroup;
-  image: string = ' assets/login/draw2.webp';
+  image: string = 'assets/login/draw2.webp';
   get f() {
     return this.loginForm.controls;
   }

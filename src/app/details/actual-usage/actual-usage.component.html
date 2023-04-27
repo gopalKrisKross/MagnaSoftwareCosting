@@ -1,50 +1,111 @@
 <div class="row">
   <div class="col-md-12">
-    <nb-card class="inline-form-card">
+    <nb-card class="inline-form-card" status="warning">
       <nb-card-header>Actual Usage</nb-card-header>
       <nb-card-body>
-        <div class="row">
-          <div class="col-sm-3">
-            <nb-select placeholder="Department" size="small" class="formInput">
-              <nb-option value="2">Select Deparment</nb-option>
-              <!-- <nb-option
-                  *ngFor="let branch of departmentDetails"
-                  [value]="branch"
-                  >{{ branch }}</nb-option
-                > -->
-            </nb-select>
-          </div>
-          <div class="col-sm-3">
+        <div class="row justify-content-start">
+          <div class="col-6 formField">
             <nb-select placeholder="Software" size="small" class="formInput">
               <nb-option value="1">Select Software</nb-option>
+              <nb-option *ngFor="let soft of softWareList" value="1">{{
+                soft
+              }}</nb-option>
             </nb-select>
           </div>
-          <div class="col-sm-2">
+          <div class="col-6 formField">
             <input
+              placeholder="Month-Year"
               nbInput
-              [nbDatepicker]="fromDatePicker"
-              size="small"
-              class="formInput"
-            />
-            <nb-datepicker #fromDatePicker format="MMM-YY"></nb-datepicker>
-          </div>
-          <div class="col-sm-2">
-            <input
-              nbInput
-              [nbDatepicker]="toDatePicker"
+              [nbDatepicker]="monthDatePicker"
               fieldSize="small"
               class="formInput"
             />
-            <nb-datepicker #toDatePicker format="MMM-YY"></nb-datepicker>
+            <nb-datepicker #monthDatePicker format="MMM-YY"></nb-datepicker>
           </div>
-          <div class="text-center p-2 col-sm-2">
-            <button type="button" size="small" nbButton status="info">
-              Go
-            </button>
+          <div class="col-6 formField">
+            <input
+              type="number"
+              class="formInput"
+              status="basic"
+              fieldSize="small"
+              nbInput
+              placeholder="Licence"
+              [min]="0"
+            />
+          </div>
+          <div class="col-6 formField">
+            <input
+              type="number"
+              class="formInput"
+              status="basic"
+              fieldSize="small"
+              nbInput
+              placeholder="Total Cost"
+              [min]="0"
+            />
+          </div>
+          <div class="col-6 formField">
+            <input
+              type="number"
+              class="formInput"
+              status="basic"
+              fieldSize="small"
+              nbInput
+              placeholder="Avrage Cost"
+              [min]="0"
+            />
           </div>
         </div>
 
-        <div class="offset-sm-11 col-sm-12">
+        <div class="mt-2 col-12 text-end">
+          <button type="button" size="small" nbButton status="info">
+            save
+          </button>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <nb-card class="inline-form-card" status="warning">
+      <nb-card-header>Usage By Departments In Hours </nb-card-header>
+      <nb-card-body>
+        <div [formGroup]="departnentForm">
+          <table class="table table-bordered label mt-3 text-center w-75">
+            <thead class="tHeading">
+              <tr>
+                <th>Sr.</th>
+                <th>Department</th>
+                <th>Actual Usage as per IT report in Hours</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of departmentDetails; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ data }}</td>
+                <td class="p-0">
+                  <input
+                    type="text"
+                    class="formInput text-center"
+                    status="basic"
+                    fieldSize="small"
+                    nbInput
+                    formControlName="{{ data }} "
+                  />
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td></td>
+                <td>Total</td>
+                <td>{{ calculateTotal() }}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div class="mt-2 col-10 text-end">
           <button type="button" size="small" nbButton status="info">
             save
           </button>

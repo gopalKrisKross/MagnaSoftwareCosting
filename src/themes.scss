@@ -5,8 +5,7 @@
 
 $nb-themes: nb-register-theme(
   (
-    // header-background-color: rgb(180, 118, 221),
-    // sidebar-background-color: rgb(180, 118, 221),
+    header-background-color: rgb(253 173 173),
     layout-padding-top: 2.25rem,
 
     menu-item-icon-margin: 0 0.5rem 0 0,
@@ -24,7 +23,7 @@ $nb-themes: nb-register-theme(
 
     slide-out-background: #f7f9fc,
     slide-out-shadow-color: 0 4px 14px 0 #8f9bb3,
-    slide-out-shadow-color-rtl: 0 4px 14px 0 #8f9bb3
+    slide-out-shadow-color-rtl: 0 4px 14px 0 #8f9bb3,
   ),
   default,
   default
@@ -32,6 +31,7 @@ $nb-themes: nb-register-theme(
 
 $nb-themes: nb-register-theme(
   (
+    card-header-warning-background-color: var(background-basic-color-2),
     layout-padding-top: 2.25rem,
 
     menu-item-icon-margin: 0 0.5rem 0 0,
@@ -57,6 +57,12 @@ $nb-themes: nb-register-theme(
 
 $nb-themes: nb-register-theme(
   (
+    sidebar-width: 14rem,
+    card-header-warning-background-color: #23344f,
+    header-background-color: #c1d6f7,
+    footer-background-color: #c1d6f7,
+    sidebar-background-color: #c1d6f7,
+    card-header-text-line-height: 0.5rem,
     layout-padding-top: 2.25rem,
 
     menu-item-icon-margin: 0 0.5rem 0 0,
@@ -82,6 +88,7 @@ $nb-themes: nb-register-theme(
 
 $nb-themes: nb-register-theme(
   (
+    card-header-warning-background-color: var(background-basic-color-2),
     layout-padding-top: 2.25rem,
 
     menu-item-icon-margin: 0 0.5rem 0 0,

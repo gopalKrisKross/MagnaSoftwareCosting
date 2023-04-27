@@ -22,7 +22,7 @@ import { LoginModule } from './login/login.module';
     FormsModule,
     ReactiveFormsModule,
     DetailsModule,
-    NbThemeModule.forRoot({ name: 'default' }),
+    NbThemeModule.forRoot({ name: 'corporate' }),
     NbEvaIconsModule,
     LoginModule,
   ],

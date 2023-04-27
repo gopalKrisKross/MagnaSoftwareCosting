@@ -17,18 +17,68 @@
 </div>
 
 <div class="header-container">
-  <nb-actions size="small">
-    <nb-action class="control-item">
+  <nb-actions size="small" class="dropdown">
+    <nb-action
+      id="masterMenu"
+      class="dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      <nb-action
+        class="control-item p-0"
+        icon="grid-outline"
+        nbTooltip="Master"
+        nbTooltipPlacement="bottom"
+      ></nb-action>
+      <ul class="dropdown-menu" aria-labelledby="masterMenu">
+        <li>
+          <button class="dropdown-item" type="button">User List</button>
+        </li>
+        <li>
+          <button class="dropdown-item" type="button">Department List</button>
+        </li>
+        <li>
+          <button class="dropdown-item" type="button">
+            Software Licences List
+          </button>
+        </li>
+        <li>
+          <button class="dropdown-item" type="button">Shift List</button>
+        </li>
+        <li>
+          <button class="dropdown-item" type="button">Project List</button>
+        </li>
+      </ul>
+    </nb-action>
+    <nb-action
+      class="control-item"
+      nbTooltip="Search"
+      nbTooltipPlacement="bottom"
+    >
       <nb-search type="rotate-layout"></nb-search>
     </nb-action>
-    <nb-action class="control-item" icon="email-outline"></nb-action>
-    <nb-action class="control-item" icon="bell-outline"></nb-action>
-    <nb-action class="user-action">
+
+    <nb-action
+      class="control-item"
+      icon="bell-outline"
+      nbTooltip="Notification"
+      nbTooltipPlacement="bottom"
+      badgeText="99+"
+      badgeStatus="success"
+      badgePosition="top right"
+    >
+    </nb-action>
+
+    <nb-action
+      class="user-action"
+      nbTooltip="Profile"
+      nbTooltipPlacement="bottom"
+    >
       <nb-user
         [nbContextMenu]="userMenu"
-        [onlyPicture]="userPictureOnly"
-        name="Jonh Doe"
-        onlyPicture
+        name="User Name"
+        color="#cccccc"
+        [picture]="picture"
       >
       </nb-user>
     </nb-action>
