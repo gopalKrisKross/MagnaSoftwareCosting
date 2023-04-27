@@ -21,6 +21,10 @@ const routes: Routes = [
         path: 'costing',
         component: ActualUsageComponent,
       },
+      {
+        path: 'masterList/:listName',
+        component: MasterListComponent,
+      }
     ],
   },
 ];

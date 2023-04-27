@@ -1,1 +1,39 @@
-<p>master-list works!</p>
+<div class="row">
+  <div class="col-md-12">
+    <nb-card class="inline-form-card" status="warning">
+      <nb-card-header>
+        <div class="d-flex justify-content-between col-12">
+          <div class="align-items-center d-flex">{{ listName }}</div>
+          <div class="">
+            <nb-icon
+              icon="plus-outline"
+              nbTooltip="Create"
+              nbTooltipPlacement="bottom"
+            ></nb-icon>
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <div>
+          <table class="table table-bordered label mt-3 text-center">
+            <thead class="tHeading">
+              <tr>
+                <th *ngFor="let heading of masterListHeading">{{ heading }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let dataItem of info">
+                <td *ngFor="let dataProp of dataItem | keyvalue">
+                  {{ dataProp.value }}
+                </td>
+                <td nbTooltip="Edit" nbTooltipPlacement="bottom">
+                  <nb-icon icon="edit-outline"></nb-icon>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
