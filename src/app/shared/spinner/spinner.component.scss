@@ -1,0 +1,52 @@
+:host {
+  display: block;
+  position: fixed;
+  z-index: 1111;
+  .spinnerbox {
+    background-color: black;
+    opacity: 0.8;
+    height: 100%;
+    width: 100%;
+    /* z-index: 1390; */
+    position: fixed;
+    display: block;
+    top: 0%;
+  }
+
+  /* CM SPINNER */
+  .cm-spinner {
+    margin: 20% auto;
+    height: 190px;
+    width: 190px;
+    border: 3px solid transparent;
+    border-radius: 50%;
+    border-top: 7px solid red;
+    -webkit-animation: spin 4s linear infinite;
+    animation: spin 4s linear infinite;
+    position: relative;
+  }
+
+  .cm-spinner::before,
+  .cm-spinner::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    left: 6px;
+    right: 6px;
+    border-radius: 50%;
+    border: 6px solid transparent;
+  }
+
+  .cm-spinner::before {
+    border-top-color: yellow;
+    -webkit-animation: 3s spin linear infinite;
+    animation: 3s spin linear infinite;
+  }
+
+  .cm-spinner::after {
+    border-top-color: blue;
+    -webkit-animation: spin 1.5s linear infinite;
+    animation: spin 1.5s linear infinite;
+  }
+}

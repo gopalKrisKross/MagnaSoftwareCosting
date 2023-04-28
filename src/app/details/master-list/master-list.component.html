@@ -4,7 +4,7 @@
       <nb-card-header>
         <div class="d-flex justify-content-between col-12">
           <div class="align-items-center d-flex">{{ title }}</div>
-          <div class="">
+          <div class="" *ngIf="pageType != 'reportList'">
             <nb-icon
               (click)="openModal(false)"
               icon="plus-outline"
@@ -15,7 +15,7 @@
         </div>
       </nb-card-header>
       <nb-card-body>
-        <div>
+        <div *ngIf="pageType != 'reportList'">
           <table class="table table-bordered label mt-3 text-center">
             <thead class="tHeading">
               <tr>
@@ -35,6 +35,38 @@
                     (click)="openModal(false)"
                   ></nb-icon>
                 </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="pageType == 'reportList'">
+          <table class="table table-bordered label mt-3 text-center">
+            <thead>
+              <tr>
+                <td>Sr. No.</td>
+                <td>Department</td>
+                <td>Actual Usage as per IT report (1)</td>
+                <td>Cost as per actual usage (2)</td>
+                <td>"Latest Projection by HoD (3)"</td>
+                <td>Excess Projection (4)</td>
+                <td>% for sharing unutilised license cost (5)</td>
+                <td>Unutilised Licenses (6)</td>
+                <td>Cost of Unutilised Licenses (7)</td>
+                <td>Total Cost to Department (8=2+7)</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let report of reportListData">
+                <td>{{ report.id }}</td>
+                <td>{{ report.department }}</td>
+                <td>{{ report.actualUsageIt }}</td>
+                <td>{{ report.costActualUsage }}</td>
+                <td>{{ report.latestProjection }}</td>
+                <td>{{ report.expressProjection }}</td>
+                <td>{{ report.sharingUnutilisedLicense }}</td>
+                <td>{{ report.unutilisedLicenses }}</td>
+                <td>{{ report.costUnutilisedLicenses }}</td>
+                <td>{{ report.totalCost }}</td>
               </tr>
             </tbody>
           </table>

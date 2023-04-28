@@ -8,6 +8,6 @@ import { ThemeModule } from '../theme/theme.module';
 @NgModule({
   declarations: [SpinnerComponent, CreateMasterFormComponent],
   imports: [CommonModule, ReactiveFormsModule, ThemeModule],
-  exports: [ReactiveFormsModule],
+  exports: [ReactiveFormsModule, SpinnerComponent],
 })
 export class SharedModule {}

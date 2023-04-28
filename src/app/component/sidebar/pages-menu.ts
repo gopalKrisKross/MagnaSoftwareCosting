@@ -16,7 +16,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
       {
         title: 'Report',
-        link: '/component/details/create',
+        link: 'details/masterList/reportList',
       },
     ],
   },

@@ -40,24 +40,24 @@ export class HeaderComponent implements OnInit {
   userMenu = [
     { title: 'Profile', icon: 'person-outline' },
     { title: 'Log out', icon: 'unlock-outline' },
-    {
-      title: 'Select Theme',
-      icon: 'film-outline',
-      children: [
-        {
-          title: 'Corporate',
-        },
-        {
-          title: 'Cosmic',
-        },
-        {
-          title: 'Dark',
-        },
-        // {
-        //   title: 'Default',
-        // },
-      ],
-    },
+    // {
+    //   title: 'Select Theme',
+    //   icon: 'film-outline',
+    //   children: [
+    //     {
+    //       title: 'Corporate',
+    //     },
+    //     {
+    //       title: 'Cosmic',
+    //     },
+    //     {
+    //       title: 'Dark',
+    //     },
+    //     // {
+    //     //   title: 'Default',
+    //     // },
+    //   ],
+    // },
   ];
   constructor(
     private themeService: NbThemeService,
