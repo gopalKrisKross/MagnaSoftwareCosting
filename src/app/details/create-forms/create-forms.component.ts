@@ -1,10 +1,13 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { CommonService } from 'src/app/services/common/common.service';
+import { ToasterService } from 'src/app/services/toaster/toaster.service';
+import { Global } from 'src/app/shared/global';
 import { EstimationAction } from 'src/app/shared/model';
 
 @Component({
@@ -14,137 +17,140 @@ import { EstimationAction } from 'src/app/shared/model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateFormsComponent implements OnInit {
-  departnentForm: any = new FormGroup({});
   deptOptionForm: FormGroup;
-  departmentDetails: any = [
-    'TRIM',
-    'BODY',
-    'POWERTRAIN',
-    // 'CAE',
-    // 'PM',
-    'E&E',
-    // 'IT',
-  ];
-  softWareList: any = ['CATIA', 'UG'];
-  softWareData: any;
+
   headerList: any = [
     'Shift',
-    'Jan-23',
-    'Feb-23',
-    'Mar-23',
-    'Apr-23',
-    'May-23',
-    'Jun-23',
-    'Jul-23',
-    'Aug-23',
-    'Sep-23',
-    'Oct-23',
-    'Nov-23',
-    'Dec-23',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
-  data: any = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-  shift: any = ['First', 'Gen', 'Sec'];
+  month: any = [
+    'january',
+    'february',
+    'march',
+    'april',
+    'may',
+    'june',
+    'july',
+    'august',
+    'september',
+    'october',
+    'november',
+    'december',
+  ];
+
   departmentName: any;
   departmentData: any;
-  project: any = [
-    {
-      key: 'TRIM',
-      value: 'ME-Troy',
-    },
-    {
-      key: 'TRIM',
-      value: 'ME-UK',
-    },
-    {
-      key: 'TRIM',
-      value: 'MSE-AUT (PANTHERA)',
-    },
-    {
-      key: 'TRIM',
-      value: 'MS-AUT (JUPITAR & INEOS)',
-    },
-    {
-      key: 'BODY',
-      value: 'MEI',
-    },
-    {
-      key: 'BODY',
-      value: 'Eicher',
-    },
-    {
-      key: 'BODY',
-      value: 'Mahindra UPP',
-    },
-    {
-      key: 'POWERTRAIN',
-      value: 'MPT TS ',
-    },
-    {
-      key: 'POWERTRAIN',
-      value: 'ECS',
-    },
-    {
-      key: 'POWERTRAIN',
-      value: 'MPT DS',
-    },
-    {
-      key: 'E&E',
-      value: 'SMC',
-    },
-    {
-      key: 'E&E',
-      value: 'T2K',
-    },
-  ];
-  constructor(private fb: FormBuilder) {
+
+  departmentList: any;
+  defaultData: any;
+  softWareList: any;
+  groupedCollection: any;
+  key: any;
+  get estimations() {
+    console.log(
+      this.estimationForm.controls.estimation.controls
+        ? this.estimationForm.controls.estimation.controls
+        : ''
+    );
+    return this.estimationForm.controls.estimation.controls;
+  }
+  estimationForm: any = this.fb.group({
+    estimation: this.fb.array([]),
+  });
+  changedId: number = -1;
+  editCondition: any;
+  constructor(
+    private fb: FormBuilder,
+    private commonService: CommonService,
+    private CD: ChangeDetectorRef,
+    private toast: ToasterService
+  ) {
     this.deptOptionForm = this.getdeptOptionForm();
   }
   ngOnInit() {
     // this.departmentData = this.departmentDetails;
-    this.softWareData = this.softWareList;
-    this.createFormGroup(this.departmentDetails);
+    // this.softWareData = this.softWareList;
+    // this.createFormGroup(this.departmentDetails);
+
+    this.getDefaultList();
   }
-  createFormGroup(list: any) {
+  iconToggle(i: number, type: boolean) {
     try {
-      console.log(list);
-      Array.from(list).forEach((ele, idx) => {
-        Array.from(this.shift).forEach((shift, idx) => {
-          Array.from(this.data).forEach((no, idx) => {
-            this.departnentForm.addControl(
-              `${ele}${shift}${idx}`,
-              new FormControl(no, Validators.required)
-            );
-          });
-        });
-      });
+      if (type) {
+        this.estimationForm.controls.estimation['controls'][i]
+          .get('editStatus')
+          .setValue(true);
+
+        this.estimationForm.controls.estimation['controls'][i]
+          .get('saveStatus')
+          .setValue(false);
+      } else {
+        this.estimationForm.controls.estimation['controls'][i]
+          .get('editStatus')
+          .setValue(false);
+
+        this.estimationForm.controls.estimation['controls'][i]
+          .get('saveStatus')
+          .setValue(true);
+      }
+      this.CD.detectChanges();
     } catch (error) {}
   }
-  getProject(obj: string) {
+  editList(index: any) {
     try {
-      console.log(this.project.filter((x: any) => x.key == obj));
-      return this.project.filter((x: any) => x.key == obj);
+      this.iconToggle(index, false);
+      let nextMonthList = this.month.slice(new Date().getMonth() + 1, 12);
+      nextMonthList.forEach((element: any) => {
+        this.estimationForm.controls.estimation['controls'][index]
+          .get(element)
+          .enable();
+      });
+      console.log('text');
+    } catch (error) {}
+  }
+  rowSpanname(key: any) {}
+  getTotal(month: string, key: any): number | any {
+    try {
+      let count = 0;
+      let list = this.estimationForm?.get('estimation').getRawValue();
+      let filterlist = list.filter((ele: any) => ele.projectName == key);
+      filterlist.forEach((element: any) => {
+        count += Number(element[month]);
+      });
+      return count;
     } catch (error) {}
   }
   /**
    * @author Sandesh
    * @description this function is used for getting action form
    */
-  getdeptOptionForm(iObj?: EstimationAction): any {
+  getdeptOptionForm(iObj?: EstimationAction): FormGroup | any {
     try {
       let formGroup: FormGroup;
       if (iObj && Object.keys(iObj).length > 0) {
         formGroup = <FormGroup>this.fb.group({
           department: [iObj.department],
           software: [iObj.software],
-          toDatePicker: [iObj.toDatePicker],
-          fromDatePicker: [iObj.fromDatePicker],
+          year: [iObj.year],
+          // fromDatePicker: [iObj.fromDatePicker],
         });
       } else {
         formGroup = <FormGroup>this.fb.group({
-          department: [''],
-          software: [''],
-          toDatePicker: [''],
-          fromDatePicker: [''],
+          department: ['0'],
+          software: ['0'],
+          year: ['0'],
+          // fromDatePicker: [''],
         });
       }
 
@@ -153,39 +159,212 @@ export class CreateFormsComponent implements OnInit {
       console.error(error);
     }
   }
-  getCalTotal(no: any): any {
+  getDefaultList() {
     try {
-      return Number(no) * 3;
+      let params = {
+        dbName: Global.LOGGED_IN_USER.dbName,
+        dbPassword: Global.LOGGED_IN_USER.dbPassword,
+        userId: Global.LOGGED_IN_USER.userId,
+      };
+      this.commonService.getEstimationData(params).subscribe(
+        (res: any) => {
+          if (res) {
+            this.departmentList = res.Table;
+            this.softWareList = res.Table1;
+            this.CD.detectChanges();
+          }
+        },
+        (err: Error) => {
+          console.log(err);
+        }
+      );
+      // getEstimationData
     } catch (error) {}
   }
-  // default : #e2bae2
+
   getData() {
     try {
-      debugger;
-      console.log(this.deptOptionForm.getRawValue());
       let values = this.deptOptionForm.getRawValue();
-      let list = [values.department];
-      this.departmentData = [values.department];
+      let params = {
+        dbName: Global.LOGGED_IN_USER.dbName,
+        dbPassword: Global.LOGGED_IN_USER.dbPassword,
+        userId: Global.LOGGED_IN_USER.userId,
+        departmentId: values.department,
+        licenceId: values.software,
+        year: values.year,
+      };
+      this.commonService.getEstimationListData(params).subscribe(
+        (res: any) => {
+          console.log(res);
+          if (res) {
+            //clear form data
+            (this.estimationForm.controls['estimation'] as FormArray).clear();
 
-      this.createFormGroup(list);
+            // this.CD.detectChanges();
+            // setTimeout(() => {
+            res.Table?.forEach((element: any, i: any) => {
+              this.addEstimation(element, i);
+            });
+            this.defaultData = res.Table;
+            // const map = new Map();
+
+            // let a = this.defaultData.forEach((element: any) => {
+            //   map.set(element.projectName, element);
+            // });
+            // console.log('a', map);
+            this.groupedCollection = this.defaultData.reduce(
+              (previous: any, current: any) => {
+                if (!previous[current['projectName']]) {
+                  previous[current['projectName']] = [current];
+                } else {
+                  previous[current['projectName']].push(current);
+                }
+                return previous;
+              },
+              {}
+            );
+            console.log(this.groupedCollection);
+            this.CD.detectChanges();
+            // }, 0);
+          }
+        },
+        (err: Error) => {
+          console.log(err);
+        }
+      );
+      //console.log(this.deptOptionForm.getRawValue());
+
+      // let list = [values.department];
+      // this.departmentData = [values.department];
+
+      // this.createFormGroup(list);
+    } catch (error) {}
+  }
+  getListData(key: any) {
+    let list = this.estimationForm?.get('estimation').getRawValue();
+    let filterlist = list.filter((ele: any) => ele.projectName == key);
+
+    return filterlist;
+  }
+
+  /**
+   * @author Sandesh
+   * @description this function is used for showing department name
+   */
+  getDepartment() {
+    try {
+      if (this.departmentList && this.deptOptionForm.get('department')?.value) {
+        let value = this.departmentList.filter((list: any) => {
+          if (
+            list.departmentId == this.deptOptionForm.get('department')?.value
+          ) {
+            return list.departmentId;
+          }
+        });
+
+        return value[0].departmentName;
+      }
     } catch (error) {}
   }
 
-  saveData() {
-    console.log(this.departnentForm.getRawValue());
-    let obj = {};
-    let arr: any = [];
+  /**
+   * @author Sandesh
+   * @description this function is used for create estimation form
+   */
+  createEstimationForm(iObj: any, index: number): FormGroup | any {
+    try {
+      let formGroup: FormGroup;
 
-    const deptFormaData = this.departnentForm.getRawValue();
-    Array.from(this.departmentDetails).forEach((te, idx) => {
-      let map = new Map();
-      Object.keys(deptFormaData).forEach((key, i) => {
-        // if (String(key).match(String(te))?.length > 0) {
-        //   map.set(key, deptFormaData[key]);
-        // }
+      formGroup = <FormGroup>this.fb.group({
+        january: [{ value: iObj.january, disabled: true }],
+        february: [{ value: iObj.february, disabled: true }],
+        march: [{ value: iObj.march, disabled: true }],
+        april: [{ value: iObj.april, disabled: true }],
+        may: [{ value: iObj.may, disabled: true }],
+        june: [{ value: iObj.june, disabled: true }],
+        july: [{ value: iObj.july, disabled: true }],
+        august: [{ value: iObj.august, disabled: true }],
+        september: [{ value: iObj.september, disabled: true }],
+        october: [{ value: iObj.october, disabled: true }],
+        november: [{ value: iObj.november, disabled: true }],
+        december: [{ value: iObj.december, disabled: true }],
+        projectName: [iObj.projectName],
+        shift: [iObj.shiftName],
+        projectId: [iObj.projectId],
+        shiftId: [iObj.shiftId],
+        estimationId: [iObj.estimationId],
+        index: [index],
+        editStatus: [true],
+        saveStatus: [false],
       });
-      arr[String(te)] = map;
-    });
-    console.log(arr);
+
+      return formGroup;
+    } catch (error) {}
+  }
+
+  /**
+   * @author Sandesh
+   * @description this function is used adding new row
+   */
+  addEstimation(iObj: any, index: number) {
+    try {
+      (this.estimationForm?.get('estimation') as FormArray).push(
+        this.createEstimationForm(iObj, index)
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  saveData(index: any) {
+    let value = this.estimationForm.controls.estimation['controls']
+      .at(index)
+      .getRawValue();
+    let optionValue = this.deptOptionForm.getRawValue();
+    let params = {
+      dbName: Global.LOGGED_IN_USER.dbName,
+      dbPassword: Global.LOGGED_IN_USER.dbPassword,
+      userId: Global.LOGGED_IN_USER.userId,
+      departmentId: optionValue.department,
+      licenceServerId: optionValue.software,
+      year: optionValue.year,
+      estimationId: value.estimationId,
+      projectId: value.projectId,
+      shiftId: value.shiftId,
+      january: value.january,
+      february: value.february,
+      march: value.march,
+      april: value.april,
+      may: value.may,
+      june: value.june,
+      july: value.july,
+      august: value.august,
+      september: value.september,
+      october: value.october,
+      november: value.november,
+      december: value.december,
+      updatedBy: Global.LOGGED_IN_USER.userId,
+    };
+    // console.log(params);
+
+    this.commonService.saveEstimationData(params).subscribe(
+      (res: any) => {
+        if (res) {
+          this.toast.showSuccess('Data Saved Successfully'); // showError('User-ID / Password Combination Wrong.');
+          this.iconToggle(index, true);
+          this.estimationForm.controls.estimation['controls'].at(
+            index
+          ).value.estimationId = res;
+          this.month.forEach((element: any) => {
+            this.estimationForm.controls.estimation['controls'][index]
+              .get(element)
+              .disable();
+          });
+        }
+      },
+      (err: any) => {
+        console.error(err);
+      }
+    );
+    console.log(params);
   }
 }

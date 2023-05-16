@@ -6,6 +6,9 @@ import {
   NbThemeService,
 } from '@nebular/theme';
 import { Subject } from 'rxjs';
+import { NavigationService } from 'src/app/services/navigation/navigation.service';
+import { PubsubService } from 'src/app/services/pubsub/pubsub.service';
+import { Global } from 'src/app/shared/global';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +18,8 @@ import { Subject } from 'rxjs';
 export class HeaderComponent implements OnInit {
   user: any;
   picture: any = 'assets/img/nick.png';
-
+  magnaIcon: any = '/assets/img/magnaLogo.png';
+  userName: string = Global.LOGGED_IN_USER.userName;
   themes = [
     // {
     //   value: 'default',
@@ -62,16 +66,17 @@ export class HeaderComponent implements OnInit {
   constructor(
     private themeService: NbThemeService,
     private sidebarService: NbSidebarService,
-    private menuService: NbMenuService
+    private menuService: NbMenuService,
+    private nav: NavigationService
   ) {}
 
   ngOnInit() {
     this.menuService.onItemClick().subscribe((event: any) => {
-      console.log(event);
       switch (event.item.title.toLowerCase()) {
         case 'profile':
           break;
         case 'log out':
+          this.logOut();
           break;
         case 'corporate':
         case 'cosmic':
@@ -86,7 +91,12 @@ export class HeaderComponent implements OnInit {
       console.log();
     });
   }
-
+  logOut() {
+    try {
+      localStorage.removeItem('LOGGED_IN_USER');
+      this.nav.gotoPage('', null, (res: any) => {});
+    } catch (error) {}
+  }
   ngOnDestroy() {}
 
   changeTheme(themeName: string) {

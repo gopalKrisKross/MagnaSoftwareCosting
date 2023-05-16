@@ -36,8 +36,6 @@ import { NbMomentDateModule } from '@nebular/moment';
     NbSelectModule,
     NbIconModule,
     NbEvaIconsModule,
-    NbMenuModule.forRoot(),
-    NbDatepickerModule.forRoot(),
 
     NbCardModule,
     NbInputModule,
@@ -45,7 +43,6 @@ import { NbMomentDateModule } from '@nebular/moment';
     NbSpinnerModule,
     NbTooltipModule,
     NbBadgeModule,
-    NbDialogModule.forRoot(),
   ],
   exports: [
     NbLayoutModule,

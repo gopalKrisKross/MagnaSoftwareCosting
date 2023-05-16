@@ -1,6 +1,10 @@
-<nb-card class="w-75 ms-auto me-auto" status="warning">
+<nb-card
+  class="ms-auto me-auto"
+  [ngClass]="{ 'w-75': userList == true, minWidth: userList == false }"
+  status="warning"
+>
   <nb-card-header>
-    Create
+    {{ TitleDetails[Title] }}
     <div class="float-end">
       <nb-icon
         icon="close-outline"
@@ -10,14 +14,28 @@
   ></nb-card-header>
   <nb-card-body>
     <div class="row" [formGroup]="masterForm">
-      <div class="col-6 floating-label-field">
+      <div class="col-12 floating-label-field text-end m-0">
+        <span>
+          <input
+            type="checkbox"
+            formControlName="status"
+            [disabled]="Title == 'Edit'"
+        /></span>
+
+        <label class="ms-2">Status</label>
+      </div>
+      <div class="col-6 floating-label-field" *ngIf="userList">
         <input
           type="text"
           class="floating-input"
           placeholder=" "
-          formControlName="id"
+          formControlName="userId"
+          maxlength="50"
         />
-        <label class="floating-label">ID</label>
+        <label class="floating-label">User ID</label>
+        <ng-container *ngIf="f['userId'].touched && f['userId'].invalid">
+          <p class="errorText">User ID is required!</p>
+        </ng-container>
       </div>
       <div class="col-6 floating-label-field">
         <input
@@ -25,65 +43,257 @@
           class="floating-input"
           placeholder=" "
           formControlName="name"
+          maxlength="100"
         />
         <label class="floating-label">Name</label>
+        <ng-container *ngIf="f['name'].touched && f['name'].invalid">
+          <p class="errorText">User Name is required and spcial character Single Quotes are not Allow.!</p>
+        </ng-container>
       </div>
-      <div class="col-6 floating-label-field">
+      <div class="row" *ngIf="shiftList">
+        <div class="col-6 floating-label-field">
+          <input   placeholder=" "
+               type="text"
+               class="floating-input"
+               formControlName="fromTime"
+               [nbTimepicker]="fromTimePicker"/>
+               <label class="floating-label">From Time</label>
+        <nb-timepicker #fromTimePicker  ></nb-timepicker>
+        </div>
+        <div class="col-6 floating-label-field">
+          <input   placeholder=" "
+               type="text"
+               class="floating-input"
+               formControlName="toTime"
+               [nbTimepicker]="ToTimePicker"/>
+               <label class="floating-label">To Time</label>
+        <nb-timepicker #ToTimePicker  ></nb-timepicker>
+        </div>
+      </div>
+      <div class="col-12 floating-label-field" *ngIf="projectList">
+        <textarea  class="floating-input textArea" placeholder=" " formControlName="remark" ></textarea>
+        <label class="floating-label">Remark</label>
+
+      </div>
+      <div class="col-6 floating-label-field" *ngIf="userList">
+        <input
+          type="email"
+          class="floating-input"
+          placeholder=" "
+          formControlName="emailId"
+          maxlength="100"
+        />
+        <label class="floating-label">Email</label>
+        <ng-container *ngIf="f['emailId'].touched && f['emailId'].invalid">
+          <p class="errorText"> You have entered an invalid email address!</p>
+        </ng-container>
+       
+      </div>
+      <div class="col-6 floating-label-field" *ngIf="userList">
+        <input
+          type="text"
+          class="floating-input"
+          placeholder=" "
+          [nbDatepicker]="BirthDatePicker"
+          formControlName="BirthDate"
+        />
+        <label class="floating-label">Birth Date</label>
+
+        <nb-datepicker #BirthDatePicker format="dd-MMM-yyyy"></nb-datepicker>
+      </div>
+      <div
+        class="col-6 floating-label-field"
+        *ngIf="userList && Title != 'Edit'"
+      >
+        <input
+          type="password"
+          class="floating-input"
+          placeholder=" "
+          formControlName="password"
+          maxlength="100"
+        />
+        <label class="floating-label">Password</label>
+        <ng-container *ngIf="f['password'].touched && f['password'].invalid">
+          <p class="errorText">
+            Minimum eight characters, at least one uppercase letter, one
+            lowercase letter, one number and one special character!
+          </p>
+        </ng-container>
+      </div>
+      <div
+        class="col-6 floating-label-field mb-0"
+        *ngIf="userList && Title != 'Edit'"
+      >
+        <input
+          type="{{ showPass == true ? 'text' : 'password' }}"
+          class="floating-input"
+          placeholder=" "
+          formControlName="confirmPassword"
+        />
+        <label class="floating-label">Confirm Password</label>
+        <ng-container>
+          <nb-action
+          *ngIf="!showPass"
+          (click)="showPass = true"
+          class="control-item p-0 passwordIcon"
+          icon="eye-outline"
+        ></nb-action>
+
+        <nb-action
+          *ngIf="showPass"
+          (click)="showPass = false"
+          class="control-item p-0 passwordIcon"
+          icon="eye-off-outline"
+        ></nb-action>
+        </ng-container>
+        <ng-container *ngIf="masterForm.get('password')?.value != masterForm.get('confirmPassword')?.value
+         ">
+          <p class="errorText">
+            Password does not match
+          </p>
+        </ng-container>
+        
+        
+      </div>
+      <div class="col-6 floating-label-field" *ngIf="userList">
+        <input
+          type="text"
+          class="floating-input"
+          placeholder=" "
+          formControlName="mobileNo"
+          maxlength="100"
+        />
+        <label class="floating-label">Mobile No.</label>
+        <ng-container *ngIf="f['mobileNo'].touched && f['mobileNo'].invalid">
+          <p class="errorText">You have entered an invalid Mobile number!</p>
+        </ng-container>
+      </div>
+      <div class="col-6 floating-label-field" *ngIf="userList">
+        <input
+          type="text"
+          class="floating-input"
+          placeholder=" "
+          formControlName="phoneNo"
+          maxlength="100"
+        />
+        <label class="floating-label">Phone No.</label>
+        <ng-container *ngIf="f['phoneNo'].touched && f['phoneNo'].invalid">
+          <p class="errorText">You have entered an invalid Phone number!</p>
+        </ng-container>
+      </div>
+      <div class="col-6 floating-label-field" *ngIf="userList">
         <input
           type="text"
           class="floating-input"
           placeholder=" "
           formControlName="licenceServerID"
+          maxlength="200"
         />
+        <!-- <select
+          class="floating-input"
+          placeholder=" "
+          formControlName="licenceServerID"
+        >
+          <option value="0">select</option>
+          <option *ngFor="let item of table1" [value]="item.licenceId">
+            {{ item.licenceName }}
+          </option>
+        </select> -->
         <label class="floating-label">Licence Server ID</label>
+        <ng-container *ngIf="f['licenceServerID'].touched && f['licenceServerID'].invalid">
+          <p class="errorText">Licence server ID required and spcial character Single Quotes are not Allow.!</p>
+        </ng-container>
       </div>
-      <div class="col-6 floating-label-field">
-        <input
+      <div class="col-6 floating-label-field" *ngIf="userList">
+        <!-- <input
           type="text"
           class="floating-input"
           placeholder=" "
           formControlName="departmentID"
-        />
-        <label class="floating-label">Department ID</label>
+        /> -->
+        <select
+          class="floating-input"
+          placeholder=" "
+          formControlName="departmentID"
+        >
+          <option value="0">select</option>
+          <option *ngFor="let item of table" [value]="item.departmentId">
+            {{ item.departmentName }}
+          </option>
+        </select>
+        <label class="floating-label">Department  </label>
       </div>
-      <div class="col-6 floating-label-field">
+      <div class="col-6 floating-label-field" *ngIf="userList">
         <input
           type="text"
           class="floating-input"
           placeholder=" "
           formControlName="licenceServerDeptID"
+          maxlength="200"
         />
+        <!-- <select
+          class="floating-input"
+          placeholder=" "
+          formControlName="licenceServerDeptID"
+        >
+          <option value="0">select</option>
+          <option
+            *ngFor="let item of table2"
+            [value]="item.licenceDepartmentId"
+          >
+            {{ item.licenceDepartmentName }}
+          </option>
+        </select> -->
         <label class="floating-label">Licence Server Dept ID</label>
+        <ng-container *ngIf="f['licenceServerDeptID'].touched && f['licenceServerDeptID'].invalid">
+          <p class="errorText">Licence server dept ID required and spcial character Single Quotes are not Allow.!</p>
+        </ng-container>
       </div>
-      <div class="col-6 floating-label-field">
-        <input
-          type="text"
-          class="floating-input"
-          placeholder=" "
-          formControlName="status"
-        />
-        <label class="floating-label">Status</label>
-      </div>
-      <div class="col-6 floating-label-field">
-        <input
-          type="text"
-          class="floating-input"
-          placeholder=" "
-          formControlName="addedby"
-        />
-        <label class="floating-label">Added by</label>
-      </div>
-      <div class="col-6 floating-label-field">
-        <input
-          type="text"
-          class="floating-input"
-          placeholder=" "
-          [nbDatepicker]="AddDatePicker"
-          formControlName="addedDate"
-        />
-        <label class="floating-label">Added Date</label>
 
-        <nb-datepicker #AddDatePicker format="DD-MMM-yyyy"></nb-datepicker>
+      <div class="col-6 floating-label-field" *ngIf="userList">
+        <!-- <input
+          type="text"
+          class="floating-input"
+          placeholder=" "
+          formControlName="roleId"
+        /> -->
+        <select class="floating-input" placeholder=" " formControlName="roleId">
+          <option value="-1">select</option>
+          <option
+            *ngFor="let item of table1"
+            [value]="item.roleId"
+          >
+            {{ item.roleName }}
+          </option>
+        </select>
+        <label class="floating-label">Role </label>
+      </div>
+      <div class="col-6 floating-label-field" *ngIf="userList">
+        <input
+          type="text"
+          class="floating-input"
+          placeholder=" "
+          formControlName="designation"
+          maxlength="100"
+        />
+        <label class="floating-label">Designation</label>
+        <ng-container *ngIf="f['designation'].touched && f['designation'].invalid">
+          <p class="errorText">The spcial character Single Quotes are not Allow.!</p>
+        </ng-container>
+      </div>
+      
+      <div class="col-6 floating-label-field" *ngIf="userList">
+        <select
+          class="floating-input"
+          placeholder=" "
+          formControlName="reportingTo"
+        >
+          <option value="0">select</option>
+          <option *ngFor="let item of table2" [value]="item.userId">
+            {{ item.userName }}
+          </option>
+        </select>
+        <label class="floating-label">Reporting To</label>
       </div>
     </div>
   </nb-card-body>

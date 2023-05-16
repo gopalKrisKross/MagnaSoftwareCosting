@@ -27,7 +27,10 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/@nebular/theme/styles/prebuilt/default.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/app/app.component.scss",
+              "node_modules/ngx-toastr/toastr.css"
+              
             ],
             "scripts": [ 
               "node_modules/bootstrap/dist/js/bootstrap.bundle.js" ]
@@ -98,5 +101,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "2f038da4-2972-4e29-9b8e-a149d5071166"
   }
 }

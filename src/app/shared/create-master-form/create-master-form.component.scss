@@ -1,1 +1,14 @@
  
+ .minWidth{
+    width: 500px !important;
+ }
+ .passwordIcon{
+   top: -22px;
+    position: relative;
+    float: right;
+ }
+ .textArea{
+   resize: none;
+   height: 100px;
+   overflow: auto;
+ }

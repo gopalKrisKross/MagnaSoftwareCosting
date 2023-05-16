@@ -3,62 +3,89 @@
     <nb-card class="inline-form-card" status="warning">
       <nb-card-header>Actual Usage</nb-card-header>
       <nb-card-body>
-        <div class="row justify-content-start">
-          <div class="col-6 formField">
-            <nb-select placeholder="Software" size="small" class="formInput">
-              <nb-option value="1">Select Software</nb-option>
-              <nb-option *ngFor="let soft of softWareList" value="1">{{
-                soft
-              }}</nb-option>
-            </nb-select>
+        <div class="row justify-content-start" [formGroup]="usageOptionForm">
+          <div class="col-6 floating-label-field">
+            <select
+              class="floating-input"
+              placeholder=" "
+              formControlName="software"
+            >
+              <option value="0">Select Software</option>
+              <option
+                *ngFor="let software of softwareList"
+                [value]="software.licenceId"
+              >
+                {{ software.licenceName }}
+              </option>
+            </select>
+            <label class="floating-label">Software</label>
           </div>
-          <div class="col-6 formField">
-            <input
-              placeholder="Month-Year"
-              nbInput
-              [nbDatepicker]="monthDatePicker"
-              fieldSize="small"
-              class="formInput"
-            />
-            <nb-datepicker #monthDatePicker format="MMM-YY"></nb-datepicker>
+          <div class="col-3 floating-label-field">
+            <select
+              class="floating-input"
+              placeholder=" "
+              formControlName="month"
+            >
+              <option value="0">Select Month</option>
+              <option *ngFor="let month of monthList" [value]="month.id">
+                {{ month.name }}
+              </option>
+            </select>
+            <label class="floating-label">Month</label>
           </div>
-          <div class="col-6 formField">
+          <div class="col-3 floating-label-field">
+            <select
+              class="floating-input"
+              placeholder=" "
+              formControlName="year"
+            >
+              <option value="0">Select year</option>
+
+              <option *ngFor="let year of yearList" [value]="year.id">
+                {{ year.name }}
+              </option>
+            </select>
+            <label class="floating-label" value="0">Year</label>
+          </div>
+          <div class="col-6 floating-label-field">
             <input
               type="number"
-              class="formInput"
-              status="basic"
-              fieldSize="small"
-              nbInput
-              placeholder="Licence"
+              class="floating-input"
+              placeholder=" "
               [min]="0"
+              formControlName="licence"
             />
+            <label class="floating-label">Licence</label>
           </div>
-          <div class="col-6 formField">
+          <div class="col-6 floating-label-field">
+            <input
+              type="text"
+              class="floating-input"
+              placeholder=" "
+              formControlName="avgCost"
+            />
+            <label class="floating-label">Avrage Cost</label>
+          </div>
+          <div class="col-6 floating-label-field">
             <input
               type="number"
-              class="formInput"
-              status="basic"
-              fieldSize="small"
-              nbInput
-              placeholder="Total Cost"
+              class="floating-input"
+              placeholder=" "
               [min]="0"
+              formControlName="totalCost"
             />
-          </div>
-          <div class="col-6 formField">
-            <input
-              type="number"
-              class="formInput"
-              status="basic"
-              fieldSize="small"
-              nbInput
-              placeholder="Avrage Cost"
-              [min]="0"
-            />
+            <label class="floating-label">Total Cost</label>
           </div>
         </div>
 
         <div class="mt-2 col-12 text-end">
-          <button type="button" size="small" nbButton status="info">
+          <button
+            type="button"
+            size="small"
+            nbButton
+            status="info"
+            (click)="saveActualUsage('ActualUsage')"
+          >
             save
           </button>
         </div>
@@ -71,8 +98,11 @@
     <nb-card class="inline-form-card" status="warning">
       <nb-card-header>Usage By Departments In Hours </nb-card-header>
       <nb-card-body>
-        <div [formGroup]="departnentForm">
-          <table class="table table-bordered label mt-3 text-center w-75">
+        <div [formGroup]="departmentForm">
+          <table
+            class="table table-bordered label mt-3 text-center w-75"
+            *ngIf="departmentHoursData"
+          >
             <thead class="tHeading">
               <tr>
                 <th>Sr.</th>
@@ -80,10 +110,13 @@
                 <th>Actual Usage as per IT report in Hours</th>
               </tr>
             </thead>
-            <tbody>
-              <tr *ngFor="let data of departmentDetails; let i = index">
+            <tbody formArrayName="department">
+              <tr
+                *ngFor="let data of departmentHoursData; let i = index"
+                [formGroupName]="i"
+              >
                 <td>{{ i + 1 }}</td>
-                <td>{{ data }}</td>
+                <td>{{ getDepartmentNmae(data.id) }}</td>
                 <td class="p-0">
                   <input
                     type="text"
@@ -91,7 +124,7 @@
                     status="basic"
                     fieldSize="small"
                     nbInput
-                    formControlName="{{ data }} "
+                    formControlName="usageHours"
                   />
                 </td>
               </tr>

@@ -4,6 +4,8 @@ import { LoginComponent } from './login.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ThemeModule } from '../theme/theme.module';
 import { SharedModule } from '../shared/shared.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { Interceptor } from '../services/network/interceptor';
 const routes: Routes = [{ path: '', component: LoginComponent }];
 @NgModule({
   declarations: [LoginComponent],
@@ -13,5 +15,6 @@ const routes: Routes = [{ path: '', component: LoginComponent }];
     ThemeModule,
     SharedModule,
   ],
+  providers: [ { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },],
 })
 export class LoginModule {}

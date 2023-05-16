@@ -4,13 +4,15 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
+  HttpErrorResponse,
 } from '@angular/common/http';
 import { catchError, delay, finalize, Observable, of } from 'rxjs';
-import { PubsubService } from '../punsub/pubsub.service';
+import { PubsubService } from '../pubsub/pubsub.service';
+import { ToasterService } from '../toaster/toaster.service';
 
 @Injectable()
-export class IterceptorInterceptor implements HttpInterceptor {
-  constructor(private pubsub: PubsubService) {}
+export class Interceptor implements HttpInterceptor {
+  constructor(private pubsub: PubsubService, private toast: ToasterService) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -21,9 +23,14 @@ export class IterceptorInterceptor implements HttpInterceptor {
     const customReq = request.clone({});
     return next.handle(customReq).pipe(
       catchError((err: any) => {
+        if (err instanceof HttpErrorResponse) {
+          this.toast.showError(
+            'Oops!! Something went wrong. Please check your internet connection or try again after sometime.'
+          );
+        }
         return of(err);
       }),
-      delay(1000),
+      delay(0),
       finalize(() => {
         this.pubsub.showLoader(false);
       })

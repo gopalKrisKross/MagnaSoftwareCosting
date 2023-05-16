@@ -5,9 +5,9 @@
         <img [src]="image" class="img-fluid" alt="Sample image" />
       </div>
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-        <nb-card accent="info">
-          <nb-card-header class="loginHeading">Login</nb-card-header>
-          <nb-card-body>
+        <div class="cardMain">
+          <h4 class="loginHeading">Login</h4>
+          <div>
             <form [formGroup]="loginForm">
               <div class="form-floating mb-3">
                 <input
@@ -16,7 +16,7 @@
                   placeholder="name@example.com"
                   formControlName="EmailId"
                 />
-                <label for="floatingInput">Email address</label>
+                <label for="floatingInput">Email Address</label>
                 <ng-container
                   *ngIf="f['EmailId'].touched && f['EmailId'].invalid"
                 >
@@ -46,7 +46,7 @@
 
               <div class="text-center text-lg-end mt-4">
                 <button
-                  type="button"
+                  type="submit"
                   class="btn btn-primary btn-lg"
                   style="padding-left: 2.5rem; padding-right: 2.5rem"
                   (click)="login()"
@@ -55,8 +55,8 @@
                 </button>
               </div>
             </form>
-          </nb-card-body>
-        </nb-card>
+          </div>
+        </div>
       </div>
     </div>
   </div>

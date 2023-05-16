@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { PubsubService } from 'src/app/services/punsub/pubsub.service';
+import { delay } from 'rxjs';
+import { PubsubService } from 'src/app/services/pubsub/pubsub.service';
 
 @Component({
   selector: 'app-spinner',
@@ -12,13 +13,12 @@ export class SpinnerComponent implements OnInit {
     return this.isLoaderPresent;
   }
 
-  constructor(private pubsub: PubsubService) {
-    this.pubsub.loaderShow$.subscribe((res) => {
-      if (res) {
-        this.isLoaderPresent = res ? true : false;
-      }
-    });
-  }
+  constructor(private pubsub: PubsubService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.pubsub.loaderShow$.pipe(delay(0)).subscribe((res) => {
+      this.isLoaderPresent = res ? true : false;
+    });
+    // console.log('loadder', this.pubsub.loaderShow$);
+  }
 }

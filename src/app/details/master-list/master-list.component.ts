@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NbDialogService } from '@nebular/theme';
+import { CommonService } from 'src/app/services/common/common.service';
+import { PubsubService } from 'src/app/services/pubsub/pubsub.service';
 import { CreateMasterFormComponent } from 'src/app/shared/create-master-form/create-master-form.component';
+import { Global } from 'src/app/shared/global';
 
 @Component({
   selector: 'app-master-list',
@@ -13,79 +16,7 @@ export class MasterListComponent implements OnInit {
 
   pageType: string = '';
   // titleName = '';
-  masterListHeading: any = {
-    id: 'ID',
-    name: 'Name',
-    lSId: 'License Server ID',
-    loginId: 'Login ID',
-    password: 'Password',
-    deptId: 'Department ID',
-    lSDId: 'License Server Dept ID',
-    status: 'Status',
-    addBy: 'Added By',
-    addDate: 'Added Date',
-    updateBy: 'Updated By',
-    updateDate: 'Updated Date',
-  };
 
-  info = [
-    {
-      id: '12',
-      name: 'sample',
-      lSId: 'adf',
-      loginId: 'adf',
-      password: 'asdfafd',
-      deptId: 'adfadfas',
-      lSDId: 'adfsad',
-      status: 'closed',
-      addBy: 'adfaf',
-      addDate: '12/2/22',
-      updateBy: 'adfsaf',
-      updateDate: '25/01/22',
-    },
-    {
-      id: '12',
-      name: 'sample',
-      lSId: 'adf',
-      loginId: 'adf',
-      password: 'asdfafd',
-      deptId: 'adfadfas',
-      lSDId: 'adfsad',
-      status: 'closed',
-      addBy: 'adfaf',
-      addDate: '12/2/22',
-      updateBy: 'adfsaf',
-      updateDate: '25/01/22',
-    },
-    {
-      id: '12',
-      name: 'sample',
-      lSId: 'adf',
-      loginId: 'adf',
-      password: 'asdfafd',
-      deptId: 'adfadfas',
-      lSDId: 'adfsad',
-      status: 'closed',
-      addBy: 'adfaf',
-      addDate: '12/2/22',
-      updateBy: 'adfsaf',
-      updateDate: '25/01/22',
-    },
-    {
-      id: '12',
-      name: 'sample',
-      lSId: 'adf',
-      loginId: 'adf',
-      password: 'asdfafd',
-      deptId: 'adfadfas',
-      lSDId: 'adfsad',
-      status: 'closed',
-      addBy: 'adfaf',
-      addDate: '12/2/22',
-      updateBy: 'adfsaf',
-      updateDate: '25/01/22',
-    },
-  ];
   reportListData = [
     {
       id: '1',
@@ -149,22 +80,37 @@ export class MasterListComponent implements OnInit {
     },
   ];
   flagdetails: any = {
-    userList: 'User List',
-    departmentList: 'Department List',
-    softwareLicencesList: 'Software Licences List',
-    shiftList: 'Shift List',
-    projectList: 'Project List',
+    User: 'User List',
+    Department: 'Department List',
+    SoftwareLicence: 'Software Licences List',
+    Shift: 'Shift List',
+    Project: 'Project List',
     reportList: 'Report List',
   };
+  masterList: any;
   get title() {
     return this.flagdetails[this.pageType];
   }
+  get userList() {
+    return ['user'].includes(this.pageType.toLowerCase());
+  }
+  get shiftList() {
+    return ['shift'].includes(this.pageType.toLowerCase());
+  }
+  get projectList() {
+    return ['project'].includes(this.pageType.toLowerCase());
+  }
+  p: number = 1;
   constructor(
     private route: ActivatedRoute,
-    private dialogService: NbDialogService
+    private dialogService: NbDialogService,
+    private commonService: CommonService,
+    private pubsub: PubsubService
   ) {
     this.route.params.subscribe((params) => {
-      this.pageType = params['listName'];
+      console.log(Global.LOGGED_IN_USER);
+      this.pageType = params['pageType'];
+      this.getMasterList(this.pageType);
     });
 
     // this.titleName = this.listName;
@@ -172,19 +118,52 @@ export class MasterListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.warn(this.route.snapshot.paramMap.get('listName'));
+    this.pubsub.reloadURL$.subscribe((res: any) => {
+      if (res) {
+        this.getMasterList(res);
+      }
+    });
   }
   /**
    * @author Sandesh
    * @description this function is used for open master form
    */
-  openModal(closeOnBackdropClick: boolean) {
+  openModal(closeOnBackdropClick: boolean, action: string, list: object) {
     try {
-      let config: any = { data: this.pageType };
+      let config: any = {
+        data: this.pageType,
+        action: action,
+        list: list,
+        flag: this.pageType,
+      };
       this.dialogService.open(CreateMasterFormComponent, {
         closeOnBackdropClick,
         context: config,
       });
+    } catch (error) {}
+  }
+  getMasterList(entity: string) {
+    try {
+      let params = {
+        dbName: Global.LOGGED_IN_USER.dbName,
+        dbPassword: Global.LOGGED_IN_USER.password,
+        userId: Global.LOGGED_IN_USER.userId,
+        entityName: entity,
+        flage: 'List',
+        entityId: '',
+      };
+      this.commonService.masterList(params).subscribe(
+        (res: any) => {
+          console.log(res);
+          if (res) {
+            this.masterList = res.Table;
+            console.log(this.masterList);
+          }
+        },
+        (err: Error) => {
+          console.error(err);
+        }
+      );
     } catch (error) {}
   }
 }

@@ -4,35 +4,59 @@
       <nb-card-header>Estimation</nb-card-header>
       <nb-card-body>
         <div class="row" [formGroup]="deptOptionForm">
-          <div class="col-md-3">
-            <nb-select
-              placeholder="Department"
-              size="small"
-              class="formInput"
+          <div class="col-md-3 floating-label-field">
+            <select
+              placeholder=" "
+              class="floating-input"
               formControlName="department"
             >
-              <nb-option value="2">Select Deparment</nb-option>
-              <nb-option
-                *ngFor="let branch of departmentDetails"
-                [value]="branch"
-                >{{ branch }}</nb-option
+              <option value="0">Select Deparment</option>
+              <option
+                *ngFor="let department of departmentList"
+                [value]="department.departmentId"
               >
-            </nb-select>
+                {{ department.departmentName }}
+              </option>
+            </select>
+            <label class="floating-label"> Department</label>
           </div>
-          <div class="col-md-3">
-            <nb-select
-              placeholder="Software"
-              size="small"
-              class="formInput"
+          <div class="col-md-3 floating-label-field">
+            <select
+              placeholder=" "
+              class="floating-input"
               name="software"
               formControlName="software"
             >
-              <nb-option value="1">Select Software</nb-option>
-              <nb-option value="CATIA">CATIA</nb-option>
-              <nb-option value="UG">UG</nb-option>
-            </nb-select>
+              <option value="0">Select Software</option>
+              <option
+                *ngFor="let software of softWareList"
+                [value]="software.licenceId"
+              >
+                {{ software.licenceName }}
+              </option>
+              <!-- <nb-option value="UG">UG</nb-option> -->
+            </select>
+            <label class="floating-label"> Software</label>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-3 floating-label-field">
+            <select
+              placeholder=" "
+              class="floating-input"
+              name="year"
+              formControlName="year"
+            >
+              <option value="0">Select Year</option>
+              <option value="2020">2020</option>
+              <option value="2021">2021</option>
+              <option value="2022">2022</option>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>
+            </select>
+            <label class="floating-label"> Year</label>
+          </div>
+
+          <!-- <div class="col-md-2">
             <input
               nbInput
               [nbDatepicker]="fromDatePicker"
@@ -41,9 +65,9 @@
               name="fromDatePicker"
               formControlName="fromDatePicker"
             />
-            <nb-datepicker #fromDatePicker format="MMM-YY"></nb-datepicker>
-          </div>
-          <div class="col-md-2">
+            <nb-datepicker #fromDatePicker format="dd-MMM-yyyy" ></nb-datepicker>
+          </div> -->
+          <!-- <div class="col-md-2">
             <input
               nbInput
               [nbDatepicker]="toDatePicker"
@@ -52,9 +76,9 @@
               name="toDatePicker"
               formControlName="toDatePicker"
             />
-            <nb-datepicker #toDatePicker format="MMM-YY"></nb-datepicker>
-          </div>
-          <div class="text-center col-md-2">
+            <nb-datepicker #toDatePicker format="dd-MMM-yyyy"></nb-datepicker>
+          </div> -->
+          <div class="text-center col-md-3">
             <button
               type="button"
               size="small"
@@ -66,82 +90,207 @@
             </button>
           </div>
         </div>
-        <div [formGroup]="departnentForm">
-          <table
-            class="table table-bordered label mt-3 text-center"
-            id="departmentTable"
-            *ngFor="let branch of departmentData"
-          >
-            <thead class="tHeading">
-              <tr>
-                <th>{{ branch }}</th>
-                <th *ngFor="let header of headerList">{{ header }}</th>
-              </tr>
-            </thead>
-            <tbody *ngFor="let project of getProject(branch)">
-              <tr>
-                <td rowspan="3" class=" ">
-                  {{ project.value }}
-                </td>
-                <td>First</td>
-                <td *ngFor="let val of data; let i = index" class="p-0">
-                  <input
-                    type="text"
-                    class="formInput text-center"
-                    status="basic"
-                    fieldSize="small"
-                    nbInput
-                    formControlName="{{ branch }}First{{ i }}"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>Gen</td>
-                <td *ngFor="let val of data; let i = index" class="p-0">
-                  <input
-                    type="text"
-                    class="formInput text-center"
-                    status="basic"
-                    fieldSize="small"
-                    nbInput
-                    formControlName="{{ branch }}Gen{{ i }}"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>Sec</td>
-                <td *ngFor="let val of data; let i = index" class="p-0">
-                  <input
-                    type="text"
-                    class="formInput text-center"
-                    status="basic"
-                    fieldSize="small"
-                    nbInput
-                    formControlName="{{ branch }}Sec{{ i }}"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>Total</td>
-                <td *ngFor="let val of data; let i = index" class="fw-bold">
-                  {{ getCalTotal(val) }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <div [formGroup]="estimationForm">
+          <div formArrayName="estimation">
+            <table
+              class="table table-bordered label mt-3 text-start"
+              id="departmentTable"
+              *ngIf="defaultData"
+            >
+              <thead class="tHeading">
+                <tr>
+                  <th class="deptCol">{{ getDepartment() }}</th>
+                  <th *ngFor="let header of headerList">{{ header }}</th>
+                  <th class="iconCol"></th>
+                </tr>
+              </thead>
 
-        <div class="offset-sm-11 col-sm-12" *ngIf="departmentData">
-          <button
-            type="button"
-            size="small"
-            nbButton
-            status="info"
-            (click)="saveData()"
-          >
-            save
-          </button>
+              <!-- //*ngFor="let item of estimations -->
+              <tbody *ngFor="let item of groupedCollection | keyvalue">
+                <!-- //*ngFor="let item of estimations -->
+                <tr
+                  *ngFor="let project of getListData(item.key)"
+                  [formGroupName]="project.index"
+                >
+                  <td class="p-0 ps-1 pe-1">
+                    {{ item.key }}
+                  </td>
+                  <td class="p-0 ps-1 pe-1 shiftCol">
+                    {{ project.shift }}
+                  </td>
+                  <td class="p-0">
+                    <input
+                      type="text"
+                      class="formInput text-center ps-0 pe-0"
+                      status="basic"
+                      fieldSize="small"
+                      nbInput
+                      formControlName="january"
+                    />
+                  </td>
+                  <td class="p-0">
+                    <input
+                      type="text"
+                      class="formInput text-center ps-0 pe-0"
+                      status="basic"
+                      fieldSize="small"
+                      nbInput
+                      formControlName="february"
+                    />
+                  </td>
+                  <td class="p-0">
+                    <input
+                      type="text"
+                      class="formInput text-center ps-0 pe-0"
+                      status="basic"
+                      fieldSize="small"
+                      nbInput
+                      formControlName="march"
+                    />
+                  </td>
+                  <td class="p-0">
+                    <input
+                      type="text"
+                      class="formInput text-center ps-0 pe-0"
+                      status="basic"
+                      fieldSize="small"
+                      nbInput
+                      formControlName="april"
+                    />
+                  </td>
+                  <td class="p-0">
+                    <input
+                      type="text"
+                      class="formInput text-center ps-0 pe-0"
+                      status="basic"
+                      fieldSize="small"
+                      nbInput
+                      formControlName="may"
+                    />
+                  </td>
+                  <td class="p-0">
+                    <input
+                      type="text"
+                      class="formInput text-center ps-0 pe-0"
+                      status="basic"
+                      fieldSize="small"
+                      nbInput
+                      formControlName="june"
+                    />
+                  </td>
+                  <td class="p-0">
+                    <input
+                      type="text"
+                      class="formInput text-center ps-0 pe-0"
+                      status="basic"
+                      fieldSize="small"
+                      nbInput
+                      formControlName="july"
+                    />
+                  </td>
+                  <td class="p-0">
+                    <input
+                      type="text"
+                      class="formInput text-center ps-0 pe-0"
+                      status="basic"
+                      fieldSize="small"
+                      nbInput
+                      formControlName="august"
+                    />
+                  </td>
+                  <td class="p-0">
+                    <input
+                      type="text"
+                      class="formInput text-center ps-0 pe-0"
+                      status="basic"
+                      fieldSize="small"
+                      nbInput
+                      formControlName="september"
+                    />
+                  </td>
+                  <td class="p-0">
+                    <input
+                      type="text"
+                      class="formInput text-center ps-0 pe-0"
+                      status="basic"
+                      fieldSize="small"
+                      nbInput
+                      formControlName="october"
+                    />
+                  </td>
+                  <td class="p-0">
+                    <input
+                      type="text"
+                      class="formInput text-center ps-0 pe-0"
+                      status="basic"
+                      fieldSize="small"
+                      nbInput
+                      formControlName="november"
+                    />
+                  </td>
+                  <td class="p-0">
+                    <input
+                      type="text"
+                      class="formInput text-center ps-0 pe-0"
+                      status="basic"
+                      fieldSize="small"
+                      nbInput
+                      formControlName="december"
+                    />
+                  </td>
+                  <td class="p-0 ps-1 pe-1 text-center">
+                    <nb-icon
+                      *ngIf="project.editStatus"
+                      icon="edit-outline"
+                      (click)="editList(project.index)"
+                      nbTooltip="Edit"
+                      nbTooltipPlacement="bottom"
+                    ></nb-icon>
+                    <nb-icon
+                      *ngIf="project.saveStatus"
+                      icon="save-outline"
+                      (click)="saveData(project.index)"
+                      nbTooltip="Save"
+                      nbTooltipPlacement="bottom"
+                    ></nb-icon>
+                    <!-- <nb-action
+                        class="control-item"
+                        icon="edit-outline"
+                       
+                        
+                      >
+                      </nb-action> -->
+
+                    <!-- <div >
+                      <nb-action
+                        class="control-item"
+                       
+                       
+                      >
+                      </nb-action>
+                    </div> -->
+                  </td>
+                </tr>
+                <tr class="text-center">
+                  <td colspan="2">Total</td>
+
+                  <td>{{ getTotal("january", item.key) }}</td>
+                  <td>{{ getTotal("february", item.key) }}</td>
+                  <td>{{ getTotal("march", item.key) }}</td>
+                  <td>{{ getTotal("april", item.key) }}</td>
+                  <td>{{ getTotal("may", item.key) }}</td>
+                  <td>{{ getTotal("june", item.key) }}</td>
+                  <td>{{ getTotal("july", item.key) }}</td>
+                  <td>{{ getTotal("august", item.key) }}</td>
+                  <td>{{ getTotal("september", item.key) }}</td>
+                  <td>{{ getTotal("october", item.key) }}</td>
+                  <td>{{ getTotal("november", item.key) }}</td>
+                  <td>{{ getTotal("december", item.key) }}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </nb-card-body>
     </nb-card>

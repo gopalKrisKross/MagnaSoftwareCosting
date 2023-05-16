@@ -13,13 +13,18 @@
     height: 100%;
   }
 }
+ 
 .loginHeading {
   text-align: center;
   padding: 14px;
   font-size: 30px;
+background-color: transparent !important;
 }
 section {
-  background-color: #9ea7b4;
+  background-color: #9ea7b4 !important;
+}
+.cardmain{
+  background-color: transparent !important;
 }
 .status-danger {
   color: #970909 !important;

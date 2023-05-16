@@ -1,3 +1,31 @@
 .formInput {
   width: 100%;
 }
+.deptCol{
+  width: 18%;
+}
+.iconCol{
+  width: 5%;
+}
+.shiftCol{
+  width: 7%;
+}
+#departmentTable{
+
+  .formInput:focus{
+    background-color: white !important;
+    border: 1px solid blue  !important;
+  }
+  .editIcon{
+    display: block;
+  }
+  .saveIcon{
+    display: none;
+  }
+  .show{
+    display: block!important;
+  }
+  .hidden{
+    display: none!important;
+  }
+}

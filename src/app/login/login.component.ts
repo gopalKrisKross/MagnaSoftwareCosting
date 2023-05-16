@@ -6,6 +6,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { NavigationService } from '../services/navigation/navigation.service';
+import { LoginService } from '../services/loginservice/login.service';
+import { PubsubService } from '../services/pubsub/pubsub.service';
+import { ToasterService } from '../services/toaster/toaster.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +22,11 @@ export class LoginComponent implements OnInit {
   get f() {
     return this.loginForm.controls;
   }
-  constructor(private fb: FormBuilder, private nav: NavigationService) {
+  constructor(
+    private nav: NavigationService,
+    private loginService: LoginService,
+    private toast: ToasterService
+  ) {
     this.loginForm = this.createLoginForm();
   }
   createLoginForm(iObj?: any): any {
@@ -36,13 +43,43 @@ export class LoginComponent implements OnInit {
     try {
       if (this.loginForm.valid) {
         let value = this.loginForm.getRawValue();
-        let leadUrl = 'component/details/create';
+        // let param = {
+        //   dbName: 'MagnaLicenseUsage',
+        //   emailId: 'chavandattatray24@gmail.com',
+        //   password: '123456789',
+        // };
+        let param = {
+          //dbName: 'MagnaLicenseUsage',
+          emailId: value.EmailId,
+          password: value.Password,
+        };
+        // this.pubsub.showLoader(true);
 
-        this.nav.gotoPage(leadUrl, { replaceUrl: true }, (res: any) => {
-          console.log(res);
-        });
+        this.loginService.login(param).subscribe(
+          (res: any) => {
+            if (res && res.length > 0) {
+              localStorage.setItem(
+                'Global.LOGGED_IN_USER',
+                JSON.stringify(res[0])
+              );
+
+              let leadUrl = 'component/pages';
+
+              this.nav.gotoPage(
+                leadUrl,
+                { replaceUrl: true },
+                (res: any) => {}
+              );
+            } else {
+              this.toast.showError('User-ID / Password Combination Wrong.');
+            }
+          },
+          (err: any) => {}
+        );
       }
-    } catch (error) {}
+    } catch (error) {
+      // this.pubsub.showLoader(false);
+    }
   }
   ngOnInit(): void {}
 }

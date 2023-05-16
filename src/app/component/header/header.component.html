@@ -15,7 +15,9 @@
     >
   </nb-select> -->
 </div>
-
+<div class="c-logo"  [ngStyle]="{ 'background-image': 'url(' + magnaIcon + ')'}" >
+   
+</div>
 <div class="header-container">
   <nb-actions size="small" class="dropdown">
     <nb-action
@@ -35,7 +37,7 @@
           <button
             class="dropdown-item"
             type="button"
-            routerLink="details/masterList/userList"
+            routerLink="details/masterList/User"
           >
             User List
           </button>
@@ -44,7 +46,7 @@
           <button
             class="dropdown-item"
             type="button"
-            routerLink="details/masterList/departmentList"
+            routerLink="details/masterList/Department"
           >
             Department List
           </button>
@@ -53,7 +55,7 @@
           <button
             class="dropdown-item"
             type="button"
-            routerLink="details/masterList/softwareLicencesList"
+            routerLink="details/masterList/SoftwareLicence"
           >
             Software Licences List
           </button>
@@ -62,7 +64,7 @@
           <button
             class="dropdown-item"
             type="button"
-            routerLink="details/masterList/shiftList"
+            routerLink="details/masterList/Shift"
           >
             Shift List
           </button>
@@ -71,7 +73,7 @@
           <button
             class="dropdown-item"
             type="button"
-            routerLink="details/masterList/projectList"
+            routerLink="details/masterList/Project"
           >
             Project List
           </button>
@@ -86,7 +88,7 @@
       <nb-search type="rotate-layout"></nb-search>
     </nb-action> -->
 
-    <nb-action
+    <!-- <nb-action
       class="control-item"
       icon="bell-outline"
       nbTooltip="Notification"
@@ -95,7 +97,7 @@
       badgeStatus="success"
       badgePosition="top right"
     >
-    </nb-action>
+    </nb-action> -->
 
     <nb-action
       class="user-action"
@@ -104,7 +106,7 @@
     >
       <nb-user
         [nbContextMenu]="userMenu"
-        name="User Name"
+        name="{{userName}}"
         color="#cccccc"
         [picture]="picture"
       >
