@@ -110,3 +110,15 @@
   color: red;
   font-size: 11px;
 }
+.ngx-toastr {
+  width: 750px !important;  
+}
+.table{
+  font-size: 13px;
+}
+ 
+@media screen and (max-width: 750px) {
+  .ngx-toastr {
+    width:  350px !important;   
+  }
+}

@@ -1,0 +1,148 @@
+<div class="row">
+  <div class="col-6">
+    <nb-card class="inline-form-card" status="warning">
+      <nb-card-header> Report Form </nb-card-header>
+      <nb-card-body>
+        <div class="row justify-content-start" [formGroup]="reportForm">
+          <div class="col-4 floating-label-field">
+            <select
+              class="floating-input"
+              placeholder=" "
+              formControlName="software"
+            >
+              <option value="0">Select Software</option>
+              <option
+                *ngFor="let software of softwareList"
+                [value]="software.licenceId"
+              >
+                {{ software.licenceName }}
+              </option>
+            </select>
+            <label class="floating-label">Software</label>
+          </div>
+          <div class="col-4 floating-label-field">
+            <select
+              class="floating-input"
+              placeholder=" "
+              formControlName="month"
+            >
+              <option value="0">Select Month</option>
+              <option *ngFor="let month of monthList" [value]="month.id">
+                {{ month.name }}
+              </option>
+            </select>
+            <label class="floating-label">Month</label>
+          </div>
+          <div class="col-4 floating-label-field">
+            <select
+              class="floating-input"
+              placeholder=" "
+              formControlName="year"
+            >
+              <option value="0">Select year</option>
+
+              <option *ngFor="let year of yearList" [value]="year.id">
+                {{ year.name }}
+              </option>
+            </select>
+            <label class="floating-label" value="0">Year</label>
+          </div>
+        </div>
+
+        <div class="mt-2 col-12 text-end">
+          <button
+            type="button"
+            size="small"
+            nbButton
+            status="info"
+            (click)="getReportList()"
+          >
+            Go
+          </button>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="col-6" *ngIf="totalCalculateData">
+    <nb-card class="inline-form-card" status="warning">
+      <nb-card-header>Monthly Usage Report </nb-card-header>
+      <nb-card-body>
+        <table class="table table-bordered mt-3 text-center table-light">
+          <tbody>
+            <tr *ngFor="let count of totalCalculateData | keyvalue">
+              <td>{{ count.key }}</td>
+              <td>{{ count.value }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </nb-card-body>
+    </nb-card>
+  </div>
+
+  <div class="col-12" *ngIf="reportListData">
+    <nb-card class="inline-form-card" status="warning">
+      <nb-card-header>
+        <div class="d-flex justify-content-between col-12">
+          <div class="align-items-center d-flex">Report List</div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <table class="table table-bordered mt-3 text-center table-light">
+          <thead>
+            <tr>
+              <td>Sr. No.</td>
+              <td>Department</td>
+              <td>Actual Usage as per IT report (1)</td>
+              <td>Cost as per actual usage (2)</td>
+              <td>Latest Projection by HoD (3)</td>
+              <td>Excess Projection (4)</td>
+              <td>% for sharing unutilised license cost (5)</td>
+              <td>Unutilised Licenses (6)</td>
+              <td>Cost of Unutilised Licenses (7)</td>
+              <td>Total Cost to Department (8=2+7)</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let report of reportListData">
+              <td>{{ report.tempRowId }}</td>
+              <td>{{ report.departmentName }}</td>
+              <td>{{ report.ActualUsageAsPerITReport | number : "1.2-2" }}</td>
+              <td>{{ report.CostAsPerActualUsage | number : "1.2-2" }}</td>
+              <td>{{ report.LatestProjectionByHoD }}</td>
+              <td>{{ report.ExcessProjection | number : "1.2-2" }}</td>
+              <td>
+                {{ report.PercentageForSharingUnutilisedLicenseCost }}
+              </td>
+              <td>{{ report.UnutilisedLicenses }}</td>
+              <td>{{ report.CostOfUnutilisedLicenses }}</td>
+              <td>{{ report.TotalCostToDepartment }}</td>
+            </tr>
+            <tr>
+              <td>Total</td>
+              <td></td>
+              <td>
+                {{ getTotal(reportListData, "ActualUsageAsPerITReport") }}
+              </td>
+              <td>{{ getTotal(reportListData, "CostAsPerActualUsage") }}</td>
+              <td>{{ getTotal(reportListData, "LatestProjectionByHoD") }}</td>
+              <td>{{ getTotal(reportListData, "ExcessProjection") }}</td>
+              <td>
+                {{
+                  getTotal(
+                    reportListData,
+                    "PercentageForSharingUnutilisedLicenseCost"
+                  )
+                }}
+              </td>
+              <td>{{ getTotal(reportListData, "UnutilisedLicenses") }}</td>
+              <td>
+                {{ getTotal(reportListData, "CostOfUnutilisedLicenses") }}
+              </td>
+              <td>{{ getTotal(reportListData, "TotalCostToDepartment") }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

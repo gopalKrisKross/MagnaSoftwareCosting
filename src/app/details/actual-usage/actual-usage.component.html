@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-6">
     <nb-card class="inline-form-card" status="warning">
       <nb-card-header>Actual Usage</nb-card-header>
       <nb-card-body>
@@ -55,7 +55,7 @@
               [min]="0"
               formControlName="licence"
             />
-            <label class="floating-label">Licence</label>
+            <label class="floating-label">Licences</label>
           </div>
           <div class="col-6 floating-label-field">
             <input
@@ -92,17 +92,16 @@
       </nb-card-body>
     </nb-card>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
-    <nb-card class="inline-form-card" status="warning">
+  <div class="col-6">
+    <nb-card
+      class="inline-form-card"
+      status="warning"
+      *ngIf="departmentHoursData"
+    >
       <nb-card-header>Usage By Departments In Hours </nb-card-header>
       <nb-card-body>
         <div [formGroup]="departmentForm">
-          <table
-            class="table table-bordered label mt-3 text-center w-75"
-            *ngIf="departmentHoursData"
-          >
+          <table class="table table-bordered mt-3 text-center table-light">
             <thead class="tHeading">
               <tr>
                 <th>Sr.</th>
@@ -112,34 +111,44 @@
             </thead>
             <tbody formArrayName="department">
               <tr
-                *ngFor="let data of departmentHoursData; let i = index"
+                *ngFor="let data of departmentHoursDataList; let i = index"
                 [formGroupName]="i"
               >
                 <td>{{ i + 1 }}</td>
-                <td>{{ getDepartmentNmae(data.id) }}</td>
+                <td>
+                  {{ getDepartmentNmae(data.departmentId) }}
+                </td>
                 <td class="p-0">
                   <input
-                    type="text"
+                    type="number"
                     class="formInput text-center"
                     status="basic"
                     fieldSize="small"
                     nbInput
                     formControlName="usageHours"
+                    [min]="0"
+                    step=".01"
                   />
                 </td>
               </tr>
             </tbody>
             <tfoot>
-              <tr>
+              <tr class="text-dark fw-bold">
                 <td></td>
                 <td>Total</td>
-                <td>{{ calculateTotal() }}</td>
+                <td class="pe-4">{{ calculateTotal() }}</td>
               </tr>
             </tfoot>
           </table>
         </div>
-        <div class="mt-2 col-10 text-end">
-          <button type="button" size="small" nbButton status="info">
+        <div class="mt-2 text-end">
+          <button
+            type="button"
+            size="small"
+            nbButton
+            status="info"
+            (click)="saveDeptData()"
+          >
             save
           </button>
         </div>

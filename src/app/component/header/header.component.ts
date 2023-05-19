@@ -93,7 +93,7 @@ export class HeaderComponent implements OnInit {
   }
   logOut() {
     try {
-      localStorage.removeItem('LOGGED_IN_USER');
+      localStorage.removeItem('Global.LOGGED_IN_USER');
       this.nav.gotoPage('', null, (res: any) => {});
     } catch (error) {}
   }

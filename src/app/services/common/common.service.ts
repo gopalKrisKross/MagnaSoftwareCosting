@@ -10,6 +10,7 @@ import {
   IEstimationSaveParam,
   IMasterList,
   IMasterListAddEdit,
+  IreportListParam,
 } from 'src/app/shared/model';
 
 @Injectable({
@@ -143,6 +144,29 @@ export class CommonService {
   ): Observable<IDeptActualUsageParam> | any {
     return this.http
       .post(Global.MAGNA_API + '/addEdit/actualUsageAddEdit', param, {
+        headers: this.getHeaders(),
+      })
+      .pipe(
+        switchMap((t: any) => of(JSON.parse(t))),
+        catchError(this.handleError)
+      );
+  }
+  saveEditDepartment(param: any): Observable<any> | any {
+    // http://localhost:4950/api/addEdit/UseByDepartmentAddEdit
+    return this.http
+      .post(Global.MAGNA_API + '/addEdit/UseByDepartmentAddEdit', param, {
+        headers: this.getHeaders(),
+      })
+      .pipe(
+        switchMap((t: any) => of(JSON.parse(t))),
+        catchError(this.handleError)
+      );
+  }
+  getReportList(param: IreportListParam): Observable<IreportListParam> | any {
+    //http://localhost:4950/api/listing/actualUsageReports
+
+    return this.http
+      .post(Global.MAGNA_API + '/listing/actualUsageReports', param, {
         headers: this.getHeaders(),
       })
       .pipe(

@@ -7,7 +7,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     children: [
       {
         title: 'Estimation',
-        link: '/component/details/create',
+        link: '/component/details/estimation',
       },
 
       {
@@ -16,7 +16,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
       {
         title: 'Report',
-        link: 'details/masterList/reportList',
+        link: '/component/details/list/report',
       },
     ],
   },

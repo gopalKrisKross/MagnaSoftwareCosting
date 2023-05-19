@@ -137,3 +137,11 @@ export interface IDeptActualUsageParam {
   moduleName: string;
   entityId: number | string;
 }
+export interface IreportListParam {
+  dbName: string;
+  dbPassword: string;
+  userId: number | string;
+  licenceId: number | string;
+  month: number | string;
+  year: number | string;
+}

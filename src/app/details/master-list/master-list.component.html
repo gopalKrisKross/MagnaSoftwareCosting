@@ -6,7 +6,7 @@
           <div class="align-items-center d-flex">{{ title }}</div>
           <div class="" *ngIf="pageType != 'reportList'">
             <nb-icon
-              (click)="openModal(false, 'Add',{})"
+              (click)="openModal(false, 'Add', {})"
               icon="plus-outline"
               nbTooltip="Create"
               nbTooltipPlacement="bottom"
@@ -15,18 +15,23 @@
         </div>
       </nb-card-header>
       <nb-card-body>
-        <div *ngIf="pageType != 'reportList'">
-          <pagination-controls class="float-end" (pageChange)="p = $event"></pagination-controls>
-          <table class="table table-hover   label mt-3 text-start">
-            <thead class="table-bordered text-dark">
+        <div>
+          <pagination-controls
+            class="float-end"
+            (pageChange)="p = $event"
+          ></pagination-controls>
+          <table
+            class="table table-hover table-bordered mt-3 text-start table-light"
+          >
+            <thead class="text-dark">
               <tr>
-                <th >User ID</th>
+                <th>User ID</th>
                 <th>Name</th>
-                
-                <th *ngIf="userList">Department  </th>
-                <th *ngIf="userList">Licence Server  </th>
-                <th *ngIf="userList">Licence Server Department  </th>
-               
+
+                <th *ngIf="userList">Department</th>
+                <th *ngIf="userList">Licence Server</th>
+                <th *ngIf="userList">Licence Server Department</th>
+
                 <th *ngIf="userList">Designation</th>
                 <th *ngIf="projectList">Remark</th>
                 <th *ngIf="shiftList">From Time</th>
@@ -36,7 +41,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let dataItem of masterList | paginate: { itemsPerPage: 10, currentPage: p };let i=index">
+              <tr
+                *ngFor="
+                  let dataItem of masterList
+                    | paginate : { itemsPerPage: 10, currentPage: p };
+                  let i = index
+                "
+              >
                 <td>
                   {{ dataItem.id }}
                 </td>
@@ -51,70 +62,37 @@
                   {{ dataItem.licenceServerId }}
                   <!-- {{ dataItem.licenceName }} -->
                 </td>
-               
+
                 <td *ngIf="userList">
                   {{ dataItem.licenceServerDepartmentId }}
                   <!-- {{ dataItem.licencesDepartmentName }} -->
                 </td>
-               
+
                 <td *ngIf="userList">
                   {{ dataItem.designation }}
                 </td>
                 <td *ngIf="projectList">
-                  {{ dataItem.remark  }}
-                </td>
-                <td *ngIf="shiftList"> 
-                  {{ dataItem.fromTime  }}
+                  {{ dataItem.remark }}
                 </td>
                 <td *ngIf="shiftList">
-                  {{ dataItem.toTime  }}
+                  {{ dataItem.fromTime }}
+                </td>
+                <td *ngIf="shiftList">
+                  {{ dataItem.toTime }}
                 </td>
                 <td>
-                  {{ dataItem.status==true?'Active':'Inactive' }}
+                  {{ dataItem.status == true ? "Active" : "Inactive" }}
                 </td>
                 <td nbTooltip="Edit" nbTooltipPlacement="bottom">
                   <nb-icon
                     icon="edit-outline"
-                    (click)="openModal(false, 'Edit',dataItem)"
+                    (click)="openModal(false, 'Edit', dataItem)"
                   ></nb-icon>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <div *ngIf="pageType == 'reportList'">
-          <table class="table table-bordered label mt-3 text-center">
-            <thead>
-              <tr>
-                <td>Sr. No.</td>
-                <td>Department</td>
-                <td>Actual Usage as per IT report (1)</td>
-                <td>Cost as per actual usage (2)</td>
-                <td>"Latest Projection by HoD (3)"</td>
-                <td>Excess Projection (4)</td>
-                <td>% for sharing unutilised license cost (5)</td>
-                <td>Unutilised Licenses (6)</td>
-                <td>Cost of Unutilised Licenses (7)</td>
-                <td>Total Cost to Department (8=2+7)</td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let report of reportListData">
-                <td>{{ report.id }}</td>
-                <td>{{ report.department }}</td>
-                <td>{{ report.actualUsageIt }}</td>
-                <td>{{ report.costActualUsage }}</td>
-                <td>{{ report.latestProjection }}</td>
-                <td>{{ report.expressProjection }}</td>
-                <td>{{ report.sharingUnutilisedLicense }}</td>
-                <td>{{ report.unutilisedLicenses }}</td>
-                <td>{{ report.costUnutilisedLicenses }}</td>
-                <td>{{ report.totalCost }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      
       </nb-card-body>
     </nb-card>
   </div>

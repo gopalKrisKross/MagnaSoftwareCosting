@@ -4,7 +4,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonService } from 'src/app/services/common/common.service';
 import { ToasterService } from 'src/app/services/toaster/toaster.service';
 import { Global } from 'src/app/shared/global';
@@ -70,6 +70,8 @@ export class CreateFormsComponent implements OnInit {
   });
   changedId: number = -1;
   editCondition: any;
+  softwareCount: number = 1;
+
   constructor(
     private fb: FormBuilder,
     private commonService: CommonService,
@@ -79,10 +81,6 @@ export class CreateFormsComponent implements OnInit {
     this.deptOptionForm = this.getdeptOptionForm();
   }
   ngOnInit() {
-    // this.departmentData = this.departmentDetails;
-    // this.softWareData = this.softWareList;
-    // this.createFormGroup(this.departmentDetails);
-
     this.getDefaultList();
   }
   iconToggle(i: number, type: boolean) {
@@ -109,17 +107,27 @@ export class CreateFormsComponent implements OnInit {
   }
   editList(index: any) {
     try {
-      this.iconToggle(index, false);
-      let nextMonthList = this.month.slice(new Date().getMonth() + 1, 12);
-      nextMonthList.forEach((element: any) => {
-        this.estimationForm.controls.estimation['controls'][index]
-          .get(element)
-          .enable();
-      });
-      console.log('text');
+      let currentYear = new Date().getFullYear();
+      let selectedYear = this.deptOptionForm.get('year')?.value;
+      let nextMonthList;
+      if (currentYear == selectedYear) {
+        this.iconToggle(index, false);
+        nextMonthList = this.month.slice(new Date().getMonth() + 1, 12);
+      } else if (selectedYear > currentYear) {
+        this.iconToggle(index, false);
+        nextMonthList = this.month;
+      } else if (selectedYear < currentYear) {
+        nextMonthList = [];
+      }
+      if (nextMonthList && nextMonthList.length > 0)
+        nextMonthList.forEach((element: any) => {
+          this.estimationForm.controls.estimation['controls'][index]
+            .get(element)
+            .enable();
+        });
     } catch (error) {}
   }
-  rowSpanname(key: any) {}
+
   getTotal(month: string, key: any): number | any {
     try {
       let count = 0;
@@ -140,16 +148,16 @@ export class CreateFormsComponent implements OnInit {
       let formGroup: FormGroup;
       if (iObj && Object.keys(iObj).length > 0) {
         formGroup = <FormGroup>this.fb.group({
-          department: [iObj.department],
-          software: [iObj.software],
-          year: [iObj.year],
+          department: [iObj.department, Validators.required],
+          software: [iObj.software, Validators.required],
+          year: [iObj.year, Validators.required],
           // fromDatePicker: [iObj.fromDatePicker],
         });
       } else {
         formGroup = <FormGroup>this.fb.group({
-          department: ['0'],
-          software: ['0'],
-          year: ['0'],
+          department: ['0', Validators.required],
+          software: ['0', Validators.required],
+          year: ['0', Validators.required],
           // fromDatePicker: [''],
         });
       }
@@ -158,6 +166,9 @@ export class CreateFormsComponent implements OnInit {
     } catch (error) {
       console.error(error);
     }
+  }
+  trackByMethod(index: number, el: any): number {
+    return el.tempRowId;
   }
   getDefaultList() {
     try {
@@ -181,65 +192,65 @@ export class CreateFormsComponent implements OnInit {
       // getEstimationData
     } catch (error) {}
   }
-
+  /**
+   * @author Sandesh
+   * @description this function is used for getting estimation list
+   */
   getData() {
     try {
       let values = this.deptOptionForm.getRawValue();
-      let params = {
-        dbName: Global.LOGGED_IN_USER.dbName,
-        dbPassword: Global.LOGGED_IN_USER.dbPassword,
-        userId: Global.LOGGED_IN_USER.userId,
-        departmentId: values.department,
-        licenceId: values.software,
-        year: values.year,
-      };
-      this.commonService.getEstimationListData(params).subscribe(
-        (res: any) => {
-          console.log(res);
-          if (res) {
-            //clear form data
-            (this.estimationForm.controls['estimation'] as FormArray).clear();
 
-            // this.CD.detectChanges();
-            // setTimeout(() => {
-            res.Table?.forEach((element: any, i: any) => {
-              this.addEstimation(element, i);
-            });
-            this.defaultData = res.Table;
-            // const map = new Map();
+      if (
+        values.software > '0' &&
+        values.department > '0' &&
+        values.year > '0'
+      ) {
+        let params = {
+          dbName: Global.LOGGED_IN_USER.dbName,
+          dbPassword: Global.LOGGED_IN_USER.dbPassword,
+          userId: Global.LOGGED_IN_USER.userId,
+          departmentId: values.department,
+          licenceId: values.software,
+          year: values.year,
+        };
+        this.commonService.getEstimationListData(params).subscribe(
+          (res: any) => {
+            console.log(res);
+            if (res) {
+              //clear form data
+              (this.estimationForm.controls['estimation'] as FormArray).clear();
+              //this function use for generate form group name form
+              res.Table?.forEach((element: any, i: any) => {
+                this.addEstimation(element, i);
+              });
+              this.defaultData = res.Table;
+              //this function use for getting groupBy data
+              this.groupedCollection = this.defaultData.reduce(
+                (previous: any, current: any) => {
+                  if (!previous[current['projectName']]) {
+                    previous[current['projectName']] = [current];
+                  } else {
+                    previous[current['projectName']].push(current);
+                  }
+                  return previous;
+                },
+                {}
+              );
 
-            // let a = this.defaultData.forEach((element: any) => {
-            //   map.set(element.projectName, element);
-            // });
-            // console.log('a', map);
-            this.groupedCollection = this.defaultData.reduce(
-              (previous: any, current: any) => {
-                if (!previous[current['projectName']]) {
-                  previous[current['projectName']] = [current];
-                } else {
-                  previous[current['projectName']].push(current);
-                }
-                return previous;
-              },
-              {}
-            );
-            console.log(this.groupedCollection);
-            this.CD.detectChanges();
-            // }, 0);
+              this.CD.detectChanges();
+            }
+          },
+          (err: Error) => {
+            console.log(err);
           }
-        },
-        (err: Error) => {
-          console.log(err);
-        }
-      );
-      //console.log(this.deptOptionForm.getRawValue());
-
-      // let list = [values.department];
-      // this.departmentData = [values.department];
-
-      // this.createFormGroup(list);
+        );
+      }
     } catch (error) {}
   }
+  /**
+   * @author Sandesh
+   * @description this function is used for  filter list using project name
+   */
   getListData(key: any) {
     let list = this.estimationForm?.get('estimation').getRawValue();
     let filterlist = list.filter((ele: any) => ele.projectName == key);
@@ -293,7 +304,7 @@ export class CreateFormsComponent implements OnInit {
         projectId: [iObj.projectId],
         shiftId: [iObj.shiftId],
         estimationId: [iObj.estimationId],
-        index: [index],
+        indexValue: [index],
         editStatus: [true],
         saveStatus: [false],
       });
@@ -315,6 +326,10 @@ export class CreateFormsComponent implements OnInit {
       console.error(error);
     }
   }
+  /**
+   * @author Sandesh
+   * @description this function is use for set saving param
+   */
   saveData(index: any) {
     let value = this.estimationForm.controls.estimation['controls']
       .at(index)
@@ -349,7 +364,7 @@ export class CreateFormsComponent implements OnInit {
     this.commonService.saveEstimationData(params).subscribe(
       (res: any) => {
         if (res) {
-          this.toast.showSuccess('Data Saved Successfully'); // showError('User-ID / Password Combination Wrong.');
+          this.toast.showSuccess('Data Saved Successfully');
           this.iconToggle(index, true);
           this.estimationForm.controls.estimation['controls'].at(
             index

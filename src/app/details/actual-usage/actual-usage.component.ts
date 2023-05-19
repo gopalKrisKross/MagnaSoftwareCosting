@@ -11,7 +11,6 @@ import { CommonService } from 'src/app/services/common/common.service';
 import { PubsubService } from 'src/app/services/pubsub/pubsub.service';
 import { ToasterService } from 'src/app/services/toaster/toaster.service';
 import { Global } from 'src/app/shared/global';
-import { IDeptActualUsageParam } from 'src/app/shared/model';
 
 @Component({
   selector: 'app-actual-usage',
@@ -28,11 +27,15 @@ export class ActualUsageComponent implements OnInit {
   departmentHoursData: any;
   actualUsageData: any;
   departmentList: any;
+  departmentHoursDataList: any;
   get monthList() {
     return this.pubsub.monthList;
   }
   get yearList() {
     return this.pubsub.yearList;
+  }
+  get departments() {
+    return this.departmentForm?.controls.department.getRawValue();
   }
   departmentForm: any = this.fb.group({
     department: this.fb.array([]),
@@ -48,7 +51,6 @@ export class ActualUsageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.createFormGroup();
     this.getDefaultDataList();
     this.setSubscription();
   }
@@ -64,9 +66,12 @@ export class ActualUsageComponent implements OnInit {
         userId: Global.LOGGED_IN_USER.userId,
       };
       this.comService.getEstimationData(param).subscribe((res: any) => {
+        console.log(res);
         this.softwareList = res.Table1;
         this.departmentList = res.Table;
-        console.log(res);
+        console.log(this.departmentList);
+        this.usageOptionForm.get('year')?.setValue(new Date().getFullYear());
+        this.usageOptionForm.get('month')?.setValue(new Date().getMonth() + 1);
       });
     } catch (error) {}
   }
@@ -74,28 +79,20 @@ export class ActualUsageComponent implements OnInit {
    * @author Sandesh
    * @description this function use for  generate department form using formGroupNmae
    */
-  createDepartmentForm(iObj: any): FormGroup | any {
+  createDepartmentForm(iObj: any, type: boolean): FormGroup | any {
     try {
       let formGroup: FormGroup;
       if (iObj && Object.keys(iObj).length > 0) {
         formGroup = <FormGroup>this.fb.group({
           departmentId: [iObj.departmentId],
-          id: [iObj.id],
-          licenceId: [iObj.licenceId],
-          month: [iObj.month],
-          status: [iObj.status],
-          usageHours: [iObj.usageHours],
-          year: [iObj.year],
+
+          usageHours: [iObj.usageHours ? iObj.usageHours : 0.0],
         });
       } else {
         formGroup = <FormGroup>this.fb.group({
           departmentId: [''],
-          id: [''],
-          licenceId: [''],
-          month: [''],
-          status: [''],
+
           usageHours: [''],
-          year: [''],
         });
       }
       return formGroup;
@@ -140,27 +137,6 @@ export class ActualUsageComponent implements OnInit {
   saveActualUsage(type: string) {
     try {
       if (this.usageOptionForm.valid) {
-        this.getSaveParams(type).then((params: any) => {
-          console.log(params);
-
-          this.comService
-            .saveEditDeptActualUsage(params)
-            .subscribe((res: any) => {
-              if (res > 0) {
-                this.toast.showSuccess('Data Saved Successfully');
-              }
-            });
-        });
-      }
-    } catch (error) {}
-  }
-  /**
-   * @author Sandesh
-   * @description this function is use for set param for department and actual usage
-   */
-  getSaveParams(type: string): Promise<IDeptActualUsageParam> | any {
-    try {
-      return new Promise<IDeptActualUsageParam>((resolve, reject) => {
         let values = this.usageOptionForm.getRawValue();
         let param = {
           dbName: Global.LOGGED_IN_USER.dbName,
@@ -171,37 +147,26 @@ export class ActualUsageComponent implements OnInit {
           month: values.month,
           year: values.year,
 
-          licenceUsedCout: 0,
-          totalCost: 0,
-          averageCost: 0,
+          licenceUsedCout: values.licence,
+          totalCost: values.totalCost,
+          averageCost: values.avgCost,
 
           departmentId: '0',
           usageHours: '0',
 
-          moduleName: '',
-          entityId: '0',
+          moduleName: 'ActualUsage',
+          entityId: values.id,
         };
-        switch (type) {
-          case 'ActualUsage':
-            param.licenceUsedCout = values.licence;
-            param.totalCost = values.totalCost;
-            param.averageCost = values.avgCost;
-            param.moduleName = 'ActualUsage';
-            param.entityId = values.id;
 
-            break;
-          case 'UseByDepartment':
-            param.departmentId = '0';
-            param.usageHours = '0';
-
-            param.moduleName = '';
-            param.entityId = '0';
-            break;
-        }
-        resolve(param);
-      });
+        this.comService.saveEditDeptActualUsage(param).subscribe((res: any) => {
+          if (res > 0) {
+            this.toast.showSuccess('Data Saved Successfully');
+          }
+        });
+      }
     } catch (error) {}
   }
+
   /**
    * @author Sandesh
    * @description this function is use for adding subscription
@@ -229,9 +194,21 @@ export class ActualUsageComponent implements OnInit {
             this.setActualUsageData(this.actualUsageData);
             (this.departmentForm.controls['department'] as FormArray).clear();
 
-            this.departmentHoursData?.forEach((element: any) => {
-              this.addDepartment(element);
-            });
+            if (
+              this.departmentHoursData &&
+              this.departmentHoursData.length > 0
+            ) {
+              this.departmentHoursDataList = this.departmentHoursData;
+              this.departmentHoursData?.forEach((element: any) => {
+                this.addDepartment(element);
+              });
+            } else {
+              this.departmentHoursDataList = this.departmentList;
+              console.log(this.departmentHoursData);
+              this.departmentList.forEach((element: any) => {
+                this.addDepartment(element);
+              });
+            }
           });
         }
       })
@@ -275,7 +252,7 @@ export class ActualUsageComponent implements OnInit {
   addDepartment(iObj: any) {
     try {
       (this.departmentForm?.get('department') as FormArray).push(
-        this.createDepartmentForm(iObj)
+        this.createDepartmentForm(iObj, true)
       );
     } catch (error) {
       console.error(error);
@@ -293,9 +270,57 @@ export class ActualUsageComponent implements OnInit {
     let initialValue = 0;
     controlesData?.forEach((ele: any) => {
       let values = ele.getRawValue();
-      initialValue += Number(values.usageHours);
+
+      // let minutes: any = this.convertH2M(values.usageHours);
+      let minutes: any = Number(values.usageHours);
+      if (!isNaN(minutes)) {
+        initialValue += Number(minutes);
+      } else {
+        initialValue += 0;
+      }
     });
-    return initialValue;
+    return initialValue.toFixed(2);
+    // return this.timeConvert(initialValue);
+  }
+  // convertH2M(timeInHour: any) {
+  //   debugger;
+  //   let timeParts = String(timeInHour).split('.');
+  //   return (
+  //     Number(timeParts[0] ? timeParts[0] : 0) * 60 +
+  //     Number(timeParts[1] ? timeParts[1] : 0)
+  //   );
+  // }
+  // timeConvert(n: any) {
+  //   let num = n;
+  //   let hours = num / 60;
+  //   let rhours = Math.floor(hours);
+  //   let minutes = (hours - rhours) * 60;
+  //   let rminutes = Math.round(minutes);
+  //   return rhours + ' : ' + rminutes;
+  // }
+  saveDeptData() {
+    try {
+      console.log(this.departmentForm?.controls.department.getRawValue());
+      let list = this.departmentForm?.controls.department.getRawValue();
+      let values = this.usageOptionForm.getRawValue();
+      let param = {
+        dbName: Global.LOGGED_IN_USER.dbName,
+        dbPassword: Global.LOGGED_IN_USER.dbPassword,
+        userId: Global.LOGGED_IN_USER.userId,
+        updatedBy: Global.LOGGED_IN_USER.userId,
+        licenceServerId: values.software,
+        month: values.month,
+        year: values.year,
+
+        eArrayUseByDepartment: list,
+      };
+      console.log(param);
+
+      this.comService.saveEditDepartment(param).subscribe((res: any) => {
+        this.toast.showSuccess('Data Saved Successfully');
+        console.log(res);
+      });
+    } catch (error) {}
   }
   getDepartmentNmae(id: number) {
     try {

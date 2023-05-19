@@ -20,39 +20,39 @@ export class PubsubService {
   readonly monthList: Array<any> = [
     {
       name: 'January',
-      id: '01',
+      id: '1',
     },
     {
       name: 'February',
-      id: '02',
+      id: '2',
     },
     {
       name: 'March',
-      id: '03',
+      id: '3',
     },
     {
       name: 'April',
-      id: '04',
+      id: '4',
     },
     {
       name: 'May',
-      id: '05',
+      id: '5',
     },
     {
       name: 'June',
-      id: '06',
+      id: '6',
     },
     {
       name: 'July',
-      id: '07',
+      id: '7',
     },
     {
       name: 'August',
-      id: '08',
+      id: '8',
     },
     {
       name: 'September',
-      id: '09',
+      id: '9',
     },
     {
       name: 'October',

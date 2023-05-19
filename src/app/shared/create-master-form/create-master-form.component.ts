@@ -7,6 +7,7 @@ import { CommonService } from 'src/app/services/common/common.service';
 import { IMasterListAddEdit } from 'src/app/shared/model';
 import { CommonFun } from '../lib';
 import { PubsubService } from 'src/app/services/pubsub/pubsub.service';
+import { ToasterService } from 'src/app/services/toaster/toaster.service';
 @Component({
   selector: 'app-create-master-form',
   templateUrl: './create-master-form.component.html',
@@ -49,7 +50,8 @@ export class CreateMasterFormComponent implements OnInit {
     private dialogRef: NbDialogRef<any>,
     private fb: FormBuilder,
     private commonService: CommonService,
-    private pubsub: PubsubService
+    private pubsub: PubsubService,
+    private toast: ToasterService
   ) {
     this.masterForm = <FormGroup>this.getMasterForm(this.masterFormDetails);
   }
@@ -59,7 +61,7 @@ export class CreateMasterFormComponent implements OnInit {
     this.Title = this.dialogRef.componentRef.instance.action;
     this.entityList = this.dialogRef.componentRef.instance.list;
     this.pageType = this.dialogRef.componentRef.instance.flag;
-    console.log(this.entityList);
+    console.log(this.Title);
 
     this.getDefaultData();
   }
@@ -213,6 +215,9 @@ export class CreateMasterFormComponent implements OnInit {
     try {
       if (this.Title == 'Edit') {
         this.masterForm.get('userId')?.disable();
+        this.masterForm.get('password')?.clearValidators();
+        this.masterForm.get('password')?.setErrors(null);
+        this.masterForm.updateValueAndValidity();
       } else if (this.Title == 'Add') {
         this.masterForm.get('status')?.disable();
       }
@@ -275,6 +280,7 @@ export class CreateMasterFormComponent implements OnInit {
    */
   saveDetails() {
     try {
+      debugger;
       let val: boolean = false;
       if (this.masterForm.valid && this.pageType == 'User') {
         val = true;
@@ -296,6 +302,7 @@ export class CreateMasterFormComponent implements OnInit {
                 if (res != '0') {
                   this.close(true);
                   this.pubsub.reloadURL(this.pageType);
+                  this.toast.showSuccess('Data Saved Successfully');
                 }
               },
               (err: Error) => {

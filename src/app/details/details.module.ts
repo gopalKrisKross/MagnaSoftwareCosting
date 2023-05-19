@@ -12,6 +12,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Interceptor } from '../services/network/interceptor';
 import { Resolver } from '../services/network/resolver';
 import { NbDatepickerModule } from '@nebular/theme';
+import { ReportListComponent } from './report-list/report-list.component';
 
 const routes: Routes = [
   {
@@ -19,13 +20,18 @@ const routes: Routes = [
     component: DetailComponent,
     children: [
       {
-        path: 'create',
+        path: 'estimation',
         component: CreateFormsComponent,
         resolve: { login: Resolver },
       },
       {
         path: 'costing',
         component: ActualUsageComponent,
+        resolve: { login: Resolver },
+      },
+      {
+        path: 'list/:report',
+        component: ReportListComponent,
         resolve: { login: Resolver },
       },
       {
@@ -42,6 +48,7 @@ const routes: Routes = [
     DetailComponent,
     ActualUsageComponent,
     MasterListComponent,
+    ReportListComponent,
   ],
   imports: [
     CommonModule,

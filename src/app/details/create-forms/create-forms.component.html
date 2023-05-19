@@ -93,26 +93,35 @@
         <div [formGroup]="estimationForm">
           <div formArrayName="estimation">
             <table
-              class="table table-bordered label mt-3 text-start"
+              class="table table-bordered mt-3 text-start table-light"
               id="departmentTable"
               *ngIf="defaultData"
             >
               <thead class="tHeading">
                 <tr>
-                  <th class="deptCol">{{ getDepartment() }}</th>
+                  <th class="deptCol">
+                    Project
+                    <!-- {{ getDepartment() }} -->
+                  </th>
                   <th *ngFor="let header of headerList">{{ header }}</th>
                   <th class="iconCol"></th>
                 </tr>
               </thead>
 
-              <!-- //*ngFor="let item of estimations -->
               <tbody *ngFor="let item of groupedCollection | keyvalue">
-                <!-- //*ngFor="let item of estimations -->
                 <tr
-                  *ngFor="let project of getListData(item.key)"
-                  [formGroupName]="project.index"
+                  *ngFor="
+                    let project of getListData(item.key);
+                    trackBy: trackByMethod;
+                    let i = index
+                  "
+                  [formGroupName]="project.indexValue"
                 >
-                  <td class="p-0 ps-1 pe-1">
+                  <td
+                    class="p-0 ps-1 pe-1 align-middle"
+                    *ngIf="i == 0"
+                    rowspan="3"
+                  >
                     {{ item.key }}
                   </td>
                   <td class="p-0 ps-1 pe-1 shiftCol">
@@ -126,6 +135,7 @@
                       fieldSize="small"
                       nbInput
                       formControlName="january"
+                      name="january"
                     />
                   </td>
                   <td class="p-0">
@@ -136,6 +146,7 @@
                       fieldSize="small"
                       nbInput
                       formControlName="february"
+                      name="february"
                     />
                   </td>
                   <td class="p-0">
@@ -146,6 +157,7 @@
                       fieldSize="small"
                       nbInput
                       formControlName="march"
+                      name="march"
                     />
                   </td>
                   <td class="p-0">
@@ -156,6 +168,7 @@
                       fieldSize="small"
                       nbInput
                       formControlName="april"
+                      name="april"
                     />
                   </td>
                   <td class="p-0">
@@ -166,6 +179,7 @@
                       fieldSize="small"
                       nbInput
                       formControlName="may"
+                      name="may"
                     />
                   </td>
                   <td class="p-0">
@@ -176,6 +190,7 @@
                       fieldSize="small"
                       nbInput
                       formControlName="june"
+                      name="june"
                     />
                   </td>
                   <td class="p-0">
@@ -186,6 +201,7 @@
                       fieldSize="small"
                       nbInput
                       formControlName="july"
+                      name="july"
                     />
                   </td>
                   <td class="p-0">
@@ -196,6 +212,7 @@
                       fieldSize="small"
                       nbInput
                       formControlName="august"
+                      name="august"
                     />
                   </td>
                   <td class="p-0">
@@ -206,6 +223,7 @@
                       fieldSize="small"
                       nbInput
                       formControlName="september"
+                      name="september"
                     />
                   </td>
                   <td class="p-0">
@@ -216,6 +234,7 @@
                       fieldSize="small"
                       nbInput
                       formControlName="october"
+                      name="october"
                     />
                   </td>
                   <td class="p-0">
@@ -226,6 +245,7 @@
                       fieldSize="small"
                       nbInput
                       formControlName="november"
+                      name="november"
                     />
                   </td>
                   <td class="p-0">
@@ -236,20 +256,22 @@
                       fieldSize="small"
                       nbInput
                       formControlName="december"
+                      name="december"
+                      id="december{{ project.indexValue }}"
                     />
                   </td>
                   <td class="p-0 ps-1 pe-1 text-center">
                     <nb-icon
                       *ngIf="project.editStatus"
                       icon="edit-outline"
-                      (click)="editList(project.index)"
+                      (click)="editList(project.indexValue)"
                       nbTooltip="Edit"
                       nbTooltipPlacement="bottom"
                     ></nb-icon>
                     <nb-icon
                       *ngIf="project.saveStatus"
                       icon="save-outline"
-                      (click)="saveData(project.index)"
+                      (click)="saveData(project.indexValue)"
                       nbTooltip="Save"
                       nbTooltipPlacement="bottom"
                     ></nb-icon>
@@ -271,7 +293,7 @@
                     </div> -->
                   </td>
                 </tr>
-                <tr class="text-center">
+                <tr class="text-center text-dark fw-bold">
                   <td colspan="2">Total</td>
 
                   <td>{{ getTotal("january", item.key) }}</td>
