@@ -54,6 +54,7 @@
               placeholder=" "
               [min]="0"
               formControlName="licence"
+              [readOnly]="disabledOption"
             />
             <label class="floating-label">Licences</label>
           </div>
@@ -73,6 +74,7 @@
               placeholder=" "
               [min]="0"
               formControlName="totalCost"
+              [readOnly]="disabledOption"
             />
             <label class="floating-label">Total Cost</label>
           </div>
@@ -128,6 +130,7 @@
                     formControlName="usageHours"
                     [min]="0"
                     step=".01"
+                    [readOnly]="disabledOption"
                   />
                 </td>
               </tr>

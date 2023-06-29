@@ -1,31 +1,58 @@
 .formInput {
   width: 100%;
 }
-.deptCol{
+
+.deptCol {
   width: 18%;
 }
-.iconCol{
+
+.iconCol {
   width: 5%;
 }
-.shiftCol{
+
+.shiftCol {
   width: 7%;
 }
-#departmentTable{
 
-  .formInput:focus{
-    background-color: white !important;
-    border: 1px solid blue  !important;
+#departmentTable th {
+  top: 0;
+  position: sticky;
+}
+
+.estimationFormContent {
+  overflow: auto;
+  height: 65vh;
+}
+
+#departmentTable {
+  thead tr th {
+    background-color: rgb(86, 100, 127);
+    color: white;
   }
-  .editIcon{
+
+  tfoot tr td {
+    background-color: rgba(153, 166, 192, 0.33);
+    color: black;
+  }
+
+  .formInput:focus {
+    background-color: white !important;
+    border: 1px solid blue !important;
+  }
+
+  .editIcon {
     display: block;
   }
-  .saveIcon{
+
+  .saveIcon {
     display: none;
   }
-  .show{
-    display: block!important;
+
+  .show {
+    display: block !important;
   }
-  .hidden{
-    display: none!important;
+
+  .hidden {
+    display: none !important;
   }
 }

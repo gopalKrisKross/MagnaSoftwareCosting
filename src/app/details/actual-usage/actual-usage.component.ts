@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -41,11 +41,13 @@ export class ActualUsageComponent implements OnInit {
     department: this.fb.array([]),
   });
   subscriptions = new Subscription();
+  disabledOption: boolean = false;
   constructor(
     private pubsub: PubsubService,
     private comService: CommonService,
     private fb: FormBuilder,
-    private toast: ToasterService
+    private toast: ToasterService,
+    private CD: ChangeDetectorRef
   ) {
     this.usageOptionForm = <FormGroup>this.createOptionForm();
   }
@@ -66,10 +68,9 @@ export class ActualUsageComponent implements OnInit {
         userId: Global.LOGGED_IN_USER.userId,
       };
       this.comService.getEstimationData(param).subscribe((res: any) => {
-        console.log(res);
         this.softwareList = res.Table1;
         this.departmentList = res.Table;
-        console.log(this.departmentList);
+
         this.usageOptionForm.get('year')?.setValue(new Date().getFullYear());
         this.usageOptionForm.get('month')?.setValue(new Date().getMonth() + 1);
       });
@@ -136,8 +137,13 @@ export class ActualUsageComponent implements OnInit {
    */
   saveActualUsage(type: string) {
     try {
-      if (this.usageOptionForm.valid) {
-        let values = this.usageOptionForm.getRawValue();
+      let values = this.usageOptionForm.getRawValue();
+      if (
+        this.usageOptionForm.valid &&
+        values.software != '0' &&
+        values.month != '0' &&
+        values.year != '0'
+      ) {
         let param = {
           dbName: Global.LOGGED_IN_USER.dbName,
           dbPassword: Global.LOGGED_IN_USER.dbPassword,
@@ -163,6 +169,8 @@ export class ActualUsageComponent implements OnInit {
             this.toast.showSuccess('Data Saved Successfully');
           }
         });
+      } else {
+        this.toast.showError('Please select all field');
       }
     } catch (error) {}
   }
@@ -188,7 +196,6 @@ export class ActualUsageComponent implements OnInit {
             year: year,
           };
           this.comService.getActualUsageListing(param).subscribe((res: any) => {
-            console.log(res);
             this.actualUsageData = res.Table[0];
             this.departmentHoursData = res.Table1;
             this.setActualUsageData(this.actualUsageData);
@@ -204,11 +211,13 @@ export class ActualUsageComponent implements OnInit {
               });
             } else {
               this.departmentHoursDataList = this.departmentList;
-              console.log(this.departmentHoursData);
+
               this.departmentList.forEach((element: any) => {
                 this.addDepartment(element);
               });
             }
+
+            this.disableEnableFnc();
           });
         }
       })
@@ -238,10 +247,12 @@ export class ActualUsageComponent implements OnInit {
         this.usageOptionForm.get('id')?.setValue(list.id);
       } else {
         this.usageOptionForm.get('licence')?.setValue(0);
+
         this.usageOptionForm.get('avgCost')?.setValue(0);
         this.usageOptionForm.get('totalCost')?.setValue(0);
         this.usageOptionForm.get('id')?.setValue(0);
       }
+
       this.usageOptionForm.updateValueAndValidity();
     } catch (error) {}
   }
@@ -258,6 +269,23 @@ export class ActualUsageComponent implements OnInit {
       console.error(error);
     }
   }
+  disableEnableFnc() {
+    try {
+      let currentYear = new Date().getFullYear();
+      let currentMonth = new Date().getMonth() + 1;
+
+      let selectedYear = this.usageOptionForm.get('year')?.value;
+      let selectedMonth = this.usageOptionForm.get('month')?.value;
+
+      if (selectedYear <= currentYear && selectedMonth <= currentMonth) {
+        this.disabledOption = true;
+      } else {
+        this.disabledOption = false;
+      }
+
+      this.CD.detectChanges();
+    } catch (error) {}
+  }
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
@@ -268,10 +296,8 @@ export class ActualUsageComponent implements OnInit {
   calculateTotal() {
     let controlesData = this.departmentForm?.controls.department.controls;
     let initialValue = 0;
-    controlesData?.forEach((ele: any) => {
+    controlesData?.forEach((ele: any, i: number) => {
       let values = ele.getRawValue();
-
-      // let minutes: any = this.convertH2M(values.usageHours);
       let minutes: any = Number(values.usageHours);
       if (!isNaN(minutes)) {
         initialValue += Number(minutes);
@@ -280,27 +306,10 @@ export class ActualUsageComponent implements OnInit {
       }
     });
     return initialValue.toFixed(2);
-    // return this.timeConvert(initialValue);
   }
-  // convertH2M(timeInHour: any) {
-  //   debugger;
-  //   let timeParts = String(timeInHour).split('.');
-  //   return (
-  //     Number(timeParts[0] ? timeParts[0] : 0) * 60 +
-  //     Number(timeParts[1] ? timeParts[1] : 0)
-  //   );
-  // }
-  // timeConvert(n: any) {
-  //   let num = n;
-  //   let hours = num / 60;
-  //   let rhours = Math.floor(hours);
-  //   let minutes = (hours - rhours) * 60;
-  //   let rminutes = Math.round(minutes);
-  //   return rhours + ' : ' + rminutes;
-  // }
+
   saveDeptData() {
     try {
-      console.log(this.departmentForm?.controls.department.getRawValue());
       let list = this.departmentForm?.controls.department.getRawValue();
       let values = this.usageOptionForm.getRawValue();
       let param = {
@@ -314,11 +323,9 @@ export class ActualUsageComponent implements OnInit {
 
         eArrayUseByDepartment: list,
       };
-      console.log(param);
 
       this.comService.saveEditDepartment(param).subscribe((res: any) => {
         this.toast.showSuccess('Data Saved Successfully');
-        console.log(res);
       });
     } catch (error) {}
   }

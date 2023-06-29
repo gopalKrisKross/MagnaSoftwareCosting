@@ -1,7 +1,7 @@
-<div class="row">
+<div class="row" id="reportDiv">
   <div class="col-6">
     <nb-card class="inline-form-card" status="warning">
-      <nb-card-header> Report Form </nb-card-header>
+      <nb-card-header> Report Require For : </nb-card-header>
       <nb-card-body>
         <div class="row justify-content-start" [formGroup]="reportForm">
           <div class="col-4 floating-label-field">
@@ -65,13 +65,13 @@
   </div>
   <div class="col-6" *ngIf="totalCalculateData">
     <nb-card class="inline-form-card" status="warning">
-      <nb-card-header>Monthly Usage Report </nb-card-header>
+      <nb-card-header>Month Summary</nb-card-header>
       <nb-card-body>
         <table class="table table-bordered mt-3 text-center table-light">
           <tbody>
             <tr *ngFor="let count of totalCalculateData | keyvalue">
-              <td>{{ count.key }}</td>
-              <td>{{ count.value }}</td>
+              <td class="text-start">{{ count.key }}</td>
+              <td class="text-end">{{ count.value }}</td>
             </tr>
           </tbody>
         </table>
@@ -83,64 +83,109 @@
     <nb-card class="inline-form-card" status="warning">
       <nb-card-header>
         <div class="d-flex justify-content-between col-12">
-          <div class="align-items-center d-flex">Report List</div>
+          <div class="align-items-center d-flex">Cost Breckup</div>
         </div>
       </nb-card-header>
       <nb-card-body>
         <table class="table table-bordered mt-3 text-center table-light">
           <thead>
             <tr>
-              <td>Sr. No.</td>
-              <td>Department</td>
-              <td>Actual Usage as per IT report (1)</td>
-              <td>Cost as per actual usage (2)</td>
-              <td>Latest Projection by HoD (3)</td>
-              <td>Excess Projection (4)</td>
-              <td>% for sharing unutilised license cost (5)</td>
-              <td>Unutilised Licenses (6)</td>
-              <td>Cost of Unutilised Licenses (7)</td>
-              <td>Total Cost to Department (8=2+7)</td>
+              <th>Sr. No.</th>
+              <th class="text-start">Department</th>
+              <th>Actual Usage as per IT report (1)</th>
+              <th>Cost as per actual usage (2)</th>
+              <th>Latest Projection by HoD (3)</th>
+              <th>Excess Projection (4)</th>
+              <th>% for sharing unutilised license cost (5)</th>
+              <th>Unutilised Licenses (6)</th>
+              <th>Cost of Unutilised Licenses (7)</th>
+              <th>Total Cost to Department (8=2+7)</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let report of reportListData">
               <td>{{ report.tempRowId }}</td>
-              <td>{{ report.departmentName }}</td>
-              <td>{{ report.ActualUsageAsPerITReport | number : "1.2-2" }}</td>
-              <td>{{ report.CostAsPerActualUsage | number : "1.2-2" }}</td>
-              <td>{{ report.LatestProjectionByHoD }}</td>
-              <td>{{ report.ExcessProjection | number : "1.2-2" }}</td>
-              <td>
+              <td class="text-start">{{ report.departmentName }}</td>
+              <td class="text-end">
+                {{ report.ActualUsageAsPerITReport }}
+              </td>
+              <td class="text-end">
+                {{ report.CostAsPerActualUsage | currancyFormat }}
+              </td>
+              <td class="text-end">{{ report.LatestProjectionByHoD }}</td>
+              <td class="text-end">
+                {{ report.ExcessProjection }}
+              </td>
+              <td class="text-end">
                 {{ report.PercentageForSharingUnutilisedLicenseCost }}
               </td>
-              <td>{{ report.UnutilisedLicenses }}</td>
-              <td>{{ report.CostOfUnutilisedLicenses }}</td>
-              <td>{{ report.TotalCostToDepartment }}</td>
+              <td class="text-end">
+                {{ report.UnutilisedLicenses }}
+              </td>
+              <td class="text-end">
+                {{ report.CostOfUnutilisedLicenses | currancyFormat }}
+              </td>
+              <td class="text-end">
+                {{ report.TotalCostToDepartment | currancyFormat }}
+              </td>
             </tr>
+          </tbody>
+          <tfoot>
             <tr>
               <td>Total</td>
               <td></td>
-              <td>
-                {{ getTotal(reportListData, "ActualUsageAsPerITReport") }}
+              <td class="text-end">
+                {{
+                  getTotal(reportListData, "ActualUsageAsPerITReport")
+                    | number : "1.2-2"
+                }}
               </td>
-              <td>{{ getTotal(reportListData, "CostAsPerActualUsage") }}</td>
-              <td>{{ getTotal(reportListData, "LatestProjectionByHoD") }}</td>
-              <td>{{ getTotal(reportListData, "ExcessProjection") }}</td>
-              <td>
+              <td class="text-end">
+                {{
+                  getTotal(reportListData, "CostAsPerActualUsage")
+                    | currancyFormat
+                }}
+              </td>
+              <td class="text-end">
+                {{
+                  getTotal(reportListData, "LatestProjectionByHoD")
+                    | number : "1.2-2"
+                }}
+              </td>
+              <td class="text-end">
+                {{
+                  getTotal(reportListData, "ExcessProjection")
+                    | number : "1.2-2"
+                }}
+              </td>
+              <td class="text-end">
                 {{
                   getTotal(
                     reportListData,
                     "PercentageForSharingUnutilisedLicenseCost"
-                  )
+                  ) | number : "1.2-2"
                 }}
               </td>
-              <td>{{ getTotal(reportListData, "UnutilisedLicenses") }}</td>
-              <td>
-                {{ getTotal(reportListData, "CostOfUnutilisedLicenses") }}
+              <td class="text-end">
+                {{
+                  getTotal(reportListData, "UnutilisedLicenses")
+                    | number : "1.2-2"
+                }}
               </td>
-              <td>{{ getTotal(reportListData, "TotalCostToDepartment") }}</td>
+              <td class="text-end">
+                {{
+                  getTotal(reportListData, "CostOfUnutilisedLicenses")
+                    | currancyFormat
+                }}
+              </td>
+              <td class="text-end">
+                {{
+                  getTotal(reportListData, "TotalCostToDepartment")
+                    | currancyFormat
+                }}
+              </td>
             </tr>
-          </tbody>
+          </tfoot>
         </table>
       </nb-card-body>
     </nb-card>

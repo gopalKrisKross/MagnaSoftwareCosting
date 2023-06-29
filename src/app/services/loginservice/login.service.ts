@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Global } from 'src/app/shared/global';
 import { ILoginDetails } from 'src/app/shared/model';
 
@@ -35,10 +35,7 @@ export class LoginService {
         .post(Global.MAGNA_API + '/login/userLogin', param, {
           headers: this.getHeaders(),
         })
-        .pipe(
-          switchMap((t: any) => of(JSON.parse(t))),
-          catchError(this.handleError)
-        );
+        .pipe(catchError(this.handleError));
     } catch (error) {
       console.error(error);
     }

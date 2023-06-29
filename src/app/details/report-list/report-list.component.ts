@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { NbDialogService } from '@nebular/theme';
 import { CommonService } from 'src/app/services/common/common.service';
 import { PubsubService } from 'src/app/services/pubsub/pubsub.service';
 import { Global } from 'src/app/shared/global';
@@ -37,6 +38,10 @@ export class ReportListComponent implements OnInit {
   ngOnInit(): void {
     this.getDefaultDataList();
   }
+  /**
+   * @author Sandesh
+   * @description this function is used for create report form
+   */
   createReportForm(): FormGroup<any> | any {
     try {
       let formGroup: FormGroup;
@@ -48,6 +53,10 @@ export class ReportListComponent implements OnInit {
       return formGroup;
     } catch (error) {}
   }
+  /**
+   * @author Sandesh
+   * @description this function is used for get report list data
+   */
   getReportList() {
     try {
       let value = this.reportForm.getRawValue();
@@ -60,12 +69,15 @@ export class ReportListComponent implements OnInit {
         year: value.year,
       };
       this.comService.getReportList(param).subscribe((res: any) => {
-        console.log(res);
-        this.reportListData = res.Table;
-        this.totalCalculateData = res.Table1[0];
+        this.reportListData = res.Table ? res.Table : '';
+        this.totalCalculateData = res.Table1 ? res.Table1[0] : '';
       });
     } catch (error) {}
   }
+  /**
+   * @author Sandesh
+   * @description this function is used get DD values
+   */
   getDefaultDataList() {
     try {
       let param = {
@@ -74,7 +86,6 @@ export class ReportListComponent implements OnInit {
         userId: Global.LOGGED_IN_USER.userId,
       };
       this.comService.getEstimationData(param).subscribe((res: any) => {
-        console.log(res);
         this.softwareList = res.Table1;
       });
     } catch (error) {}
@@ -84,7 +95,7 @@ export class ReportListComponent implements OnInit {
       if (list) {
         let count = 0;
         list.forEach((element: any) => (count += Number(element[type])));
-        return count.toFixed(2);
+        return count;
       }
     } catch (error) {}
   }

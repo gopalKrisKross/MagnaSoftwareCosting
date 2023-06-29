@@ -88,7 +88,6 @@ export class HeaderComponent implements OnInit {
         default:
           break;
       }
-      console.log();
     });
   }
   logOut() {

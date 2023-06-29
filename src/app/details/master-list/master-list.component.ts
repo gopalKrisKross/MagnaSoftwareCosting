@@ -46,7 +46,6 @@ export class MasterListComponent implements OnInit {
     private pubsub: PubsubService
   ) {
     this.route.params.subscribe((params) => {
-      console.log(Global.LOGGED_IN_USER);
       this.pageType = params['pageType'];
       this.getMasterList(this.pageType);
     });
@@ -92,10 +91,8 @@ export class MasterListComponent implements OnInit {
       };
       this.commonService.masterList(params).subscribe(
         (res: any) => {
-          console.log(res);
           if (res) {
             this.masterList = res.Table;
-            console.log(this.masterList);
           }
         },
         (err: Error) => {

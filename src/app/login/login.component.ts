@@ -18,7 +18,7 @@ import { ToasterService } from '../services/toaster/toaster.service';
 export class LoginComponent implements OnInit {
   // image: string = 'assets/login/login.png';
   loginForm: FormGroup;
-  image: string = 'assets/login/draw2.webp';
+  image: string = 'assets/login/draw2.png';
   get f() {
     return this.loginForm.controls;
   }
@@ -54,13 +54,12 @@ export class LoginComponent implements OnInit {
           password: value.Password,
         };
         // this.pubsub.showLoader(true);
-
         this.loginService.login(param).subscribe(
           (res: any) => {
             if (res && res.length > 0) {
               localStorage.setItem(
                 'Global.LOGGED_IN_USER',
-                JSON.stringify(res[0])
+                JSON.stringify(JSON.parse(res)[0])
               );
 
               let leadUrl = 'component/pages';

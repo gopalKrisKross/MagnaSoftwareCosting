@@ -11,6 +11,7 @@ import {
   IMasterList,
   IMasterListAddEdit,
   IreportListParam,
+  ISummaryListParam,
 } from 'src/app/shared/model';
 
 @Injectable({
@@ -167,6 +168,18 @@ export class CommonService {
 
     return this.http
       .post(Global.MAGNA_API + '/listing/actualUsageReports', param, {
+        headers: this.getHeaders(),
+      })
+      .pipe(
+        switchMap((t: any) => of(JSON.parse(t))),
+        catchError(this.handleError)
+      );
+  }
+  getSummaryList(
+    param: ISummaryListParam
+  ): Observable<ISummaryListParam> | any {
+    return this.http
+      .post(Global.MAGNA_API + '/listing/departmentsTotalListing', param, {
         headers: this.getHeaders(),
       })
       .pipe(

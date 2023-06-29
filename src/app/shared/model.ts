@@ -145,3 +145,10 @@ export interface IreportListParam {
   month: number | string;
   year: number | string;
 }
+export interface ISummaryListParam {
+  dbName: string;
+  dbPassword: string;
+  userId: number | string;
+  licenceId: number | string;
+  year: number | string;
+}

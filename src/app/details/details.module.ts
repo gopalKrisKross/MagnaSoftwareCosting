@@ -13,6 +13,7 @@ import { Interceptor } from '../services/network/interceptor';
 import { Resolver } from '../services/network/resolver';
 import { NbDatepickerModule } from '@nebular/theme';
 import { ReportListComponent } from './report-list/report-list.component';
+import { SummaryReportComponent } from './summary-report/summary-report.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,11 @@ const routes: Routes = [
         component: MasterListComponent,
         resolve: { login: Resolver },
       },
+      {
+        path: 'summaryReport',
+        component: SummaryReportComponent,
+        resolve: { login: Resolver },
+      },
     ],
   },
 ];
@@ -49,6 +55,7 @@ const routes: Routes = [
     ActualUsageComponent,
     MasterListComponent,
     ReportListComponent,
+    SummaryReportComponent,
   ],
   imports: [
     CommonModule,

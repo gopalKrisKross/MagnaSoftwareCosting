@@ -18,6 +18,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
         title: 'Report',
         link: '/component/details/list/report',
       },
+      {
+        title: 'Summary Report',
+        link: '/component/details/summaryReport',
+      },
     ],
   },
 ];

@@ -58,11 +58,6 @@ export class CreateFormsComponent implements OnInit {
   groupedCollection: any;
   key: any;
   get estimations() {
-    console.log(
-      this.estimationForm.controls.estimation.controls
-        ? this.estimationForm.controls.estimation.controls
-        : ''
-    );
     return this.estimationForm.controls.estimation.controls;
   }
   estimationForm: any = this.fb.group({
@@ -105,6 +100,10 @@ export class CreateFormsComponent implements OnInit {
       this.CD.detectChanges();
     } catch (error) {}
   }
+  /**
+   * @author Sandesh
+   * @description this function is used for enable disable and saving data
+   */
   editList(index: any) {
     try {
       let currentYear = new Date().getFullYear();
@@ -186,7 +185,7 @@ export class CreateFormsComponent implements OnInit {
           }
         },
         (err: Error) => {
-          console.log(err);
+          console.error(err);
         }
       );
       // getEstimationData
@@ -199,10 +198,10 @@ export class CreateFormsComponent implements OnInit {
   getData() {
     try {
       let values = this.deptOptionForm.getRawValue();
-
+      // values.department > '0' &&
       if (
-        values.software > '0' &&
         values.department > '0' &&
+        values.software > '0' &&
         values.year > '0'
       ) {
         let params = {
@@ -215,7 +214,6 @@ export class CreateFormsComponent implements OnInit {
         };
         this.commonService.getEstimationListData(params).subscribe(
           (res: any) => {
-            console.log(res);
             if (res) {
               //clear form data
               (this.estimationForm.controls['estimation'] as FormArray).clear();
@@ -225,26 +223,47 @@ export class CreateFormsComponent implements OnInit {
               });
               this.defaultData = res.Table;
               //this function use for getting groupBy data
-              this.groupedCollection = this.defaultData.reduce(
-                (previous: any, current: any) => {
-                  if (!previous[current['projectName']]) {
-                    previous[current['projectName']] = [current];
-                  } else {
-                    previous[current['projectName']].push(current);
-                  }
-                  return previous;
-                },
-                {}
+              this.groupedCollection = this.groupByData(
+                this.defaultData,
+                'projectName'
               );
 
               this.CD.detectChanges();
             }
           },
           (err: Error) => {
-            console.log(err);
+            console.error(err);
           }
         );
       }
+    } catch (error) {}
+  }
+  /**
+   * @author Sandesh
+   * @description this function is used for set data in droupby
+   */
+  groupByData(list: any, type: string) {
+    try {
+      return list.reduce((previous: any, current: any) => {
+        if (!previous[current[type]]) {
+          previous[current[type]] = [current];
+        } else {
+          previous[current[type]].push(current);
+        }
+        return previous;
+      }, {});
+    } catch (error) {}
+  }
+
+  calculatShiftTotal(key: string, value: any): number | any {
+    try {
+      let count = 0;
+
+      value.forEach((element: any) => {
+        count += Number(element[key]);
+      });
+
+      return count;
     } catch (error) {}
   }
   /**
@@ -380,6 +399,5 @@ export class CreateFormsComponent implements OnInit {
         console.error(err);
       }
     );
-    console.log(params);
   }
 }

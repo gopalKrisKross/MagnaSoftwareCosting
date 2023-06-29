@@ -30,7 +30,7 @@ export class NavigationService {
     try {
       this.shouldNotReplaceUrl(iUrl, iCallBack);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 }

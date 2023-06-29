@@ -57,11 +57,9 @@ export class CreateMasterFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('dialogRef', this.dialogRef.componentRef.instance);
     this.Title = this.dialogRef.componentRef.instance.action;
     this.entityList = this.dialogRef.componentRef.instance.list;
     this.pageType = this.dialogRef.componentRef.instance.flag;
-    console.log(this.Title);
 
     this.getDefaultData();
   }
@@ -196,9 +194,7 @@ export class CreateMasterFormComponent implements OnInit {
         flage: this.Title,
         entityId: this.entityId,
       };
-      console.log(params);
       this.commonService.masterList(params).subscribe((res: any) => {
-        console.log(res);
         this.table = res.Table;
         this.table1 = res.Table1;
         this.table2 = res.Table2;
@@ -295,8 +291,6 @@ export class CreateMasterFormComponent implements OnInit {
       if (val) {
         this.getParams(this.pageType)
           .then((param) => {
-            console.log(param);
-
             this.commonService.masterListAddEdit(param).subscribe(
               (res: any) => {
                 if (res != '0') {

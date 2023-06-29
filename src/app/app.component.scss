@@ -1,6 +1,7 @@
 .formField {
   padding: 5px;
 }
+
 .floating-form {
   width: 320px;
 }
@@ -10,6 +11,7 @@
   position: relative;
   margin: 10px 0px 20px 0px;
 }
+
 .floating-input,
 .floating-select {
   font-size: 14px;
@@ -41,25 +43,25 @@
   -webkit-transition: 0.2s ease all;
 }
 
-.floating-input:focus ~ .floating-label,
-.floating-input:not(:placeholder-shown) ~ .floating-label {
+.floating-input:focus~.floating-label,
+.floating-input:not(:placeholder-shown)~.floating-label {
   top: -18px;
   font-size: 14px;
   // color:#5264AE;
 }
 
-.floating-select:focus ~ .floating-label,
-.floating-select:not([value=""]):valid ~ .floating-label {
+.floating-select:focus~.floating-label,
+.floating-select:not([value=""]):valid~.floating-label {
   top: -18px;
   font-size: 14px;
   color: #5264ae;
 }
 
 /* active state */
-.floating-input:focus ~ .bar:before,
-.floating-input:focus ~ .bar:after,
-.floating-select:focus ~ .bar:before,
-.floating-select:focus ~ .bar:after {
+.floating-input:focus~.bar:before,
+.floating-input:focus~.bar:after,
+.floating-select:focus~.bar:before,
+.floating-select:focus~.bar:after {
   width: 50%;
 }
 
@@ -90,35 +92,61 @@
 }
 
 /* active state */
-.floating-input:focus ~ .highlight,
-.floating-select:focus ~ .highlight {
+.floating-input:focus~.highlight,
+.floating-select:focus~.highlight {
   -webkit-animation: inputHighlighter 0.3s ease;
   -moz-animation: inputHighlighter 0.3s ease;
   animation: inputHighlighter 0.3s ease;
 }
+
 /****  floating-Lable style End ****/
 
 .label {
   color: #585a5e;
 }
+
 .ngx-toastr {
-  width: 550px !important;   
+  width: 550px !important;
 }
-.errorText{
-  margin: 0!important;
-  padding: 0!important;
+
+.errorText {
+  margin: 0 !important;
+  padding: 0 !important;
   color: red;
   font-size: 11px;
 }
+
 .ngx-toastr {
-  width: 750px !important;  
+  width: 750px !important;
 }
-.table{
+
+.table {
   font-size: 13px;
 }
- 
+
+.accordion-button:not(.collapsed) {
+  color: white !important;
+}
+
+#summaryReport nb-accordion-item-header {
+  padding: 5px !important;
+}
+
+#summaryReport nb-accordion-item-body .item-body {
+  padding: 0 !important;
+}
+
+.modal-header {
+  padding: 5px 16px;
+  background-color: #23344f;
+  color: white;
+
+}
+
+
+
 @media screen and (max-width: 750px) {
   .ngx-toastr {
-    width:  350px !important;   
+    width: 350px !important;
   }
 }
