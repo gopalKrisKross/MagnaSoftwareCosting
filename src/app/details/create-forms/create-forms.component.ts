@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonService } from 'src/app/services/common/common.service';
+import { PubsubService } from 'src/app/services/pubsub/pubsub.service';
 import { ToasterService } from 'src/app/services/toaster/toaster.service';
 import { Global } from 'src/app/shared/global';
 import { EstimationAction } from 'src/app/shared/model';
@@ -71,7 +72,8 @@ export class CreateFormsComponent implements OnInit {
     private fb: FormBuilder,
     private commonService: CommonService,
     private CD: ChangeDetectorRef,
-    private toast: ToasterService
+    private toast: ToasterService,
+    private pubsub: PubsubService
   ) {
     this.deptOptionForm = this.getdeptOptionForm();
   }
@@ -106,17 +108,28 @@ export class CreateFormsComponent implements OnInit {
    */
   editList(index: any) {
     try {
-      let currentYear = new Date().getFullYear();
-      let selectedYear = this.deptOptionForm.get('year')?.value;
-      let nextMonthList;
-      if (currentYear == selectedYear) {
+      let nextMonthList: any = [];
+
+      let values =
+        this.estimationForm.controls.estimation['controls'][
+          index
+        ].getRawValue();
+      let editValue = values.notAllowEstimationsEdit.split(',');
+
+      if (editValue.length > 0) {
         this.iconToggle(index, false);
-        nextMonthList = this.month.slice(new Date().getMonth() + 1, 12);
-      } else if (selectedYear > currentYear) {
+        this.pubsub.monthList.forEach((ele: any) => {
+          for (let item of editValue) {
+            if (item != ele.id) {
+              nextMonthList.push(ele.name.toLowerCase());
+            }
+          }
+        });
+      } else {
         this.iconToggle(index, false);
-        nextMonthList = this.month;
-      } else if (selectedYear < currentYear) {
-        nextMonthList = [];
+        this.pubsub.monthList.forEach((ele: any) => {
+          nextMonthList.push(ele.name.toLowerCase());
+        });
       }
       if (nextMonthList && nextMonthList.length > 0)
         nextMonthList.forEach((element: any) => {
@@ -326,6 +339,8 @@ export class CreateFormsComponent implements OnInit {
         indexValue: [index],
         editStatus: [true],
         saveStatus: [false],
+        notAllowEstimationsEdit: [iObj.notAllowEstimationsEdit],
+        allowEstimationsEdit: [iObj.allowEstimationsEdit],
       });
 
       return formGroup;
@@ -378,7 +393,6 @@ export class CreateFormsComponent implements OnInit {
       december: value.december,
       updatedBy: Global.LOGGED_IN_USER.userId,
     };
-    // console.log(params);
 
     this.commonService.saveEstimationData(params).subscribe(
       (res: any) => {

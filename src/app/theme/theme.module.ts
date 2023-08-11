@@ -19,6 +19,8 @@ import {
   NbBadgeModule,
   NbDialogModule,
   NbAccordionModule,
+  NbRadioModule,
+  NbCheckboxModule,
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { NbMomentDateModule } from '@nebular/moment';
@@ -34,10 +36,10 @@ import { NbMomentDateModule } from '@nebular/moment';
     NbContextMenuModule,
     NbSelectModule,
     NbButtonModule,
-    NbSelectModule,
+    NbRadioModule,
     NbIconModule,
     NbEvaIconsModule,
-
+    NbCheckboxModule,
     NbCardModule,
     NbInputModule,
     NbMomentDateModule,
@@ -55,8 +57,8 @@ import { NbMomentDateModule } from '@nebular/moment';
     NbSidebarModule,
     NbContextMenuModule,
     NbSelectModule,
+    NbRadioModule,
     NbButtonModule,
-    NbSelectModule,
     NbIconModule,
     NbEvaIconsModule,
     NbCardModule,
@@ -68,6 +70,7 @@ import { NbMomentDateModule } from '@nebular/moment';
     NbBadgeModule,
     NbDialogModule,
     NbAccordionModule,
+    NbCheckboxModule,
   ],
   declarations: [],
 })

@@ -39,12 +39,14 @@ import { ToastrModule } from 'ngx-toastr';
 import { NbDatepickerModule, NbTimepickerModule } from '@nebular/theme';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { currancyFormat, removeSpace } from './pipe/list.pipe';
+import { LinechartComponent } from './linechart/linechart.component';
 @NgModule({
   declarations: [
     SpinnerComponent,
     CreateMasterFormComponent,
     currancyFormat,
     removeSpace,
+    LinechartComponent,
   ],
   imports: [
     CommonModule,
@@ -68,6 +70,7 @@ import { currancyFormat, removeSpace } from './pipe/list.pipe';
     NbTimepickerModule,
     currancyFormat,
     removeSpace,
+    LinechartComponent,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },

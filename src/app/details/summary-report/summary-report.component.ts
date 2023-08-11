@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ArcElement, Chart, PieController, registerables } from 'chart.js';
 import { Subscription, combineLatest } from 'rxjs';
 import { CommonService } from 'src/app/services/common/common.service';
 import { PubsubService } from 'src/app/services/pubsub/pubsub.service';
 import { Global } from 'src/app/shared/global';
-
+Chart.register(PieController, ArcElement);
 @Component({
   selector: 'app-summary-report',
   templateUrl: './summary-report.component.html',
@@ -25,6 +26,9 @@ export class SummaryReportComponent implements OnInit {
   excessShiftData: any;
   excessShiftIdData: any;
   excessAUData: any;
+
+  calculateActualUsageData: any;
+  summaryCostData: any;
   get yearList() {
     return this.pubsub.yearList;
   }
@@ -43,13 +47,17 @@ export class SummaryReportComponent implements OnInit {
     'Nov',
     'Dec',
   ];
-
+  @ViewChild('pieCanvas', { static: false }) private pieCanvas:
+    | ElementRef
+    | any;
+  showChart: boolean = false;
   constructor(
     private pubsub: PubsubService,
     private comService: CommonService,
 
     private fb: FormBuilder
   ) {
+    Chart.register(...registerables);
     this.summaryForm = <FormGroup>this.createForm();
   }
 
@@ -99,6 +107,17 @@ export class SummaryReportComponent implements OnInit {
         software: ['0', Validators.required],
 
         year: ['0', Validators.required],
+        showOptions: ['table'],
+      });
+      formGroup.get('showOptions')?.valueChanges.subscribe((res: string) => {
+        if (res == 'table') {
+          this.showChart = false;
+        } else if (res == 'chart') {
+          this.showChart = true;
+          setTimeout(() => {
+            this.generateLineChart();
+          }, 500);
+        }
       });
       return formGroup;
     } catch (error) {}
@@ -139,6 +158,7 @@ export class SummaryReportComponent implements OnInit {
       this.comService.getSummaryList(param).subscribe((res: any) => {
         if (res) {
           this.summaryData = res.Table;
+          this.summaryCostData = res.Table1;
         }
       });
     } catch (error) {}
@@ -255,5 +275,93 @@ export class SummaryReportComponent implements OnInit {
         }
       );
     } catch (error) {}
+  }
+  /**
+   * @author Sandesh
+   * @description this function is used  for set line chart data
+   */
+  generateLineChart() {
+    let data = {
+      data: {
+        labels: [
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'August',
+          'September',
+          'October',
+          'November',
+          'December',
+        ],
+        datasets: [
+          {
+            label: 'Actual Usage ', // Name the series
+            data: this.getCalculateData(this.excessData), // Specify the data values array
+            fill: false,
+            borderColor: 'purple', // Add custom color border (Line)
+            backgroundColor: 'purple', // Add custom color background (Points and Fill)
+            borderWidth: 2, // Specify bar border width
+          },
+          {
+            label: 'Estimation', // Name the series
+            data: this.getCalculateData(this.summaryData), // Specify the data values array
+            fill: false,
+            borderColor: 'green', // Add custom color border (Line)
+            backgroundColor: 'green', // Add custom color background (Points and Fill)
+            borderWidth: 2, // Specify bar border width
+          },
+        ],
+      },
+    };
+    console.log(data);
+    return data;
+  }
+  generateCostLineChart() {
+    let data = {
+      data: {
+        labels: [
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'August',
+          'September',
+          'October',
+          'November',
+          'December',
+        ],
+        datasets: [
+          {
+            label: 'Cost', // Name the series
+            data: this.getCalculateData(this.summaryCostData), // Specify the data values array
+            fill: false,
+            borderColor: 'purple', // Add custom color border (Line)
+            backgroundColor: 'purple', // Add custom color background (Points and Fill)
+            borderWidth: 2, // Specify bar border width
+          },
+        ],
+      },
+    };
+    console.log(data);
+    return data;
+  }
+  getCalculateData(list: any) {
+    let dataSet: any = [];
+    this.calculateActualUsageData = list.reduce((a: any, b: any) =>
+      Object.fromEntries(Object.entries(a).map(([k, v]) => [k, v + b[k]]))
+    );
+
+    for (let month of this.pubsub.monthList) {
+      let count = this.calculateActualUsageData[month.name.toLowerCase()];
+      dataSet.push(count);
+    }
+    return dataSet;
   }
 }

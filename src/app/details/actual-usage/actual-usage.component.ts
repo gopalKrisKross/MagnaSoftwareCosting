@@ -37,6 +37,10 @@ export class ActualUsageComponent implements OnInit {
   get departments() {
     return this.departmentForm?.controls.department.getRawValue();
   }
+  actualEditOption: boolean = false;
+  get editAdmin() {
+    return Global.LOGGED_IN_USER.roleId != '0';
+  }
   departmentForm: any = this.fb.group({
     department: this.fb.array([]),
   });
@@ -114,7 +118,9 @@ export class ActualUsageComponent implements OnInit {
           licence: [iObj.licence],
           avgCost: [{ value: iObj.avgCost, disabled: true }],
           totalCost: [iObj.totalCost],
-          id: [iObj.totalCost],
+          id: [iObj.id],
+          actualUsageEdit: [iObj.actualUsageEdit],
+          estimationEdit: [iObj.estimationEdit],
         });
       } else {
         formGroup = <FormGroup>this.fb.group({
@@ -125,6 +131,8 @@ export class ActualUsageComponent implements OnInit {
           avgCost: [{ value: '0', disabled: true }],
           totalCost: ['0'],
           id: ['0'],
+          actualUsageEdit: [false],
+          estimationEdit: [false],
         });
       }
 
@@ -138,11 +146,13 @@ export class ActualUsageComponent implements OnInit {
   saveActualUsage(type: string) {
     try {
       let values = this.usageOptionForm.getRawValue();
+
       if (
         this.usageOptionForm.valid &&
         values.software != '0' &&
         values.month != '0' &&
-        values.year != '0'
+        values.year != '0' &&
+        Global.LOGGED_IN_USER.roleId == '0'
       ) {
         let param = {
           dbName: Global.LOGGED_IN_USER.dbName,
@@ -162,10 +172,14 @@ export class ActualUsageComponent implements OnInit {
 
           moduleName: 'ActualUsage',
           entityId: values.id,
+          actualUsageEdit: values.actualUsageEdit == true ? 1 : 0,
+          estimationsEdit: values.estimationEdit == true ? 1 : 0,
         };
 
         this.comService.saveEditDeptActualUsage(param).subscribe((res: any) => {
           if (res > 0) {
+            this.usageOptionForm.get('software')?.setValue(values.software);
+            this.usageOptionForm.updateValueAndValidity();
             this.toast.showSuccess('Data Saved Successfully');
           }
         });
@@ -217,7 +231,7 @@ export class ActualUsageComponent implements OnInit {
               });
             }
 
-            this.disableEnableFnc();
+            // this.disableEnableFnc();
           });
         }
       })
@@ -241,16 +255,26 @@ export class ActualUsageComponent implements OnInit {
   setActualUsageData(list: any) {
     try {
       if (list && Object.keys(list).length > 0) {
+        this.actualEditOption = !list.actualUsageEdit;
         this.usageOptionForm.get('licence')?.setValue(list.licenceUsedCout);
         this.usageOptionForm.get('avgCost')?.setValue(list.averageCost);
         this.usageOptionForm.get('totalCost')?.setValue(list.totalCost);
         this.usageOptionForm.get('id')?.setValue(list.id);
+        this.usageOptionForm
+          .get('estimationEdit')
+          ?.setValue(list.estimationsEdit);
+        this.usageOptionForm
+          .get('actualUsageEdit')
+          ?.setValue(list.actualUsageEdit);
       } else {
+        this.actualEditOption = false;
         this.usageOptionForm.get('licence')?.setValue(0);
 
         this.usageOptionForm.get('avgCost')?.setValue(0);
         this.usageOptionForm.get('totalCost')?.setValue(0);
         this.usageOptionForm.get('id')?.setValue(0);
+        this.usageOptionForm.get('estimationEdit')?.setValue(false);
+        this.usageOptionForm.get('actualUsageEdit')?.setValue(false);
       }
 
       this.usageOptionForm.updateValueAndValidity();
@@ -310,31 +334,33 @@ export class ActualUsageComponent implements OnInit {
 
   saveDeptData() {
     try {
-      let list = this.departmentForm?.controls.department.getRawValue();
-      let values = this.usageOptionForm.getRawValue();
-      let param = {
-        dbName: Global.LOGGED_IN_USER.dbName,
-        dbPassword: Global.LOGGED_IN_USER.dbPassword,
-        userId: Global.LOGGED_IN_USER.userId,
-        updatedBy: Global.LOGGED_IN_USER.userId,
-        licenceServerId: values.software,
-        month: values.month,
-        year: values.year,
+      if (Global.LOGGED_IN_USER.roleId == '0') {
+        let list = this.departmentForm?.controls.department.getRawValue();
+        let values = this.usageOptionForm.getRawValue();
+        let param = {
+          dbName: Global.LOGGED_IN_USER.dbName,
+          dbPassword: Global.LOGGED_IN_USER.dbPassword,
+          userId: Global.LOGGED_IN_USER.userId,
+          updatedBy: Global.LOGGED_IN_USER.userId,
+          licenceServerId: values.software,
+          month: values.month,
+          year: values.year,
 
-        eArrayUseByDepartment: list,
-      };
+          eArrayUseByDepartment: list,
+        };
 
-      this.comService.saveEditDepartment(param).subscribe((res: any) => {
-        this.toast.showSuccess('Data Saved Successfully');
-      });
+        this.comService.saveEditDepartment(param).subscribe((res: any) => {
+          this.toast.showSuccess('Data Saved Successfully');
+        });
+      }
     } catch (error) {}
   }
-  getDepartmentNmae(id: number) {
-    try {
-      let list = this.departmentList.filter(
-        (ele: any) => ele.departmentId == id
-      );
-      return list[0].departmentName;
-    } catch (error) {}
-  }
+  // getDepartmentNmae(id: number) {
+  //   try {
+  //     let list = this.departmentList.filter(
+  //       (ele: any) => ele.departmentId == id
+  //     );
+  //     return list[0].departmentName;
+  //   } catch (error) {}
+  // }
 }

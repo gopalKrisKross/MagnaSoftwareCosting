@@ -15,9 +15,10 @@
     >
   </nb-select> -->
 </div>
-<div class="c-logo"  [ngStyle]="{ 'background-image': 'url(' + magnaIcon + ')'}" >
-   
-</div>
+<div
+  class="c-logo"
+  [ngStyle]="{ 'background-image': 'url(' + magnaIcon + ')' }"
+></div>
 <div class="header-container">
   <nb-actions size="small" class="dropdown">
     <nb-action
@@ -25,6 +26,7 @@
       class="dropdown-toggle"
       data-bs-toggle="dropdown"
       aria-expanded="false"
+      *ngIf="roleId == '0'"
     >
       <nb-action
         class="control-item p-0"
@@ -106,7 +108,7 @@
     >
       <nb-user
         [nbContextMenu]="userMenu"
-        name="{{userName}}"
+        name="{{ userName }}"
         color="#cccccc"
         [picture]="picture"
       >

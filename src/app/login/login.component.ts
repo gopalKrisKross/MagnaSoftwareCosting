@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
             if (res && res.length > 0) {
               localStorage.setItem(
                 'Global.LOGGED_IN_USER',
-                JSON.stringify(JSON.parse(res)[0])
+                JSON.stringify(res[0])
               );
 
               let leadUrl = 'component/pages';

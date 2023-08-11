@@ -29,8 +29,14 @@
         </select>
         <label class="floating-label" value="0">Year</label>
       </div>
+      <div>
+        <nb-radio-group formControlName="showOptions">
+          <nb-radio value="table">Table</nb-radio>
+          <nb-radio value="chart">Chart</nb-radio>
+        </nb-radio-group>
+      </div>
     </div>
-    <div class="accordionDiv">
+    <div class="accordionDiv" *ngIf="!showChart">
       <nb-accordion *ngIf="summaryData">
         <nb-accordion-item disabled="true" class="accordionHeading">
           <nb-accordion-item-header>
@@ -154,9 +160,31 @@
   class="inline-form-card mt-4"
   status="warning"
   id="axcessShortFall"
-  *ngIf="excessShiftData"
+  *ngIf="showChart"
 >
-  <nb-card-header> Access Shortfall Report </nb-card-header>
+  <nb-card-header> Chart</nb-card-header>
+  <nb-card-body>
+    <app-linechart [data]="generateLineChart()"></app-linechart>
+  </nb-card-body>
+</nb-card>
+<nb-card
+  class="inline-form-card mt-4"
+  status="warning"
+  id="axcessShortFall"
+  *ngIf="showChart"
+>
+  <nb-card-header> Cost Chart</nb-card-header>
+  <nb-card-body>
+    <app-linechart [data]="generateCostLineChart()"></app-linechart>
+  </nb-card-body>
+</nb-card>
+<nb-card
+  class="inline-form-card mt-4"
+  status="warning"
+  id="axcessShortFall"
+  *ngIf="excessShiftData && !showChart"
+>
+  <nb-card-header> Excess Shortfall Report </nb-card-header>
   <nb-card-body>
     <table class="table table-border table-light mb-4">
       <thead>

@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit {
   picture: any = 'assets/img/nick.png';
   magnaIcon: any = '/assets/img/magnaLogo.png';
   userName: string = Global.LOGGED_IN_USER.userName;
+  roleId: any = Global.LOGGED_IN_USER.roleId;
   themes = [
     // {
     //   value: 'default',

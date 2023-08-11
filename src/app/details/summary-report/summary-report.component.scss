@@ -1,79 +1,75 @@
 .w-10 {
-    width: 10%;
+  width: 10%;
 }
 
 .w-7 {
-
-    width: 7%;
+  width: 7%;
 }
 
 .w-17 {
-
-    width: 17%;
+  width: 17%;
 }
 
 .accordionDiv {
-    height: 50vh;
+  height: 50vh;
 }
 
 #summaryReport {
-    nb-icon {
-        margin-right: 5px;
-    }
-
+  nb-icon {
+    margin-right: 5px;
+  }
 }
 
 .accordionTable {
-    width: 94%;
-
-
+  width: 94%;
 }
 
 table th {
-    vertical-align: middle;
-
+  vertical-align: middle;
 }
 
 .accordionHeading {
-    top: -15px;
-    position: sticky;
-    background: rgba(86, 100, 127, 4.909804);
-    z-index: 1;
+  top: -15px;
+  position: sticky;
+  background: rgba(86, 100, 127, 4.909804);
+  z-index: 1;
 }
 
 .accordionitem {
-    background-color: rgb(237 237 237);
-    margin: 6px 0px;
-    box-shadow: rgb(0 0 0 / 42%) 0 2px 4px, rgb(0 0 0 / 25%) 0 7px 13px -3px, rgb(0 0 0 / 39%) 0 -3px inset;
+  background-color: rgb(237 237 237);
+  margin: 6px 0px;
+  box-shadow: rgb(0 0 0 / 42%) 0 2px 4px, rgb(0 0 0 / 25%) 0 7px 13px -3px,
+    rgb(0 0 0 / 39%) 0 -3px inset;
 }
 
 .estimationModal {
-    overflow: auto;
-    height: 80vh;
+  overflow: auto;
+  height: 80vh;
 
-    table th {
-        top: 0;
-        position: sticky;
-    }
-
-
+  table th {
+    top: 0;
+    position: sticky;
+  }
 }
 
 a {
-    color: blue !important;
-    text-decoration: underline !important;
-    cursor: pointer;
+  color: blue !important;
+  text-decoration: underline !important;
+  cursor: pointer;
 }
 
 #axcessShortFall {
+  thead tr th {
+    background-color: rgb(86, 100, 127);
+    color: white;
+  }
 
-    thead tr th {
-        background-color: rgb(86, 100, 127);
-        color: white;
-    }
-
-    tfoot tr td {
-        background-color: rgba(153, 166, 192, 0.33);
-        color: black;
-    }
+  tfoot tr td {
+    background-color: rgba(153, 166, 192, 0.33);
+    color: black;
+  }
+}
+nb-radio-group {
+  display: flex;
+  flex-wrap: wrap;
 }
