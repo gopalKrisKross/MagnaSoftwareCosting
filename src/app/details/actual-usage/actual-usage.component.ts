@@ -28,6 +28,7 @@ export class ActualUsageComponent implements OnInit {
   actualUsageData: any;
   departmentList: any;
   departmentHoursDataList: any;
+  showUsage: boolean = true;
   get monthList() {
     return this.pubsub.monthList;
   }
@@ -121,6 +122,7 @@ export class ActualUsageComponent implements OnInit {
           id: [iObj.id],
           actualUsageEdit: [iObj.actualUsageEdit],
           estimationEdit: [iObj.estimationEdit],
+          usapeTabOptions: ['usageUpdate'],
         });
       } else {
         formGroup = <FormGroup>this.fb.group({
@@ -133,9 +135,18 @@ export class ActualUsageComponent implements OnInit {
           id: ['0'],
           actualUsageEdit: [false],
           estimationEdit: [false],
+          usapeTabOptions: ['usageUpdate'],
         });
       }
-
+      formGroup
+        .get('usapeTabOptions')
+        ?.valueChanges.subscribe((res: string) => {
+          if (res == 'usageUpdate') {
+            this.showUsage = true;
+          } else {
+            this.showUsage = false;
+          }
+        });
       return formGroup;
     } catch (error) {}
   }

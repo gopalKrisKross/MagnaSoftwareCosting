@@ -3,7 +3,7 @@
     <nb-card class="inline-form-card" status="warning">
       <nb-card-header>Actual Usage</nb-card-header>
       <nb-card-body [formGroup]="usageOptionForm">
-        <div class="row justify-content-start">
+        <div class="row">
           <div class="col-6 floating-label-field">
             <select
               class="floating-input"
@@ -47,6 +47,20 @@
             </select>
             <label class="floating-label" value="0">Year</label>
           </div>
+          <div
+            *ngIf="usageOptionForm.get('software')?.value != '0'"
+            class="m-2"
+          >
+            <nb-radio-group formControlName="usapeTabOptions">
+              <nb-radio value="editPermission">Edit Permission</nb-radio>
+              <nb-radio value="usageUpdate">Usage Update</nb-radio>
+            </nb-radio-group>
+          </div>
+        </div>
+        <div
+          class="row justify-content-start"
+          *ngIf="showUsage && usageOptionForm.get('software')?.value != '0'"
+        >
           <div class="col-6 floating-label-field">
             <input
               type="number"
@@ -79,7 +93,10 @@
             <label class="floating-label">Total Cost</label>
           </div>
         </div>
-        <div class="row">
+        <div
+          class="row"
+          *ngIf="!showUsage && usageOptionForm.get('software')?.value != '0'"
+        >
           <div class="col-6 floating-label-field">
             <nb-checkbox
               status="basic"
@@ -113,7 +130,10 @@
       </nb-card-body>
     </nb-card>
   </div>
-  <div class="col-6">
+  <div
+    class="col-6"
+    *ngIf="showUsage && usageOptionForm.get('software')?.value != '0'"
+  >
     <nb-card
       class="inline-form-card"
       status="warning"

@@ -118,12 +118,14 @@ export class CreateFormsComponent implements OnInit {
 
       if (editValue.length > 0) {
         this.iconToggle(index, false);
+
         this.pubsub.monthList.forEach((ele: any) => {
-          for (let item of editValue) {
-            if (item != ele.id) {
-              nextMonthList.push(ele.name.toLowerCase());
-            }
+          // for (let item of editValue) {
+          // if (item != ele.id) {
+          if (!editValue.includes(ele.id)) {
+            nextMonthList.push(ele.name.toLowerCase());
           }
+          // }
         });
       } else {
         this.iconToggle(index, false);

@@ -8,22 +8,6 @@
             <select
               placeholder=" "
               class="floating-input"
-              formControlName="department"
-            >
-              <option value="0">Select Deparment</option>
-              <option
-                *ngFor="let department of departmentList"
-                [value]="department.departmentId"
-              >
-                {{ department.departmentName }}
-              </option>
-            </select>
-            <label class="floating-label"> Department</label>
-          </div>
-          <div class="col-md-3 floating-label-field">
-            <select
-              placeholder=" "
-              class="floating-input"
               name="software"
               formControlName="software"
             >
@@ -55,7 +39,22 @@
             </select>
             <label class="floating-label"> Year</label>
           </div>
-
+          <div class="col-md-3 floating-label-field">
+            <select
+              placeholder=" "
+              class="floating-input"
+              formControlName="department"
+            >
+              <option value="0">Select Deparment</option>
+              <option
+                *ngFor="let department of departmentList"
+                [value]="department.departmentId"
+              >
+                {{ department.departmentName }}
+              </option>
+            </select>
+            <label class="floating-label"> Department</label>
+          </div>
           <!-- <div class="col-md-2">
             <input
               nbInput

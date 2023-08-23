@@ -29,6 +29,8 @@ export class SummaryReportComponent implements OnInit {
 
   calculateActualUsageData: any;
   summaryCostData: any;
+  summaryDepartmentData: any;
+  selectedDepartmentId: any = '0';
   get yearList() {
     return this.pubsub.yearList;
   }
@@ -54,7 +56,6 @@ export class SummaryReportComponent implements OnInit {
   constructor(
     private pubsub: PubsubService,
     private comService: CommonService,
-
     private fb: FormBuilder
   ) {
     Chart.register(...registerables);
@@ -114,9 +115,6 @@ export class SummaryReportComponent implements OnInit {
           this.showChart = false;
         } else if (res == 'chart') {
           this.showChart = true;
-          setTimeout(() => {
-            this.generateLineChart();
-          }, 500);
         }
       });
       return formGroup;
@@ -159,6 +157,7 @@ export class SummaryReportComponent implements OnInit {
         if (res) {
           this.summaryData = res.Table;
           this.summaryCostData = res.Table1;
+          this.summaryDepartmentData = res.Table2;
         }
       });
     } catch (error) {}
@@ -275,93 +274,5 @@ export class SummaryReportComponent implements OnInit {
         }
       );
     } catch (error) {}
-  }
-  /**
-   * @author Sandesh
-   * @description this function is used  for set line chart data
-   */
-  generateLineChart() {
-    let data = {
-      data: {
-        labels: [
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July',
-          'August',
-          'September',
-          'October',
-          'November',
-          'December',
-        ],
-        datasets: [
-          {
-            label: 'Actual Usage ', // Name the series
-            data: this.getCalculateData(this.excessData), // Specify the data values array
-            fill: false,
-            borderColor: 'purple', // Add custom color border (Line)
-            backgroundColor: 'purple', // Add custom color background (Points and Fill)
-            borderWidth: 2, // Specify bar border width
-          },
-          {
-            label: 'Estimation', // Name the series
-            data: this.getCalculateData(this.summaryData), // Specify the data values array
-            fill: false,
-            borderColor: 'green', // Add custom color border (Line)
-            backgroundColor: 'green', // Add custom color background (Points and Fill)
-            borderWidth: 2, // Specify bar border width
-          },
-        ],
-      },
-    };
-    console.log(data);
-    return data;
-  }
-  generateCostLineChart() {
-    let data = {
-      data: {
-        labels: [
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July',
-          'August',
-          'September',
-          'October',
-          'November',
-          'December',
-        ],
-        datasets: [
-          {
-            label: 'Cost', // Name the series
-            data: this.getCalculateData(this.summaryCostData), // Specify the data values array
-            fill: false,
-            borderColor: 'purple', // Add custom color border (Line)
-            backgroundColor: 'purple', // Add custom color background (Points and Fill)
-            borderWidth: 2, // Specify bar border width
-          },
-        ],
-      },
-    };
-    console.log(data);
-    return data;
-  }
-  getCalculateData(list: any) {
-    let dataSet: any = [];
-    this.calculateActualUsageData = list.reduce((a: any, b: any) =>
-      Object.fromEntries(Object.entries(a).map(([k, v]) => [k, v + b[k]]))
-    );
-
-    for (let month of this.pubsub.monthList) {
-      let count = this.calculateActualUsageData[month.name.toLowerCase()];
-      dataSet.push(count);
-    }
-    return dataSet;
   }
 }

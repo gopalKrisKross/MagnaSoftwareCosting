@@ -30,7 +30,13 @@
         <label class="floating-label" value="0">Year</label>
       </div>
       <div>
-        <nb-radio-group formControlName="showOptions">
+        <nb-radio-group
+          formControlName="showOptions"
+          *ngIf="
+            summaryForm.get('year')?.value != '0' &&
+            summaryForm.get('software')?.value != '0'
+          "
+        >
           <nb-radio value="table">Table</nb-radio>
           <nb-radio value="chart">Chart</nb-radio>
         </nb-radio-group>
@@ -164,7 +170,11 @@
 >
   <nb-card-header> Chart</nb-card-header>
   <nb-card-body>
-    <app-linechart [data]="generateLineChart()"></app-linechart>
+    <app-linechart
+      [departmentList]="summaryDepartmentData"
+      [data]="summaryData"
+      [type]="'deptChart'"
+    ></app-linechart>
   </nb-card-body>
 </nb-card>
 <nb-card
@@ -175,7 +185,7 @@
 >
   <nb-card-header> Cost Chart</nb-card-header>
   <nb-card-body>
-    <app-linechart [data]="generateCostLineChart()"></app-linechart>
+    <app-linechart [costData]="summaryCostData" [type]="'cost'"></app-linechart>
   </nb-card-body>
 </nb-card>
 <nb-card

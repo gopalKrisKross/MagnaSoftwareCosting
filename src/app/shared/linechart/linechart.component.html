@@ -1,3 +1,16 @@
+<div
+  class="col-4 floating-label-field"
+  *ngIf="departmentList && departmentList.length > 0"
+>
+  <select class="floating-input" placeholder=" " [formControl]="department">
+    <option value="0">Select Department</option>
+
+    <option *ngFor="let dept of departmentList" [value]="dept.departmentId">
+      {{ dept.departmentName }}
+    </option>
+  </select>
+  <label class="floating-label">Select Department</label>
+</div>
 <div style="height: 58vh">
   <canvas #pieCanvas class="d-container"></canvas>
 </div>
