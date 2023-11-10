@@ -11,6 +11,12 @@
   </select>
   <label class="floating-label">Select Department</label>
 </div>
+<div class="" *ngIf="departmentList && departmentList.length > 0">
+  <nb-radio-group [formControl]="chartShowOptions" name="reactive-forms-group">
+    <nb-radio value="number">Licence Quantity</nb-radio>
+    <nb-radio value="cost">Licence Cost</nb-radio>
+  </nb-radio-group>
+</div>
 <div style="height: 58vh">
   <canvas #pieCanvas class="d-container"></canvas>
 </div>

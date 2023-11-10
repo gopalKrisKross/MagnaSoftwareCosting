@@ -38,13 +38,14 @@ import { Interceptor } from '../services/network/interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { NbDatepickerModule, NbTimepickerModule } from '@nebular/theme';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { currancyFormat, removeSpace } from './pipe/list.pipe';
+import { currancyFormat, removeSpace ,FilterPipe} from './pipe/list.pipe';
 import { LinechartComponent } from './linechart/linechart.component';
 @NgModule({
   declarations: [
     SpinnerComponent,
     CreateMasterFormComponent,
     currancyFormat,
+    FilterPipe,
     removeSpace,
     LinechartComponent,
   ],
@@ -71,6 +72,7 @@ import { LinechartComponent } from './linechart/linechart.component';
     currancyFormat,
     removeSpace,
     LinechartComponent,
+    FilterPipe
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },

@@ -30,11 +30,17 @@ export class LinechartComponent implements OnInit {
   type: any;
   selectedDepartmentId: string | number = '0';
   department = new FormControl('0');
+  chartShowOptions = new FormControl('number');
   calculateActualUsageData: any;
+  selectedshowOptions: any = 'number';
   constructor(private cd: ChangeDetectorRef, private pubsub: PubsubService) {
     Chart.register(...registerables);
     this.department.valueChanges.subscribe((res: any) => {
       this.selectedDepartmentId = res;
+      this.updatePieChart();
+    });
+    this.chartShowOptions.valueChanges.subscribe((res: any) => {
+      this.selectedshowOptions = res;
       this.updatePieChart();
     });
   }
@@ -100,44 +106,78 @@ export class LinechartComponent implements OnInit {
    * @description this function is used  for set line chart data
    */
   generateLineChart() {
-    let data = {
-      data: {
-        labels: [
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July',
-          'August',
-          'September',
-          'October',
-          'November',
-          'December',
-        ],
-        datasets: [
-          {
-            label: 'Actual Usage ', // Name the series
-            data: this.getCalculateData(this.departmentList, true), // Specify the data values array
-            fill: false,
-            borderColor: 'purple', // Add custom color border (Line)
-            backgroundColor: 'purple', // Add custom color background (Points and Fill)
-            borderWidth: 2, // Specify bar border width
+    try {
+      let data: any;
+      if (this.selectedshowOptions == 'number') {
+        data = {
+          data: {
+            labels: [
+              'January',
+              'February',
+              'March',
+              'April',
+              'May',
+              'June',
+              'July',
+              'August',
+              'September',
+              'October',
+              'November',
+              'December',
+            ],
+            datasets: [
+              {
+                label: 'Actual Usage ', // Name the series
+                data: this.getCalculateData(this.departmentList, true), // Specify the data values array
+                fill: false,
+                borderColor: 'purple', // Add custom color border (Line)
+                backgroundColor: 'purple', // Add custom color background (Points and Fill)
+                borderWidth: 2, // Specify bar border width
+              },
+              {
+                label: 'Estimation', // Name the series
+                data: this.getCalculateData(this.data, true), // Specify the data values array
+                fill: false,
+                borderColor: 'green', // Add custom color border (Line)
+                backgroundColor: 'green', // Add custom color background (Points and Fill)
+                borderWidth: 2, // Specify bar border width
+              },
+            ],
           },
-          {
-            label: 'Estimation', // Name the series
-            data: this.getCalculateData(this.data, true), // Specify the data values array
-            fill: false,
-            borderColor: 'green', // Add custom color border (Line)
-            backgroundColor: 'green', // Add custom color background (Points and Fill)
-            borderWidth: 2, // Specify bar border width
+        };
+      } else {
+        data = {
+          data: {
+            labels: [
+              'January',
+              'February',
+              'March',
+              'April',
+              'May',
+              'June',
+              'July',
+              'August',
+              'September',
+              'October',
+              'November',
+              'December',
+            ],
+            datasets: [
+              {
+                label: 'Licence Cost', // Name the series
+                data: this.getCalculateData(this.data, true), // Specify the data values array
+                fill: false,
+                borderColor: 'green', // Add custom color border (Line)
+                backgroundColor: 'green', // Add custom color background (Points and Fill)
+                borderWidth: 2, // Specify bar border width
+              },
+            ],
           },
-        ],
-      },
-    };
+        };
+      }
 
-    return data;
+      return data;
+    } catch (error) {}
   }
   generateCostLineChart() {
     let data = {
@@ -172,21 +212,31 @@ export class LinechartComponent implements OnInit {
   }
 
   getCalculateData(list: any, chk: boolean) {
-    if (chk && this.selectedDepartmentId != '0') {
-      list = list.filter(
-        (ele: any) => ele.departmentId == this.selectedDepartmentId
+    try {
+      let dataSet: any = [];
+      if (chk && this.selectedDepartmentId != '0') {
+        list = list.filter(
+          (ele: any) => ele.departmentId == this.selectedDepartmentId
+        );
+      }
+
+      this.calculateActualUsageData = list.reduce((a: any, b: any) =>
+        Object.fromEntries(Object.entries(a).map(([k, v]) => [k, v + b[k]]))
       );
-    }
-    let dataSet: any = [];
-    this.calculateActualUsageData = list.reduce((a: any, b: any) =>
-      Object.fromEntries(Object.entries(a).map(([k, v]) => [k, v + b[k]]))
-    );
+      if (this.selectedshowOptions == 'number') {
+        for (let month of this.pubsub.monthList) {
+          let count = this.calculateActualUsageData[month.name.toLowerCase()];
+          dataSet.push(count);
+        }
+      } else {
+        for (let month of this.pubsub.monthList) {
+          let count =
+            this.calculateActualUsageData[`Cost_${month.name.toLowerCase()}`];
+          dataSet.push(count);
+        }
+      }
 
-    for (let month of this.pubsub.monthList) {
-      let count = this.calculateActualUsageData[month.name.toLowerCase()];
-      dataSet.push(count);
-    }
-
-    return dataSet;
+      return dataSet;
+    } catch (error) {}
   }
 }

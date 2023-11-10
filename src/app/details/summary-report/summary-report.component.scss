@@ -2,15 +2,19 @@
   width: 10%;
 }
 
+.w-6 {
+  width: 6%;
+}
 .w-7 {
   width: 7%;
 }
 
-.w-17 {
-  width: 17%;
+.w-16 {
+  width: 16%;
 }
 
 .accordionDiv {
+  overflow: auto;
   height: 50vh;
 }
 
@@ -21,7 +25,11 @@
 }
 
 .accordionTable {
-  width: 94%;
+  thead tr th {
+    background-color: rgb(86, 100, 127);
+    color: white;
+  }
+  width: 100%;
 }
 
 table th {

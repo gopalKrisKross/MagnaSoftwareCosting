@@ -39,126 +39,203 @@
         >
           <nb-radio value="table">Table</nb-radio>
           <nb-radio value="chart">Chart</nb-radio>
+          <nb-radio value="excessShortfallReport"
+            >Excess Shortfall Report</nb-radio
+          >
         </nb-radio-group>
       </div>
     </div>
-    <div class="accordionDiv" *ngIf="!showChart">
-      <nb-accordion *ngIf="summaryData">
+    <div class="accordionDiv" *ngIf="showTable">
+      <!-- <nb-accordion *ngIf="summaryData">
         <nb-accordion-item disabled="true" class="accordionHeading">
-          <nb-accordion-item-header>
-            <table class="table m-0 accordionTable text-white">
-              <thead>
-                <tr class=" ">
-                  <th class="w-10">Dept</th>
-                  <th class="w-7">Shift</th>
-                  <th class="text-end w-7">Jan</th>
-                  <th class="text-end w-7">Feb</th>
-                  <th class="text-end w-7">Mar</th>
-                  <th class="text-end w-7">Apr</th>
-                  <th class="text-end w-7">May</th>
-                  <th class="text-end w-7">Jun</th>
-                  <th class="text-end w-7">Jul</th>
-                  <th class="text-end w-7">Aug</th>
-                  <th class="text-end w-7">Sep</th>
-                  <th class="text-end w-7">Oct</th>
-                  <th class="text-end w-7">Nov</th>
-                  <th class="text-end w-7">Dec</th>
-                </tr>
-              </thead>
-            </table>
-          </nb-accordion-item-header>
-        </nb-accordion-item>
-        <nb-accordion-item
+          <nb-accordion-item-header> -->
+
+      <!-- </nb-accordion-item-header>
+        </nb-accordion-item> -->
+      <!-- <nb-accordion-item
           *ngFor="let report of summaryData"
           (click)="
             getData(report.departmentId, report.year, report.departmentName)
           "
           class="accordionitem"
         >
-          <nb-accordion-item-header>
-            <table class="table m-0 accordionTable">
-              <thead>
-                <tr class="border-white">
-                  <th class="w-17">{{ report.departmentName }}</th>
-                  <!-- <th class="w-7"></th> -->
-                  <th class="text-end w-7">{{ report.january }}</th>
-                  <th class="text-end w-7">{{ report.february }}</th>
-                  <th class="text-end w-7">{{ report.march }}</th>
-                  <th class="text-end w-7">{{ report.april }}</th>
-                  <th class="text-end w-7">{{ report.may }}</th>
-                  <th class="text-end w-7">{{ report.june }}</th>
-                  <th class="text-end w-7">{{ report.july }}</th>
-                  <th class="text-end w-7">{{ report.august }}</th>
-                  <th class="text-end w-7">{{ report.september }}</th>
-                  <th class="text-end w-7">{{ report.october }}</th>
-                  <th class="text-end w-7">{{ report.november }}</th>
-                  <th class="text-end w-7">{{ report.december }}</th>
-                </tr>
-              </thead>
-            </table></nb-accordion-item-header
-          >
-          <nb-accordion-item-body class="p-0">
-            <table
-              class="table table-bordered m-0 accordionTable table-light mb-2"
-            >
-              <tbody
-                *ngFor="
-                  let list of shiftDepartmentData | keyvalue;
-                  let idx = index
-                "
-              >
-                <tr class=" ">
-                  <th
-                    class="w-10"
-                    data-bs-toggle="modal"
-                    data-bs-target="#overViewModel"
-                  >
-                    <a>{{ idx == 0 ? getDepartmentName(list.value) : "" }}</a>
-                  </th>
-                  <th class="w-7">{{ list.key }}</th>
+          <nb-accordion-item-header> -->
 
-                  <td class="text-end w-7">
-                    {{ calculatShiftTotal("january", list.value) }}
-                  </td>
-                  <td class="text-end w-7">
-                    {{ calculatShiftTotal("february", list.value) }}
-                  </td>
-                  <td class="text-end w-7">
-                    {{ calculatShiftTotal("march", list.value) }}
-                  </td>
-                  <td class="text-end w-7">
-                    {{ calculatShiftTotal("april", list.value) }}
-                  </td>
-                  <td class="text-end w-7">
-                    {{ calculatShiftTotal("may", list.value) }}
-                  </td>
-                  <td class="text-end w-7">
-                    {{ calculatShiftTotal("june", list.value) }}
-                  </td>
-                  <td class="text-end w-7">
-                    {{ calculatShiftTotal("july", list.value) }}
-                  </td>
-                  <td class="text-end w-7">
-                    {{ calculatShiftTotal("august", list.value) }}
-                  </td>
-                  <td class="text-end w-7">
-                    {{ calculatShiftTotal("september", list.value) }}
-                  </td>
-                  <td class="text-end w-7">
-                    {{ calculatShiftTotal("october", list.value) }}
-                  </td>
-                  <td class="text-end w-7">
-                    {{ calculatShiftTotal("november", list.value) }}
-                  </td>
-                  <td class="text-end w-7">
-                    {{ calculatShiftTotal("december", list.value) }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </nb-accordion-item-body>
-        </nb-accordion-item>
-      </nb-accordion>
+      <table
+        class="table table-bordered m-0 text-center table-light accordionTable"
+        *ngIf="summaryData"
+      >
+        <thead class="accordionHeading" style="top: 0">
+          <tr class="">
+            <th class="w-16">Dept</th>
+            <th class="w-10"></th>
+            <th class="text-end w-6">Jan</th>
+            <th class="text-end w-6">Feb</th>
+            <th class="text-end w-6">Mar</th>
+            <th class="text-end w-6">Apr</th>
+            <th class="text-end w-6">May</th>
+            <th class="text-end w-6">Jun</th>
+            <th class="text-end w-6">Jul</th>
+            <th class="text-end w-6">Aug</th>
+            <th class="text-end w-6">Sep</th>
+            <th class="text-end w-6">Oct</th>
+            <th class="text-end w-7">Nov</th>
+            <th class="text-end w-7">Dec</th>
+          </tr>
+        </thead>
+        <tbody
+          *ngFor="let report of summaryData; let i = index"
+          class="border-black"
+        >
+          <tr class=" ">
+            <td class="w-16 fw-normal text-start" rowspan="2">
+              <a
+                data-bs-toggle="modal"
+                data-bs-target="#departmentModel"
+                (click)="
+                  getData(
+                    report.departmentId,
+                    report.year,
+                    report.departmentName
+                  )
+                "
+                >{{ report.departmentName }}
+              </a>
+            </td>
+            <td class="w-10 fw-normal text-start">Estimation</td>
+            <td
+              class="text-end w-6"
+              [ngClass]="{ zero: report.january == '0' }"
+            >
+              {{ report.january }}
+            </td>
+            <td
+              class="text-end w-6"
+              [ngClass]="{ zero: report.february == '0' }"
+            >
+              {{ report.february }}
+            </td>
+            <td class="text-end w-6" [ngClass]="{ zero: report.march == '0' }">
+              {{ report.march }}
+            </td>
+            <td class="text-end w-6" [ngClass]="{ zero: report.april == '0' }">
+              {{ report.april }}
+            </td>
+            <td class="text-end w-6" [ngClass]="{ zero: report.may == '0' }">
+              {{ report.may }}
+            </td>
+            <td class="text-end w-6" [ngClass]="{ zero: report.june == '0' }">
+              {{ report.june }}
+            </td>
+            <td class="text-end w-6" [ngClass]="{ zero: report.july == '0' }">
+              {{ report.july }}
+            </td>
+            <td class="text-end w-6" [ngClass]="{ zero: report.august == '0' }">
+              {{ report.august }}
+            </td>
+            <td
+              class="text-end w-6"
+              [ngClass]="{ zero: report.september == '0' }"
+            >
+              {{ report.september }}
+            </td>
+            <td
+              class="text-end w-6"
+              [ngClass]="{ zero: report.october == '0' }"
+            >
+              {{ report.october }}
+            </td>
+            <td
+              class="text-end w-7"
+              [ngClass]="{ zero: report.november == '0' }"
+            >
+              {{ report.november }}
+            </td>
+            <td
+              class="text-end w-7"
+              [ngClass]="{ zero: report.december == '0' }"
+            >
+              {{ report.december }}
+            </td>
+          </tr>
+          <tr class="">
+            <!-- <th class="w-16">{{ summaryDepartmentData[i].departmentName }}</th> -->
+            <td class="w-10 fw-normal text-start">Actual Usage</td>
+            <td
+              class="text-end w-6"
+              [ngClass]="{ zero: summaryDepartmentData[i].january == '0' }"
+            >
+              {{ summaryDepartmentData[i].january }}
+            </td>
+            <td
+              class="text-end w-6"
+              [ngClass]="{ zero: summaryDepartmentData[i].february == '0' }"
+            >
+              {{ summaryDepartmentData[i].february }}
+            </td>
+            <td
+              class="text-end w-6"
+              [ngClass]="{ zero: summaryDepartmentData[i].march == '0' }"
+            >
+              {{ summaryDepartmentData[i].march }}
+            </td>
+            <td
+              class="text-end w-6"
+              [ngClass]="{ zero: summaryDepartmentData[i].april == '0' }"
+            >
+              {{ summaryDepartmentData[i].april }}
+            </td>
+            <td
+              class="text-end w-6"
+              [ngClass]="{ zero: summaryDepartmentData[i].may == '0' }"
+            >
+              {{ summaryDepartmentData[i].may }}
+            </td>
+            <td
+              class="text-end w-6"
+              [ngClass]="{ zero: summaryDepartmentData[i].june == '0' }"
+            >
+              {{ summaryDepartmentData[i].june }}
+            </td>
+            <td
+              class="text-end w-6"
+              [ngClass]="{ zero: summaryDepartmentData[i].july == '0' }"
+            >
+              {{ summaryDepartmentData[i].july }}
+            </td>
+            <td
+              class="text-end w-6"
+              [ngClass]="{ zero: summaryDepartmentData[i].august == '0' }"
+            >
+              {{ summaryDepartmentData[i].august }}
+            </td>
+            <td
+              class="text-end w-6"
+              [ngClass]="{ zero: summaryDepartmentData[i].september == '0' }"
+            >
+              {{ summaryDepartmentData[i].september }}
+            </td>
+            <td
+              class="text-end w-6"
+              [ngClass]="{ zero: summaryDepartmentData[i].october == '0' }"
+            >
+              {{ summaryDepartmentData[i].october }}
+            </td>
+            <td
+              class="text-end w-7"
+              [ngClass]="{ zero: summaryDepartmentData[i].november == '0' }"
+            >
+              {{ summaryDepartmentData[i].november }}
+            </td>
+            <td
+              class="text-end w-7"
+              [ngClass]="{ zero: summaryDepartmentData[i].december == '0' }"
+            >
+              {{ summaryDepartmentData[i].december }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </nb-card-body>
 </nb-card>
@@ -192,11 +269,11 @@
   class="inline-form-card mt-4"
   status="warning"
   id="axcessShortFall"
-  *ngIf="excessShiftData && !showChart"
+  *ngIf="excessShiftData && showexcessShortfallReport"
 >
   <nb-card-header> Excess Shortfall Report </nb-card-header>
   <nb-card-body>
-    <table class="table table-border table-light mb-4">
+    <table class="table table-border table-light mb-4 accordionTable">
       <thead>
         <tr class="">
           <th class=" ">Actual/Forecast Usage</th>
@@ -301,7 +378,11 @@
       <tbody>
         <tr>
           <td class="text-start">Nos of Licences in Pool</td>
-          <td class="text-end w-7" *ngFor="let item of excessAUData">
+          <td
+            class="text-end w-7"
+            *ngFor="let item of excessAUData"
+            [ngClass]="{ zero: item.licenceUsedCout == '0' }"
+          >
             {{ item.licenceUsedCout }}
           </td>
         </tr>
@@ -800,7 +881,7 @@
       </div>
       <div class="modal-body estimationModal p-0">
         <div class="p-4">
-          <table class="table table-bordered table-light">
+          <table class="table table-bordered table-light accordionTable">
             <thead class="table-secondary">
               <tr>
                 <th class="deptCol">
@@ -812,20 +893,155 @@
             </thead>
             <tbody *ngFor="let list of estimationData | keyvalue">
               <tr *ngFor="let item of getValues(list.value); let i = index">
-                <td rowspan="3" *ngIf="i == 0">{{ list.key }}</td>
-                <td>{{ item.shiftName }}</td>
-                <td class="text-end">{{ item.january }}</td>
-                <td class="text-end">{{ item.february }}</td>
-                <td class="text-end">{{ item.march }}</td>
-                <td class="text-end">{{ item.april }}</td>
-                <td class="text-end">{{ item.may }}</td>
-                <td class="text-end">{{ item.june }}</td>
-                <td class="text-end">{{ item.july }}</td>
-                <td class="text-end">{{ item.august }}</td>
-                <td class="text-end">{{ item.september }}</td>
-                <td class="text-end">{{ item.october }}</td>
-                <td class="text-end">{{ item.november }}</td>
-                <td class="text-end">{{ item.december }}</td>
+                <td rowspan="3" *ngIf="i == 0" class="fw-normal">
+                  {{ list.key }}
+                </td>
+                <td class="fw-normal">{{ item.shiftName }}</td>
+                <td class="text-end" [ngClass]="{ zero: item.january == '0' }">
+                  {{ item.january }}
+                </td>
+                <td class="text-end" [ngClass]="{ zero: item.february == '0' }">
+                  {{ item.february }}
+                </td>
+                <td class="text-end" [ngClass]="{ zero: item.march == '0' }">
+                  {{ item.march }}
+                </td>
+                <td class="text-end" [ngClass]="{ zero: item.april == '0' }">
+                  {{ item.april }}
+                </td>
+                <td class="text-end" [ngClass]="{ zero: item.may == '0' }">
+                  {{ item.may }}
+                </td>
+                <td class="text-end" [ngClass]="{ zero: item.june == '0' }">
+                  {{ item.june }}
+                </td>
+                <td class="text-end" [ngClass]="{ zero: item.july == '0' }">
+                  {{ item.july }}
+                </td>
+                <td class="text-end" [ngClass]="{ zero: item.august == '0' }">
+                  {{ item.august }}
+                </td>
+                <td
+                  class="text-end"
+                  [ngClass]="{ zero: item.september == '0' }"
+                >
+                  {{ item.september }}
+                </td>
+                <td class="text-end" [ngClass]="{ zero: item.october == '0' }">
+                  {{ item.october }}
+                </td>
+                <td class="text-end" [ngClass]="{ zero: item.november == '0' }">
+                  {{ item.november }}
+                </td>
+                <td class="text-end" [ngClass]="{ zero: item.december == '0' }">
+                  {{ item.december }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal fade"
+  id="departmentModel"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          class="modal-title text-center w-100 text-white"
+          id="exampleModalLabel"
+        >
+          {{ modalTitle | uppercase }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="p-4">
+          <table
+            class="table table-bordered m-0 accordionTable table-light mb-2"
+          >
+            <thead>
+              <tr class="">
+                <th class="w-10">Dept</th>
+                <th class="w-7">Shift</th>
+                <th class="text-end w-7">Jan</th>
+                <th class="text-end w-7">Feb</th>
+                <th class="text-end w-7">Mar</th>
+                <th class="text-end w-7">Apr</th>
+                <th class="text-end w-7">May</th>
+                <th class="text-end w-7">Jun</th>
+                <th class="text-end w-7">Jul</th>
+                <th class="text-end w-7">Aug</th>
+                <th class="text-end w-7">Sep</th>
+                <th class="text-end w-7">Oct</th>
+                <th class="text-end w-7">Nov</th>
+                <th class="text-end w-7">Dec</th>
+              </tr>
+            </thead>
+            <tbody
+              *ngFor="
+                let list of shiftDepartmentData | keyvalue;
+                let idx = index
+              "
+            >
+              <tr class=" ">
+                <th
+                  class="w-10"
+                  data-bs-toggle="modal"
+                  data-bs-target="#overViewModel"
+                >
+                  <a>{{ idx == 0 ? getDepartmentName(list.value) : "" }}</a>
+                </th>
+                <th class="w-7 fw-normal">{{ list.key }}</th>
+
+                <td class="text-end w-7">
+                  {{ calculatShiftTotal("january", list.value) }}
+                </td>
+                <td class="text-end w-7">
+                  {{ calculatShiftTotal("february", list.value) }}
+                </td>
+                <td class="text-end w-7">
+                  {{ calculatShiftTotal("march", list.value) }}
+                </td>
+                <td class="text-end w-7">
+                  {{ calculatShiftTotal("april", list.value) }}
+                </td>
+                <td class="text-end w-7">
+                  {{ calculatShiftTotal("may", list.value) }}
+                </td>
+                <td class="text-end w-7">
+                  {{ calculatShiftTotal("june", list.value) }}
+                </td>
+                <td class="text-end w-7">
+                  {{ calculatShiftTotal("july", list.value) }}
+                </td>
+                <td class="text-end w-7">
+                  {{ calculatShiftTotal("august", list.value) }}
+                </td>
+                <td class="text-end w-7">
+                  {{ calculatShiftTotal("september", list.value) }}
+                </td>
+                <td class="text-end w-7">
+                  {{ calculatShiftTotal("october", list.value) }}
+                </td>
+                <td class="text-end w-7">
+                  {{ calculatShiftTotal("november", list.value) }}
+                </td>
+                <td class="text-end w-7">
+                  {{ calculatShiftTotal("december", list.value) }}
+                </td>
               </tr>
             </tbody>
           </table>

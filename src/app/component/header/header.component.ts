@@ -18,7 +18,7 @@ import { Global } from 'src/app/shared/global';
 export class HeaderComponent implements OnInit {
   user: any;
   picture: any = 'assets/img/nick.png';
-  magnaIcon: any = '/assets/img/magnaLogo.png';
+  magnaIcon: any = '/assets/img/MGA0.png';
   userName: string = Global.LOGGED_IN_USER.userName;
   roleId: any = Global.LOGGED_IN_USER.roleId;
   themes = [

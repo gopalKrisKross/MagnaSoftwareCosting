@@ -223,6 +223,7 @@ export class ActualUsageComponent implements OnInit {
           this.comService.getActualUsageListing(param).subscribe((res: any) => {
             this.actualUsageData = res.Table[0];
             this.departmentHoursData = res.Table1;
+
             this.setActualUsageData(this.actualUsageData);
             (this.departmentForm.controls['department'] as FormArray).clear();
 

@@ -238,10 +238,7 @@ export class CreateFormsComponent implements OnInit {
               });
               this.defaultData = res.Table;
               //this function use for getting groupBy data
-              this.groupedCollection = this.groupByData(
-                this.defaultData,
-                'projectName'
-              );
+              this.groupedCollection = this.groupByData(false, 'projectName');
 
               this.CD.detectChanges();
             }
@@ -257,8 +254,15 @@ export class CreateFormsComponent implements OnInit {
    * @author Sandesh
    * @description this function is used for set data in droupby
    */
-  groupByData(list: any, type: string) {
+  groupByData(obj: boolean, type: string) {
     try {
+      let list;
+      if (obj) {
+        list = this.estimationForm?.get('estimation').getRawValue();
+      } else {
+        list = this.defaultData;
+      }
+
       return list.reduce((previous: any, current: any) => {
         if (!previous[current[type]]) {
           previous[current[type]] = [current];
@@ -272,6 +276,7 @@ export class CreateFormsComponent implements OnInit {
 
   calculatShiftTotal(key: string, value: any): number | any {
     try {
+      // console.log()
       let count = 0;
 
       value.forEach((element: any) => {

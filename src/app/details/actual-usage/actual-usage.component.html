@@ -48,7 +48,11 @@
             <label class="floating-label" value="0">Year</label>
           </div>
           <div
-            *ngIf="usageOptionForm.get('software')?.value != '0'"
+            *ngIf="
+              usageOptionForm.get('software')?.value != '0' &&
+              usageOptionForm.get('month')?.value != '0' &&
+              usageOptionForm.get('year')?.value != '0'
+            "
             class="m-2"
           >
             <nb-radio-group formControlName="usapeTabOptions">
@@ -59,7 +63,12 @@
         </div>
         <div
           class="row justify-content-start"
-          *ngIf="showUsage && usageOptionForm.get('software')?.value != '0'"
+          *ngIf="
+            showUsage &&
+            usageOptionForm.get('software')?.value != '0' &&
+            usageOptionForm.get('month')?.value != '0' &&
+            usageOptionForm.get('year')?.value != '0'
+          "
         >
           <div class="col-6 floating-label-field">
             <input
@@ -69,6 +78,7 @@
               [min]="0"
               formControlName="licence"
               [readOnly]="actualEditOption"
+              [ngClass]="{ zero: usageOptionForm.get('licence')?.value == '0' }"
             />
             <label class="floating-label">Licences</label>
           </div>
@@ -78,6 +88,7 @@
               class="floating-input"
               placeholder=" "
               formControlName="avgCost"
+              [ngClass]="{ zero: usageOptionForm.get('avgCost')?.value == '0' }"
             />
             <label class="floating-label">Avrage Cost</label>
           </div>
@@ -89,13 +100,21 @@
               [min]="0"
               formControlName="totalCost"
               [readOnly]="actualEditOption"
+              [ngClass]="{
+                zero: usageOptionForm.get('totalCost')?.value == '0'
+              }"
             />
             <label class="floating-label">Total Cost</label>
           </div>
         </div>
         <div
           class="row"
-          *ngIf="!showUsage && usageOptionForm.get('software')?.value != '0'"
+          *ngIf="
+            !showUsage &&
+            usageOptionForm.get('software')?.value != '0' &&
+            usageOptionForm.get('month')?.value != '0' &&
+            usageOptionForm.get('year')?.value != '0'
+          "
         >
           <div class="col-6 floating-label-field">
             <nb-checkbox
@@ -132,7 +151,12 @@
   </div>
   <div
     class="col-6"
-    *ngIf="showUsage && usageOptionForm.get('software')?.value != '0'"
+    *ngIf="
+      showUsage &&
+      usageOptionForm.get('software')?.value != '0' &&
+      usageOptionForm.get('month')?.value != '0' &&
+      usageOptionForm.get('year')?.value != '0'
+    "
   >
     <nb-card
       class="inline-form-card"
@@ -171,6 +195,12 @@
                     [min]="0"
                     step=".01"
                     [readOnly]="actualEditOption"
+                    [ngClass]="{
+                      zero:
+                        departmentForm.controls['department']['controls'][
+                          i
+                        ].get('usageHours').value == '0'
+                    }"
                   />
                 </td>
               </tr>

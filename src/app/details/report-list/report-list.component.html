@@ -106,28 +106,28 @@
             <tr *ngFor="let report of reportListData">
               <td>{{ report.tempRowId }}</td>
               <td class="text-start">{{ report.departmentName }}</td>
-              <td class="text-center">
+              <td class="text-center"     [ngClass]="{'zero':report.ActualUsageAsPerITReport    == '0'}">
                 {{ report.ActualUsageAsPerITReport | number }}
               </td>
-              <td class="text-end">
+              <td class="text-end" [ngClass]="{'zero':report.CostAsPerActualUsage    == '0'}">
                 {{ report.CostAsPerActualUsage | number }}
               </td>
-              <td class="text-center">
+              <td class="text-center" [ngClass]="{'zero':report.LatestProjectionByHoD    == '0'}">
                 {{ report.LatestProjectionByHoD | number }}
               </td>
-              <td class="text-center">
+              <td class="text-center" [ngClass]="{'zero':report.ExcessProjection    == '0'}">
                 {{ report.ExcessProjection | number }}
               </td>
-              <td class="text-center">
+              <td class="text-center" [ngClass]="{'zero':report.PercentageForSharingUnutilisedLicenseCost    == '0'}">
                 {{ report.PercentageForSharingUnutilisedLicenseCost | number }}
               </td>
-              <td class="text-center">
+              <td class="text-center" [ngClass]="{'zero':report.UnutilisedLicenses    == '0'}">
                 {{ report.UnutilisedLicenses | number }}
               </td>
-              <td class="text-end">
+              <td class="text-end" [ngClass]="{'zero':report.CostOfUnutilisedLicenses    == '0'}">
                 {{ report.CostOfUnutilisedLicenses | number }}
               </td>
-              <td class="text-end">
+              <td class="text-end" [ngClass]="{'zero':report.TotalCostToDepartment    == '0'}">
                 {{ report.TotalCostToDepartment | number }}
               </td>
             </tr>
@@ -136,11 +136,14 @@
             <tr>
               <td colspan="2">Total</td>
 
-              <td class="text-center">
+              <td class="text-center" >
+               
                 {{
                   getTotal(reportListData, "ActualUsageAsPerITReport")
                     | number : "1.2-2"
                 }}
+              
+              
               </td>
               <td class="text-end">
                 {{ getTotal(reportListData, "CostAsPerActualUsage") | number }}

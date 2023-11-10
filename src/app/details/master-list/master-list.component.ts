@@ -13,7 +13,7 @@ import { Global } from 'src/app/shared/global';
 })
 export class MasterListComponent implements OnInit {
   // regex: RegExp = /[A-Z]/g;
-
+  textSearch:any
   pageType: string = '';
   // titleName = '';
 

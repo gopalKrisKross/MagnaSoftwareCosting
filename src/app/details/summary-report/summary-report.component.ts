@@ -53,6 +53,8 @@ export class SummaryReportComponent implements OnInit {
     | ElementRef
     | any;
   showChart: boolean = false;
+  showTable: boolean = true;
+  showexcessShortfallReport: boolean = false;
   constructor(
     private pubsub: PubsubService,
     private comService: CommonService,
@@ -112,9 +114,17 @@ export class SummaryReportComponent implements OnInit {
       });
       formGroup.get('showOptions')?.valueChanges.subscribe((res: string) => {
         if (res == 'table') {
+          this.showTable = true;
+          this.showexcessShortfallReport = false;
           this.showChart = false;
         } else if (res == 'chart') {
           this.showChart = true;
+          this.showTable = false;
+          this.showexcessShortfallReport = false;
+        } else if (res == 'excessShortfallReport') {
+          this.showexcessShortfallReport = true;
+          this.showTable = false;
+          this.showChart = false;
         }
       });
       return formGroup;
@@ -175,6 +185,7 @@ export class SummaryReportComponent implements OnInit {
   getData(id: number, year: number, department: string) {
     try {
       this.modalTitle = department;
+
       let values = this.summaryForm.getRawValue();
       if (
         id != this.currentId ||

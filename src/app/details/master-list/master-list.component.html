@@ -16,6 +16,16 @@
       </nb-card-header>
       <nb-card-body>
         <div>
+          <input
+          type='text'
+          class="formInput text-start "
+          status="basic"
+          fieldSize="small"
+          nbInput
+          placeholder='Search '
+          [(ngModel)]='textSearch'
+           
+        />
           <pagination-controls
             class="float-end"
             (pageChange)="p = $event"
@@ -43,7 +53,7 @@
             <tbody>
               <tr
                 *ngFor="
-                  let dataItem of masterList
+                  let dataItem of masterList | FilterPipe:textSearch
                     | paginate : { itemsPerPage: 10, currentPage: p };
                   let i = index
                 "

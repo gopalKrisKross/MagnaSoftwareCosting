@@ -128,135 +128,135 @@
                   </td>
                   <td class="p-0">
                     <input
-                      type="text"
+                      type='number'
                       class="formInput text-center ps-0 pe-0"
                       status="basic"
                       fieldSize="small"
                       nbInput
                       formControlName="january"
-                      name="january"
+                      name="january"  [min]='0'
                     />
                   </td>
                   <td class="p-0">
                     <input
-                      type="text"
+                    type='number'
                       class="formInput text-center ps-0 pe-0"
                       status="basic"
                       fieldSize="small"
                       nbInput
                       formControlName="february"
-                      name="february"
+                      name="february"  [min]='0'
                     />
                   </td>
                   <td class="p-0">
                     <input
-                      type="text"
+                    type='number'
                       class="formInput text-center ps-0 pe-0"
                       status="basic"
                       fieldSize="small"
                       nbInput
                       formControlName="march"
-                      name="march"
+                      name="march"  [min]='0'
                     />
                   </td>
                   <td class="p-0">
                     <input
-                      type="text"
+                    type='number'
                       class="formInput text-center ps-0 pe-0"
                       status="basic"
                       fieldSize="small"
                       nbInput
                       formControlName="april"
-                      name="april"
+                      name="april"  [min]='0'
                     />
                   </td>
                   <td class="p-0">
                     <input
-                      type="text"
+                    type='number'
                       class="formInput text-center ps-0 pe-0"
                       status="basic"
                       fieldSize="small"
                       nbInput
                       formControlName="may"
-                      name="may"
+                      name="may"  [min]='0'
                     />
                   </td>
                   <td class="p-0">
                     <input
-                      type="text"
+                    type='number'
                       class="formInput text-center ps-0 pe-0"
                       status="basic"
                       fieldSize="small"
                       nbInput
                       formControlName="june"
-                      name="june"
+                      name="june"  [min]='0'
                     />
                   </td>
                   <td class="p-0">
                     <input
-                      type="text"
+                    type='number'
                       class="formInput text-center ps-0 pe-0"
                       status="basic"
                       fieldSize="small"
                       nbInput
                       formControlName="july"
-                      name="july"
+                      name="july"  [min]='0'
                     />
                   </td>
                   <td class="p-0">
                     <input
-                      type="text"
+                    type='number'
                       class="formInput text-center ps-0 pe-0"
                       status="basic"
                       fieldSize="small"
                       nbInput
                       formControlName="august"
-                      name="august"
+                      name="august"  [min]='0'
                     />
                   </td>
                   <td class="p-0">
                     <input
-                      type="text"
+                    type='number'
                       class="formInput text-center ps-0 pe-0"
                       status="basic"
                       fieldSize="small"
                       nbInput
                       formControlName="september"
-                      name="september"
+                      name="september"  [min]='0'
                     />
                   </td>
                   <td class="p-0">
                     <input
-                      type="text"
+                    type='number'
                       class="formInput text-center ps-0 pe-0"
                       status="basic"
                       fieldSize="small"
                       nbInput
                       formControlName="october"
-                      name="october"
+                      name="october"  [min]='0'
                     />
                   </td>
                   <td class="p-0">
                     <input
-                      type="text"
+                    type='number'
                       class="formInput text-center ps-0 pe-0"
                       status="basic"
                       fieldSize="small"
                       nbInput
                       formControlName="november"
-                      name="november"
+                      name="november"  [min]='0'
                     />
                   </td>
                   <td class="p-0">
                     <input
-                      type="text"
+                    type='number'
                       class="formInput text-center ps-0 pe-0"
                       status="basic"
                       fieldSize="small"
                       nbInput
                       formControlName="december"
-                      name="december"
-                      id="december{{ project.indexValue }}"
+                      name="december" 
+                      [min]='0'
                     />
                   </td>
                   <td class="p-0 ps-1 pe-1 text-center">
@@ -313,7 +313,7 @@
               <tfoot class="border-secondary table-group-divider">
                 <tr
                   *ngFor="
-                    let key of groupByData(this.defaultData, 'shiftName')
+                    let key of groupByData(true, 'shift')
                       | keyvalue;
                     let idx = index
                   "
@@ -359,6 +359,7 @@
                   </td>
                   <td></td>
                 </tr>
+                
               </tfoot>
             </table>
           </div>
