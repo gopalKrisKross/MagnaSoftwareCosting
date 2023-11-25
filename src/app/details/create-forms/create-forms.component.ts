@@ -232,6 +232,7 @@ export class CreateFormsComponent implements OnInit {
             if (res) {
               //clear form data
               (this.estimationForm.controls['estimation'] as FormArray).clear();
+
               //this function use for generate form group name form
               res.Table?.forEach((element: any, i: any) => {
                 this.addEstimation(element, i);
@@ -276,7 +277,6 @@ export class CreateFormsComponent implements OnInit {
 
   calculatShiftTotal(key: string, value: any): number | any {
     try {
-      // console.log()
       let count = 0;
 
       value.forEach((element: any) => {
@@ -371,54 +371,58 @@ export class CreateFormsComponent implements OnInit {
    * @author Sandesh
    * @description this function is use for set saving param
    */
-  saveData(index: any) {
-    let value = this.estimationForm.controls.estimation['controls']
-      .at(index)
-      .getRawValue();
-    let optionValue = this.deptOptionForm.getRawValue();
-    let params = {
-      dbName: Global.LOGGED_IN_USER.dbName,
-      dbPassword: Global.LOGGED_IN_USER.dbPassword,
-      userId: Global.LOGGED_IN_USER.userId,
-      departmentId: optionValue.department,
-      licenceServerId: optionValue.software,
-      year: optionValue.year,
-      estimationId: value.estimationId,
-      projectId: value.projectId,
-      shiftId: value.shiftId,
-      january: value.january,
-      february: value.february,
-      march: value.march,
-      april: value.april,
-      may: value.may,
-      june: value.june,
-      july: value.july,
-      august: value.august,
-      september: value.september,
-      october: value.october,
-      november: value.november,
-      december: value.december,
-      updatedBy: Global.LOGGED_IN_USER.userId,
-    };
+  saveData(index: any, e: any) {
+    if (e.detail == '1') {
+      let value = this.estimationForm.controls.estimation['controls']
+        .at(index)
+        .getRawValue();
+      let optionValue = this.deptOptionForm.getRawValue();
 
-    this.commonService.saveEstimationData(params).subscribe(
-      (res: any) => {
-        if (res) {
-          this.toast.showSuccess('Data Saved Successfully');
-          this.iconToggle(index, true);
-          this.estimationForm.controls.estimation['controls'].at(
-            index
-          ).value.estimationId = res;
-          this.month.forEach((element: any) => {
+      let params = {
+        dbName: Global.LOGGED_IN_USER.dbName,
+        dbPassword: Global.LOGGED_IN_USER.dbPassword,
+        userId: Global.LOGGED_IN_USER.userId,
+        departmentId: optionValue.department,
+        licenceServerId: optionValue.software,
+        year: optionValue.year,
+        estimationId: value.estimationId,
+        projectId: value.projectId,
+        shiftId: value.shiftId,
+        january: value.january,
+        february: value.february,
+        march: value.march,
+        april: value.april,
+        may: value.may,
+        june: value.june,
+        july: value.july,
+        august: value.august,
+        september: value.september,
+        october: value.october,
+        november: value.november,
+        december: value.december,
+        updatedBy: Global.LOGGED_IN_USER.userId,
+      };
+
+      this.commonService.saveEstimationData(params).subscribe(
+        (res: any) => {
+          if (res) {
+            this.toast.showSuccess('Data Saved Successfully');
+            this.iconToggle(index, true);
             this.estimationForm.controls.estimation['controls'][index]
-              .get(element)
-              .disable();
-          });
+              .get('estimationId')
+              .setValue(res);
+
+            this.month.forEach((element: any) => {
+              this.estimationForm.controls.estimation['controls'][index]
+                .get(element)
+                .disable();
+            });
+          }
+        },
+        (err: any) => {
+          console.error(err);
         }
-      },
-      (err: any) => {
-        console.error(err);
-      }
-    );
+      );
+    }
   }
 }
